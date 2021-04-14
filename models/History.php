@@ -4,10 +4,8 @@ namespace app\models;
 
 use Yii;
 
-class History extends \yii\db\ActiveRecord
-{
-  public static function tableName()
-  {
+class History extends \yii\db\ActiveRecord {
+  public static function tableName()  {
     return 'history';
   }
 
@@ -16,14 +14,13 @@ class History extends \yii\db\ActiveRecord
     return [
       //  [['ACTIONDATE', 'ACTIONTIME'], 'integer'],
       //  [['FILECONTENT'], 'string'],
-      [['ACTIONDATETIME'], 'safe'],
+      [['ACTIONDATETIME','USERNAME','DESCRIPTION', 'RECORDCONTENT'], 'safe'],
       [['DESCRIPTION', 'RECORDCONTENT'], 'string', 'max' => 512],
       //  [['DESCRIPTION'], 'string', 'max' => 255],
     ];
   }
 
-  public function attributeLabels()
-  {
+  public function attributeLabels()  {
     return [
       'UID' => 'Код',
       'DESCRIPTION' => 'Событие',
@@ -33,8 +30,7 @@ class History extends \yii\db\ActiveRecord
     ];
   }
 
-  public static function find()
-  {
+  public static function find()  {
     return new HistoryQuery(get_called_class());
   }
 
