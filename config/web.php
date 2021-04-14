@@ -7,6 +7,7 @@ $config = [
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
+    'language' => 'ru-RU',
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
@@ -43,14 +44,28 @@ $config = [
             ],
         ],
         'db' => $db,
-        /*
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
             ],
         ],
-        */
+        'ad' => [
+          'class' => 'Edvlerblog\Adldap2\Adldap2Wrapper',
+          'providers' => [
+            'default' => [ //Providername default
+              'autoconnect' => true,
+              'config' => [
+                // Your account suffix, for example: matthias.maderer@example.lan
+                'account_suffix'        => '',
+                'hosts'    => ['10.195.201.2', '10.195.201.51'],
+                'base_dn'               => 'OU=Транефть-Балтика Ярославское РНУ,OU=БНП - Ярославское РНУ,OU=_YRNU,DC=SPB,DC=TN,DC=CORP',
+                'username'        => 'spb-tn\scanyrnu',
+                'password'        => 'scan=123',
+              ],
+            ],
+          ], // close providers array
+        ],
     ],
     'params' => $params,
 ];
@@ -61,14 +76,14 @@ if (YII_ENV_DEV) {
     $config['modules']['debug'] = [
         'class' => 'yii\debug\Module',
         // uncomment the following to add your IP if you are not connecting from localhost.
-        //'allowedIPs' => ['127.0.0.1', '::1'],
+        'allowedIPs' => ['127.0.0.1', '::1', '10.195.70.*'],
     ];
 
     $config['bootstrap'][] = 'gii';
     $config['modules']['gii'] = [
         'class' => 'yii\gii\Module',
         // uncomment the following to add your IP if you are not connecting from localhost.
-        //'allowedIPs' => ['127.0.0.1', '::1'],
+        'allowedIPs' => ['127.0.0.1', '::1'],
     ];
 }
 

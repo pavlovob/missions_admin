@@ -1,10 +1,16 @@
 <?php
 
 return [
+    // 'class' => 'yii\db\Connection',
+    // 'dsn' => 'mysql:host=localhost;dbname=yii2basic',
+    // 'username' => 'root',
+    // 'password' => '',
+    // 'charset' => 'utf8',
+
     'class' => 'yii\db\Connection',
-    'dsn' => 'mysql:host=localhost;dbname=yii2basic',
-    'username' => 'root',
-    'password' => '',
+    'dsn' => 'mysql:host=localhost:3307;dbname=missions',
+    'username' => 'missions',
+    'password' => '234werWER',
     'charset' => 'utf8',
 
     // Schema cache options (for production environment)

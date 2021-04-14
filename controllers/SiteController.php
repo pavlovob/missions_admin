@@ -7,16 +7,16 @@ use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\Response;
 use yii\filters\VerbFilter;
-use app\models\LoginForm;
-use app\models\ContactForm;
+// use app\models\LoginForm;
+use app\models\User;
+use app\models\History;
+// use app\models\ContactForm;
 
-class SiteController extends Controller
-{
+class SiteController extends Controller {
     /**
      * {@inheritdoc}
      */
-    public function behaviors()
-    {
+    public function behaviors()    {
         return [
             'access' => [
                 'class' => AccessControl::className(),
@@ -41,8 +41,7 @@ class SiteController extends Controller
     /**
      * {@inheritdoc}
      */
-    public function actions()
-    {
+    public function actions()    {
         return [
             'error' => [
                 'class' => 'yii\web\ErrorAction',
@@ -54,75 +53,67 @@ class SiteController extends Controller
         ];
     }
 
-    /**
-     * Displays homepage.
-     *
-     * @return string
-     */
-    public function actionIndex()
-    {
+
+    public function actionIndex()    {
         return $this->render('index');
     }
 
-    /**
-     * Login action.
-     *
-     * @return Response|string
-     */
-    public function actionLogin()
-    {
+    public function actionLogin()        {
+      $model = new User(['scenario' => 'login']);
+      if ($model->load(Yii::$app->request->post()) && ($model->validate()))      {
+        $error = User::login($model);
+        if ($error !== null){
+          switch ($error) {
+            case 'autherror':
+            //Неверное имя пользователя или пароль
+            $error = 'Неправильное имя пользователя или пароль';
+            break;
+            case 'accesserror':
+            //Неверное имя пользователя или пароль
+            $error = 'Отсутствует доступ к ИС. Необходимо оформить заявку.';
+            break;
+            //Не пользователь но запись есть
+            case 'notusererror':
+            $error = 'Указанная учетная запись не является пользовательской';
+            break;
+            default:
+            break;
+          }
+          Yii::$app->session->setFlash('error', $error);
+          History::log($error,implode('-',$model->toArray()));
+          return $this->render('login', ['model'=>$model]);
+        } else {
+          History::log('Пользователю предоставлен доступ',$model->username);
+          return $this->redirect(['/site']);
+          // return $this->redirect(['/workers']);
+        }
+
+      } else {
+        Yii::$app->session->setFlash('warning', 'Введите данные учетной записи');
+        return $this->render('login', ['model'=>$model]);
+      }
+    }
+
+    public function actionLogin_old()    {
         if (!Yii::$app->user->isGuest) {
             return $this->goHome();
         }
-
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
             return $this->goBack();
         }
-
         $model->password = '';
         return $this->render('login', [
             'model' => $model,
         ]);
     }
 
-    /**
-     * Logout action.
-     *
-     * @return Response
-     */
-    public function actionLogout()
-    {
-        Yii::$app->user->logout();
 
-        return $this->goHome();
+    public function actionLogout()    {
+      History::log('Пользователь завершил работу в ИС');
+      Yii::$app->user->logout();
+      return $this->goHome();
     }
 
-    /**
-     * Displays contact page.
-     *
-     * @return Response|string
-     */
-    public function actionContact()
-    {
-        $model = new ContactForm();
-        if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) {
-            Yii::$app->session->setFlash('contactFormSubmitted');
 
-            return $this->refresh();
-        }
-        return $this->render('contact', [
-            'model' => $model,
-        ]);
-    }
-
-    /**
-     * Displays about page.
-     *
-     * @return string
-     */
-    public function actionAbout()
-    {
-        return $this->render('about');
-    }
 }
