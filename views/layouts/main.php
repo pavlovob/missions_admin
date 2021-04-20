@@ -49,6 +49,7 @@ AppAsset::register($this);
       $menuItems[] = ['label' => 'Меню', 'items' => [
               ['label' => 'Поручения', 'url' => ['/missions']],
               ['label' => 'Просмотр истории событий', 'url' => ['/history']],
+              ['label' => 'Настройки', 'url' => ['/settings']],
         ]
       ];
     }
