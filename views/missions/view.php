@@ -3,24 +3,21 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
-/* @var $this yii\web\View */
-/* @var $model app\models\Missions */
-
-$this->title = $model->uid;
-$this->params['breadcrumbs'][] = ['label' => 'Missions', 'url' => ['index']];
+$this->title = 'Просмотр записи';
+$this->params['breadcrumbs'][] = ['label' => 'Поручения', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
 <div class="missions-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h2><?= Html::encode($this->title) ?></h2>
 
     <p>
-        <?= Html::a('Update', ['update', 'id' => $model->uid], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->uid], [
+        <?= Html::a('Редактировать', ['update', 'id' => $model->uid], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Удалить', ['delete', 'id' => $model->uid], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
+                'confirm' => 'Действительно удалить?',
                 'method' => 'post',
             ],
         ]) ?>
@@ -30,10 +27,9 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'uid',
-            'mission_month',
-            'mission_year',
+            'mission_date',
             'description',
-            'locked',
+            'status',
             'approve_post',
             'approve_fio',
             'created',

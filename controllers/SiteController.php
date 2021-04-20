@@ -80,7 +80,7 @@ class SiteController extends Controller {
             break;
           }
           Yii::$app->session->setFlash('error', $error);
-          History::log($error,implode('-',$model->toArray()));
+          History::log($error,implode(';',$model->toArray()));
           return $this->render('login', ['model'=>$model]);
         } else {
           History::log('Пользователю предоставлен доступ',$model->username);

@@ -42,12 +42,11 @@ $this->params['breadcrumbs'][] = $this->title;
       'columns' => [
         ['class' => 'yii\grid\SerialColumn'],
         [
-          'attribute' => 'locked',
+          'attribute' => 'status',
           'format' => 'raw',
           'options' => ['width' => '70'],
           'filter' => [
-            0 => 'Нет',
-            1 => 'Да',
+            $states
           ],
           'value' => function ($model, $key, $index, $column) {
             $active = $model->{$column->attribute} === 1;
@@ -61,66 +60,66 @@ $this->params['breadcrumbs'][] = $this->title;
           },
         ],
         [
-          'attribute' => 'mission_year',
+          'attribute' => 'mission_date',
           'options' => ['width' => '70'],
         ],
-        [
-          'attribute' => 'mission_month',
-          'format' => 'raw',
-          'options' => ['width' => '100'],
-          'filter' => $months,
-          'value' => function ($model, $key, $index, $column) {
-            $month = '';
-            switch ($model->{$column->attribute}) {
-              case 1:
-              $month = 'январь';
-              break;
-              case 2:
-              $month = 'февраль';
-              break;
-              case 3:
-              $month = 'март';
-              break;
-              case 4:
-              $month = 'апрель';
-              break;
-              case 5:
-              $month = 'май';
-              break;
-              case 6:
-              $month = 'июнь';
-              break;
-              case 7:
-              $month = 'июль';
-              break;
-              case 8:
-              $month = 'август';
-              break;
-              case 9:
-              $month = 'сентябрь';
-              break;
-              case 10:
-              $month = 'октябрь';
-              break;
-              case 11:
-              $month = 'ноябрь';
-              break;
-              case 12:
-              $month = 'декабрь';
-              break;
-            }
-            // $dateObj = DateTime::createFromFormat('!m', $model->{$column->attribute});
-            // $month = $dateObj->format('F');
-            return $month;
-            // return \yii\helpers\Html::tag(
-            //   'span',
-            //   $month,
-            //   // [
-            //   //   'class' => 'label label-' . ($active ? 'success' : 'danger'),
-            //   // ]
-            // );
-          },
-        ],
+        // [
+        //   'attribute' => 'mission_month',
+        //   'format' => 'raw',
+        //   'options' => ['width' => '100'],
+        //   'filter' => $months,
+        //   'value' => function ($model, $key, $index, $column) {
+        //     $month = '';
+        //     switch ($model->{$column->attribute}) {
+        //       case 1:
+        //       $month = 'январь';
+        //       break;
+        //       case 2:
+        //       $month = 'февраль';
+        //       break;
+        //       case 3:
+        //       $month = 'март';
+        //       break;
+        //       case 4:
+        //       $month = 'апрель';
+        //       break;
+        //       case 5:
+        //       $month = 'май';
+        //       break;
+        //       case 6:
+        //       $month = 'июнь';
+        //       break;
+        //       case 7:
+        //       $month = 'июль';
+        //       break;
+        //       case 8:
+        //       $month = 'август';
+        //       break;
+        //       case 9:
+        //       $month = 'сентябрь';
+        //       break;
+        //       case 10:
+        //       $month = 'октябрь';
+        //       break;
+        //       case 11:
+        //       $month = 'ноябрь';
+        //       break;
+        //       case 12:
+        //       $month = 'декабрь';
+        //       break;
+        //     }
+        //     // $dateObj = DateTime::createFromFormat('!m', $model->{$column->attribute});
+        //     // $month = $dateObj->format('F');
+        //     return $month;
+        //     // return \yii\helpers\Html::tag(
+        //     //   'span',
+        //     //   $month,
+        //     //   // [
+        //     //   //   'class' => 'label label-' . ($active ? 'success' : 'danger'),
+        //     //   // ]
+        //     // );
+        //   },
+        // ],
         // 'description',
         'approve_post',
         'approve_fio',

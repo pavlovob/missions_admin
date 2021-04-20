@@ -5,6 +5,7 @@ namespace app\controllers;
 use Yii;
 use app\models\Missions;
 use app\models\MissionsSearch;
+use app\models\History;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -45,7 +46,7 @@ class MissionsController extends Controller {
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-            'months'  => Missions::monthsDropdown(),
+            'states'  => Missions::statesDropdown(),
         ]);
     }
 
@@ -59,16 +60,21 @@ class MissionsController extends Controller {
         $model = new Missions();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $ts = strtotime($model->mission_date);
+            $msg = 'Созданы поручения на '.Missions::monthName(date('n',$ts)).' '.date('Y',$ts).' года';
+            // $msg = 'Созданы поручения на '.date('n',strtotime($model->mission_date));
+            Yii::$app->session->setFlash('info', $msg);
+            History::Log($msg,implode(';',$model->toArray()));
             return $this->redirect(['view', 'id' => $model->uid]);
         }
 
-        $model->mission_month = date('n') + 1;
-        $model->mission_year  = date('o')  ;
-        $model->description   = "Поручения на " . Missions::monthName($model->mission_month) . " " .  $model->mission_year . " года" ;
+        $model->mission_date = mktime(0, 0, 0, date('m')+1, 1, date('Y')) ;
+        // $model->description   = "Поручения на " . Missions::monthName($model->mission_month) . " " .  $model->mission_year . " года" ;
+        $model->description   = "" ;
         // $model->description = "Тест";
         return $this->render('create', [
             'model' => $model,
-            'months'  => Missions::monthsDropdown(),
+            'states'  => Missions::statesDropdown(),
         ]);
     }
 
@@ -81,6 +87,7 @@ class MissionsController extends Controller {
 
         return $this->render('update', [
             'model' => $model,
+            'months'  => Missions::monthsDropdown(),
         ]);
     }
 

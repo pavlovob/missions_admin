@@ -1,46 +1,47 @@
 <?php
 use yii\helpers\Html;
+use yii\web\View;
 use yii\bootstrap\ActiveForm;
-// use yii\jui\DatePicker;
-// use yii\widgets\ActiveForm;
 use yii\widgets\ActiveField;
+use yii\jui\DatePicker;
+use \yii\jui\Spinner;
+
+// $this->registerCss(".ui-datepicker-calendar { display: none; }");
 ?>
 
 <div class="w3-container w3-tiny">
-<div class="missions-form">
+  <div class="missions-form">
 
-    <!-- <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?> -->
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+    <?= $form->field($model, 'mission_date')->widget(\yii\jui\DatePicker::classname(), [
+      'language' => 'ru',
+      // 'id' => 'datepicker1',
+      'dateFormat' => 'yyyy-MM-dd',
+      // 'dateFormat' => 'MM yy',
+      'inline' =>'1',
+      'clientOptions' => [
+        'changeMonth' => true,
+        'changeYear' => true,
+        'yearRange' => '2020:2030',
+        'showButtonPanel' => false,
+        // 'style' => ['ui-datepicker-calendar' => ['display' => 'none']],
+        // 'style' => ['display' => 'none'],
+      ]
+      ]) ?>
 
-    <!-- <?= $form->field($model, 'mission_month')->textInput() ?> -->
-    <?= $form->field($model, 'mission_month')->dropdownList($months,['style'=>'width:150px'])?>
-    <?= $form->field($model, 'mission_year')->textInput(['style'=>'width:60px;text-align:right']) ?>
-    <?= $form->field($model, 'description')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'from_date')->widget(\yii\jui\DatePicker::classname(), [
-                        'options' => ['placeholder' => Yii::t('app', 'Starting Date')],
-                        'attribute2'=>'to_date',
-                        'type' => DatePicker::TYPE_RANGE,
-                        'pluginOptions' => [
-                            'autoclose' => true,
-                            'startView'=>'year',
-                            'minViewMode'=>'months',
-                            'format' => 'mm-yyyy'
-                        ]
-                    ]) ?>
+      <?= $form->field($model, 'approve_post')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'locked')->textInput() ?>
-
-    <?= $form->field($model, 'approve_post')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'approve_fio')->textInput(['maxlength' => true]) ?>
-
-    <div class="form-group">
+      <?= $form->field($model, 'approve_fio')->textInput(['maxlength' => true]) ?>
+      <?= $form->field($model, 'description')->textInput(['maxlength' => true]) ?>
+      <?= $form->field($model, 'url')->textInput(['maxlength' => true]) ?>
+      <?= $form->field($model, 'status')->dropdownList($states)      ?>
+      <div class="form-group">
         <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success']) ?>
         <!-- <?= Html::submitButton($model->isNewRecord ? 'Добавить' : 'Записать', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?> -->
+      </div>
+
+      <?php ActiveForm::end(); ?>
+
     </div>
-
-    <?php ActiveForm::end(); ?>
-
-</div>
-</div>
+  </div>
