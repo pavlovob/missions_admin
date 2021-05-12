@@ -18,6 +18,7 @@ Thumbs.db
 # YII2 files
 db.php
 web.php
+params.php
 
 # composer itself is not needed
 composer.phar

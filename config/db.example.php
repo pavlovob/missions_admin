@@ -1,5 +1,7 @@
 <?php
-
+// ***************************************************************************
+// Rename this file to db.php and fill the appropriate fileds with your owns!!!
+// ***************************************************************************
 return [
     'class' => 'yii\db\Connection',
     'dsn' => 'mysql:host=yourMySQLServerAddr:port;dbname=your_DB_name',
