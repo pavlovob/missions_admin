@@ -44,19 +44,72 @@ $this->params['breadcrumbs'][] = $this->title;
         [
           'attribute' => 'status',
           'format' => 'raw',
-          'options' => ['width' => '70'],
+          'options' => ['width' => '100'],
           'filter' => [
             $states
           ],
           'value' => function ($model, $key, $index, $column) {
-            $active = $model->{$column->attribute} === 1;
+            $active = $model->{$column->attribute} === STATE_OPEN;
             return \yii\helpers\Html::tag(
               'span',
-              $active ? 'Да' : 'Нет',
+              $active ? 'Открыто' : 'Закрыто',
               [
                 'class' => 'label label-' . ($active ? 'success' : 'danger'),
               ]
             );
+          },
+        ],
+        [
+          'attribute' => 'mission_date',
+          'format' => 'raw',
+          'options' => ['width' => '70'],
+          'filter' => [
+            // $states
+          ],
+          'value' => function ($model, $key, $index, $column) {
+              $ts = strtotime($model->{$column->attribute});
+                $month = '';
+                switch (date('n',$ts)) {
+                  case 1:
+                  $month = 'январь';
+                  break;
+                  case 2:
+                  $month = 'февраль';
+                  break;
+                  case 3:
+                  $month = 'март';
+                  break;
+                  case 4:
+                  $month = 'апрель';
+                  break;
+                  case 5:
+                  $month = 'май';
+                  break;
+                  case 6:
+                  $month = 'июнь';
+                  break;
+                  case 7:
+                  $month = 'июль';
+                  break;
+                  case 8:
+                  $month = 'август';
+                  break;
+                  case 9:
+                  $month = 'сентябрь';
+                  break;
+                  case 10:
+                  $month = 'октябрь';
+                  break;
+                  case 11:
+                  $month = 'ноябрь';
+                  break;
+                  case 12:
+                  $month = 'декабрь';
+                  break;
+                }
+                // $dateObj = DateTime::createFromFormat('!m', $model->{$column->attribute});
+                // $month = $dateObj->format('F');
+                return $month;
           },
         ],
         [
