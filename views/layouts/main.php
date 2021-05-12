@@ -44,7 +44,7 @@ AppAsset::register($this);
     ]);
 
     //меню только для залогиненного юзера
-    $menuItems[] = ['label' => 'Домой', 'url' => ['/']];
+    $menuItems[] = ['label' => 'ИС Поручения', 'url' => ['/']];
     if (Yii::$app->user->id !== null) {
       $menuItems[] = ['label' => 'Меню', 'items' => [
               ['label' => 'Поручения', 'url' => ['/missions']],

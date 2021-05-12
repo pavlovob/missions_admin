@@ -12,16 +12,6 @@ use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 
 class MissionsController extends Controller {
-    // public function behaviors()     {
-    //     return [
-    //         'verbs' => [
-    //             'class' => VerbFilter::className(),
-    //             'actions' => [
-    //                 'delete' => ['POST'],
-    //             ],
-    //         ],
-    //     ];
-    // }
 
     public function behaviors()     {
       return [
@@ -68,7 +58,7 @@ class MissionsController extends Controller {
             return $this->redirect(['view', 'id' => $model->uid]);
         }
 
-        $model->mission_date = mktime(0, 0, 0, date('m')+1, 1, date('Y')) ;
+        $model->mission_date = mktime(0, 0, 0, date('m')+1, 1, date('Y'));
         // $model->description   = "Поручения на " . Missions::monthName($model->mission_month) . " " .  $model->mission_year . " года" ;
         $model->description   = "" ;
         // $model->description = "Тест";

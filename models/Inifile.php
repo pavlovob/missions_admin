@@ -37,10 +37,10 @@ class Inifile extends \yii\db\ActiveRecord
   }
   public static function checkIntegrity()  {
     $params = [
-      ['section' =>'common',    'param' =>'orgname', 'description' =>'Наименование своей организации'     ,'visible'=>1],
-      ['section' =>'committee', 'param' =>'s1f',     'description' =>'Ф.И.О. утверждающего поручения'     ,'visible'=>1],
-      ['section' =>'committee', 'param' =>'s1p',     'description' =>'Должность утверждающего поручения'  ,'visible'=>1],
-      // ['section' =>'committee', 'param' =>'w1f',     'description' =>'Ф.И.О. 1го согласующего акт ТО'      ,'visible'=>1],
+      ['section' =>'common',    'param' =>'orgname',            'description' =>'Наименование своей организации'     ,'visible'=>1],
+      ['section' =>'committee', 'param' =>'s1f',                'description' =>'Ф.И.О. утверждающего поручения'     ,'visible'=>1],
+      ['section' =>'committee', 'param' =>'s1p',                'description' =>'Должность утверждающего поручения'  ,'visible'=>1],
+      ['section' =>'missions',  'param' =>'DefaultDescription', 'description' =>'Префикс заголовка поручений по умолчанию'      ,'visible'=>1],
       // ['section' =>'committee', 'param' =>'w1p',     'description' =>'Должность 1го согласующего акт ТО'   ,'visible'=>1],
       // ['section' =>'committee', 'param' =>'w2f',     'description' =>'Ф.И.О. 2го согласующего акт ТО'      ,'visible'=>1],
       // ['section' =>'committee', 'param' =>'w2p',     'description' =>'Должность 2го согласующего акт ТО'   ,'visible'=>1],
