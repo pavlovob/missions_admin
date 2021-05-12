@@ -15,10 +15,14 @@ Thumbs.db
 # composer vendor dir
 /vendor
 
+// ********************* My main git_ignore things!!!! *****************
 # YII2 files
 db.php
 web.php
 params.php
+console.php
+tn.png
+// *********************************************************************
 
 # composer itself is not needed
 composer.phar
