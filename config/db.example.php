@@ -4,7 +4,7 @@
 // ***************************************************************************
 return [
     'class' => 'yii\db\Connection',
-    'dsn' => 'mysql:host=yourMySQLServerAddress:port;dbname=your_DB_name',
+    'dsn' => 'mysql:host=YourMySQLServerAddress:Port;dbname=your_DB_name',
     'username' => 'your_username',
     'password' => 'your_password',
     'charset' => 'utf8', //may leave as is
