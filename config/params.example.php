@@ -14,5 +14,5 @@ return [
     'domain_group' => 'your local security group to access',
     'org_name' => 'your organization name short',
     'org_name_full' => 'your organization name full',
-    'org_logo_file' => 'your_logo_file (gif, bmp, jpg or png)'
+    'org_logo_file' => 'your_logo_file (gif, bmp, jpg or png). file should be in the `web` folder'
 ];

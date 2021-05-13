@@ -8,9 +8,9 @@ return [
     // 'charset' => 'utf8',
 
     'class' => 'yii\db\Connection',
-    'dsn' => 'mysql:host=localhost:3307;dbname=missions',
+    'dsn' => 'mysql:host=localhost:3306;dbname=missions',
     'username' => 'missions',
-    'password' => '234werWER',
+    'password' => '1qaz!QAZ',
     'charset' => 'utf8',
 
     // Schema cache options (for production environment)
