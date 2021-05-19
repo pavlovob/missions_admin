@@ -24,6 +24,7 @@ console.php
 test_db.php
 test.php
 tn.png
+Dump.sql
 // *********************************************************************
 
 # composer itself is not needed

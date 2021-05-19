@@ -10,7 +10,7 @@ return [
     'senderName' => 'Example.com mailer',
 
     // Fill in some params in here //
-
+    'domain_auth' => true,
     'domain_group' => 'your local security group to access',
     'org_name' => 'your organization name short',
     'org_name_full' => 'your organization name full',
