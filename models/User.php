@@ -50,7 +50,7 @@ class User extends ActiveRecord implements IdentityInterface {
       // 'register' => ['username'],
     ];
   }
-  
+
   public function getUser()    {
     if ($this->_user === false) {
       $this->_user = User::findByUsername($this->username);
@@ -109,6 +109,7 @@ class User extends ActiveRecord implements IdentityInterface {
   //Кастомная логика
   public static function checkAdmin(){ // Если в БД пусто, добавить администратора
     if (User::find()->count() == 0){
+      //ДОБАВИТЬ ХЭШ ПАРОЛЬ ПО УМОЛЧАНИЮ
       $user = new User(['scenario' => 'insert']);
       $user->login      = 'admin';
       $user->username   = 'Администратор';
