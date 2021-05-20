@@ -12,7 +12,7 @@ return [
     'username' => 'missions',
     'password' => '1qaz!QAZ',
     'charset' => 'utf8',
-
+    //  
     // Schema cache options (for production environment)
     //'enableSchemaCache' => true,
     //'schemaCacheDuration' => 60,
