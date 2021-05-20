@@ -22,8 +22,9 @@ web.php
 params.php
 test_db.php
 test.php
-tn.png      //рабочий логотип
+tn.png
 Dump.sql
+.htaccess
 // *********************************************************************
 
 # composer itself is not needed
