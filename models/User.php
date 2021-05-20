@@ -50,6 +50,13 @@ class User extends ActiveRecord implements IdentityInterface {
       // 'register' => ['username'],
     ];
   }
+  
+  public function getUser()    {
+    if ($this->_user === false) {
+      $this->_user = User::findByUsername($this->username);
+    }
+    return $this->_user;
+  }
 
   public static function findIdentity($id)    {
     // return isset(self::$users[$id]) ? new static(self::$users[$id]) : null;
@@ -113,7 +120,7 @@ class User extends ActiveRecord implements IdentityInterface {
       $user->save();
       Yii::info('В справочник пользователей добавлена учетная запись администратора по умолчанию ');
     }
-  } 
+  }
 
   public static function login($model)    { //Логиним пользователя по LDAP или БД
     $error = null;
@@ -158,12 +165,7 @@ class User extends ActiveRecord implements IdentityInterface {
     return $error;
   }
 
-  public function getUser()    {
-    if ($this->_user === false) {
-      $this->_user = User::findByUsername($this->username);
-    }
-    return $this->_user;
-  }
+
 
 
 }
