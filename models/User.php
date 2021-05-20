@@ -99,19 +99,33 @@ class User extends ActiveRecord implements IdentityInterface {
     return false;
   }
 
-  //Custom logic
-  public static function login($model)    {
+  //Кастомная логика
+  public static function checkAdmin(){ // Если в БД пусто, добавить администратора
+    if (User::find()->count() == 0){
+      $user = new User(['scenario' => 'insert']);
+      $user->login      = 'admin';
+      $user->username   = 'Администратор';
+      $user->usertype   = USERTYPE_ADMIN;
+      $user->executerid = 0;
+      $user->assignerid = 0;
+      $user->created = date('Y-m-d G:i:s', time());
+      $user->changed = date('Y-m-d G:i:s', time());
+      $user->save();
+      Yii::info('В справочник пользователей добавлена учетная запись администратора по умолчанию ');
+    }
+  } 
+
+  public static function login($model)    { //Логиним пользователя по LDAP или БД
     $error = null;
-    $LDAPDomain = \Yii::$app->params['domain_name'];
-    //Using LDAP
-    if (!Yii::$app->ad->auth()->attempt($LDAPDomain.'\\'.$model->login,$model->password))  return 'autherror';
-    //Прошел. Достаем ФИО в модель
-    $ADUser = Yii::$app->ad->search()->findBy('sAMAccountname', $model->login);
-    if ($ADUser == null) return 'notusererror';
-    $model->username = $ADUser['displayname'][0];
-    //Yii::info('Пользователь '.$model->username.' прошел аутентификацию в домене '.$LDAPDomain);
-    //AD Groups check for access
-    if (!$ADUser->inGroup(Yii::$app->params['domain_group'])) return 'accesserror';
+    if (\Yii::$app->params['domain_auth'] == true) { //если включена доменная аутентификация
+      $LDAPDomain = \Yii::$app->params['domain_name'];
+      //Using LDAP
+      if (!Yii::$app->ad->auth()->attempt($LDAPDomain.'\\'.$model->login,$model->password))  return 'autherror';
+      //Прошел. Достаем ФИО в модель
+      $ADUser = Yii::$app->ad->search()->findBy('sAMAccountname', $model->login);
+      if ($ADUser == null) return 'notusererror';
+      $model->username = $ADUser['displayname'][0];
+      if (!$ADUser->inGroup(Yii::$app->params['domain_group'])) return 'accesserror';
       // $error = 'Пользователю '.$model->fio.' отказано в доступе';
       // Yii::$app->session->setFlash('error', $error);
       // Yii::info($error);
@@ -133,10 +147,15 @@ class User extends ActiveRecord implements IdentityInterface {
       }
       $user = User::findOne(['login' => $model->login]);
       Yii::$app->user->login($user);
-      // $id = User::findIdentity($user->id);
-       // Yii::$app->user->login($id, $model->rememberMe ? 3600*24*30 : 0);
-      // Yii::info('Пользователю '.$model->fio.' предоставлен доступ с ПК '.gethostname());
-      return $error;
+    } else {  //если нет доменной аутентификации
+      $user = User::findOne(['login' => $model->login]);
+      if($user == null){  //добавить проверку пароля по хэшу
+        return 'accesserror'; //нет учетки
+      } else {
+        Yii::$app->user->login($user); //логин
+      }
+    }
+    return $error;
   }
 
   public function getUser()    {
@@ -146,19 +165,5 @@ class User extends ActiveRecord implements IdentityInterface {
     return $this->_user;
   }
 
-  //Кастомная логика
-  public static function checkAdmin(){ // Если в БД пусто, добавить администратора
-    if (User::find()->count() == 0){
-      $user = new User(['scenario' => 'insert']);
-      $user->login      = 'admin';
-      $user->username   = 'Администратор';
-      $user->usertype   = USERTYPE_ADMIN;
-      $user->executerid = 0;
-      $user->assignerid = 0;
-      $user->created = date('Y-m-d G:i:s', time());
-      $user->changed = date('Y-m-d G:i:s', time());
-      $user->save();
-      Yii::info('В справочник пользователей добавлена учетная запись администратора по умолчанию ');
-    }
-  }
+
 }

@@ -32,8 +32,10 @@ AppAsset::register($this);
     if (Yii::$app->user->isGuest){
       $username = "Гость";
     } else {
-      $user = Yii::$app->ad->search()->findBy('sAMAccountname', Yii::$app->user->identity->login);
-      $username = $user['displayname'][0];
+      //Добавить нормальное имя пользователя
+      // $user = Yii::$app->ad->search()->findBy('sAMAccountname', Yii::$app->user->identity->login);
+      //$username = $user['displayname'][0];
+      $username = '';
     }
     NavBar::begin([
       // 'brandLabel' => Yii::$app->name,
