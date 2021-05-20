@@ -145,4 +145,20 @@ class User extends ActiveRecord implements IdentityInterface {
     }
     return $this->_user;
   }
+
+  //Кастомная логика
+  public static function checkAdmin(){ // Если в БД пусто, добавить администратора
+    if (User::find()->count() == 0){
+      $user = new User(['scenario' => 'insert']);
+      $user->login      = 'admin';
+      $user->username   = 'Администратор';
+      $user->usertype   = USERTYPE_ADMIN;
+      $user->executerid = 0;
+      $user->assignerid = 0;
+      $user->created = date('Y-m-d G:i:s', time());
+      $user->changed = date('Y-m-d G:i:s', time());
+      $user->save();
+      Yii::info('В справочник пользователей добавлена учетная запись администратора по умолчанию ');
+    }
+  }
 }

@@ -14,6 +14,7 @@ return [
     'domain_group' => 'LDAP Group', //доменная группа доступа
     'domain_name' => 'Domain name', //Корневое имя домена
 
+    //Общие настройки
     'org_name'      => 'Сокращенное название организации',
     'org_name_full' => 'Полное название организации',
     'org_logo_file' => 'yourLogo.png' // (расширения gif, bmp, jpg или png) файл должен быть в папке web

@@ -55,6 +55,7 @@ class SiteController extends Controller {
 
 
     public function actionIndex()    {
+        User::checkAdmin(); //Проверка наличия записи администратора в БД (только если там нет пользователей)
         return $this->render('index');
     }
 
