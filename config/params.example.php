@@ -9,10 +9,12 @@ return [
     'senderEmail' => 'noreply@example.com',
     'senderName' => 'Example.com mailer',
 
-    // Fill in some params in here //
-    'domain_auth' => true,
-    'domain_group' => 'your local security group to access',
-    'org_name' => 'your organization name short',
-    'org_name_full' => 'your organization name full',
-    'org_logo_file' => 'your_logo_file (gif, bmp, jpg or png). file should be in the `web` folder'
+    //доменные данные для просмота LDAP
+    'domain_auth' => true // Если планируется LDAP авторизация, установить true
+    'domain_group' => 'LDAP Group', //доменная группа доступа
+    'domain_name' => 'Domain name', //Корневое имя домена
+
+    'org_name'      => 'Сокращенное название организации',
+    'org_name_full' => 'Полное название организации',
+    'org_logo_file' => 'yourLogo.png' // (расширения gif, bmp, jpg или png) файл должен быть в папке web
 ];
