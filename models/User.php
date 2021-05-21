@@ -155,11 +155,16 @@ class User extends ActiveRecord implements IdentityInterface {
       }
       $user = User::findOne(['login' => $model->login]);
       Yii::$app->user->login($user);
-    } else {  //если нет доменной аутентификации
+    }
+    else //если нет доменной аутентификации
+    {
       $user = User::findOne(['login' => $model->login]);
       if($user == null){  //добавить проверку пароля по хэшу
-        return 'accesserror'; //нет учетки
+        return 'autherror'; //нет учетки
       } else {
+        if ($user->usertype !== USERTYPE_ADMIN){
+          return 'accesserror'; //не админ
+        }
         Yii::$app->user->login($user); //логин
       }
     }
