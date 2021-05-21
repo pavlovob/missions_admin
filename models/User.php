@@ -16,11 +16,11 @@ class User extends ActiveRecord implements IdentityInterface {
       'uid'=>'Код',
       'login'=>'Логин',
       'password'=>'Пароль',
+      'password_hash'=>'Пароль',
       'username'=>'Пользователь',
       'usertype'=>'Тип записи',
       'assignerid'  => 'Куратор от',
       'executerid'  => 'Исполнитель от',
-      'password'=>'Пароль',
       'rememberMe'=>'Запомнить меня',
       'created'=>'Дата создания',
       'changed'=>'Дата изменения',
@@ -43,7 +43,7 @@ class User extends ActiveRecord implements IdentityInterface {
   public function scenarios()  {
     return [
       'login' => ['login', 'password'],
-      'insert' => ['login', 'username','usertype','assignerid','executerid','created','changed'],
+      'insert' => ['login','password_hash','username','usertype','assignerid','executerid','created','changed'],
       // 'insert' => ['username', 'password', 'password_check','workeruid'],
       // 'update' => ['username','workeruid'],
       // 'pwd_change' => ['password', 'password_check'],

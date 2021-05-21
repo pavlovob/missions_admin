@@ -24,7 +24,6 @@ test_db.php
 test.php
 tn.png
 Dump.sql
-.htaccess
 // *********************************************************************
 
 # composer itself is not needed
