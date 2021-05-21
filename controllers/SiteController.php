@@ -71,7 +71,7 @@ class SiteController extends Controller {
             break;
             case 'accesserror':
             //Неверное имя пользователя или пароль
-            $error = 'Отсутствует доступ к ИС. Необходимо оформить заявку.';
+            $error = 'Отсутствует доступ к информаицонной системе. Недостаточно прав.';
             break;
             //Не пользователь но запись есть
             case 'notusererror':
