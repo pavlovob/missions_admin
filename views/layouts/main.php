@@ -94,7 +94,7 @@ AppAsset::register($this);
           <footer class="footer">
             <div class="container">
               <!-- <p class="pull-left">&copy; Ярославское РНУ <?= date('Y') ?></p> -->
-              <p class="pull-left">&copy; <?=\Yii::$app->params['domain_name']?> <?= date('Y') ?></p>
+              <p class="pull-left">&copy; <?=\Yii::$app->params['org_name']?> <?= date('Y') ?></p>
 
               <!-- <p class="pull-right"><?= Yii::powered() ?></p> -->
             </div>
