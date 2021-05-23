@@ -134,18 +134,13 @@ class User extends ActiveRecord implements IdentityInterface {
       if ($ADUser == null) return 'notusererror';
       $model->username = $ADUser['displayname'][0];
       if (!$ADUser->inGroup(Yii::$app->params['domain_group'])) return 'accesserror';
-      // $error = 'Пользователю '.$model->fio.' отказано в доступе';
-      // Yii::$app->session->setFlash('error', $error);
-      // Yii::info($error);
-      // return $this->render('login', ['model'=>$model]);
-
       //Если нет, добавляем пользователя в справочник
       $user = User::findOne(['login' => $model->login]);
       if($user==null){
         $user = new User(['scenario' => 'insert']);
         $user->login      = $model->login;
         $user->username   = $model->username;
-        $user->usertype   = 0;
+        $user->usertype   = USERTYPE_NONE;
         $user->executerid = 0;
         $user->assignerid = 0;
         $user->created = date('Y-m-d G:i:s', time());
