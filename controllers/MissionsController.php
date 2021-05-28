@@ -6,6 +6,7 @@ use Yii;
 use app\models\Missions;
 use app\models\MissionsSearch;
 use app\models\History;
+use app\models\Inifile;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -36,7 +37,8 @@ class MissionsController extends Controller {
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-            'states'  => Missions::statesDropdown(),
+            'states'  => Missions::stateNames(),
+            // 'states'  => Missions::statesDropdown(),
         ]);
     }
 
@@ -51,16 +53,19 @@ class MissionsController extends Controller {
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $ts = strtotime($model->mission_date);
-            $msg = 'Созданы поручения на '.Missions::monthName(date('n',$ts)).' '.date('Y',$ts).' года';
+            $msg = 'Созданы поручения. ';
             // $msg = 'Созданы поручения на '.date('n',strtotime($model->mission_date));
             Yii::$app->session->setFlash('info', $msg);
             History::Log($msg,implode(';',$model->toArray()));
             return $this->redirect(['view', 'id' => $model->uid]);
         }
 
-        $model->mission_date = mktime(0, 0, 0, date('m')+1, 1, date('Y'));
+        // $model->mission_date = mktime(0, 0, 0, date('m')+1, 1, date('Y'));
+        $model->mission_date = date('Y-m-d',time());
         // $model->description   = "Поручения на " . Missions::monthName($model->mission_month) . " " .  $model->mission_year . " года" ;
         $model->description   = "" ;
+        $model->approve_fio   = Inifile::getIni('committee','s1f');
+        $model->approve_post  = Inifile::getIni('committee','s1p');
         // $model->description = "Тест";
         return $this->render('create', [
             'model' => $model,

@@ -8,7 +8,7 @@ use \yii\jui\Spinner;
 use app\assets\AppAsset;
 
 // Прячет блок выбора дней в календаре
-$this->registerCss(".ui-datepicker-calendar { display: none; }");
+// $this->registerCss(".ui-datepicker-calendar { display: none; }");
 //
 
 ?>
@@ -16,6 +16,7 @@ $this->registerCss(".ui-datepicker-calendar { display: none; }");
   <div class="missions-form">
 
     <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+    <?= $form->field($model, 'mission_name')->textInput(['maxlength' => true]) ?>
     <!-- <?= $form->field($model, 'mission_date')->textInput(['class' => 'date-picker','dateFormat' => 'yyyy-MM-dd']) ?> -->
     <!-- <?= $form->field($model, 'mission_date')->textInput(['class' => 'date-picker']) ?> -->
 
@@ -23,14 +24,14 @@ $this->registerCss(".ui-datepicker-calendar { display: none; }");
     <?= $form->field($model, 'mission_date')->widget(\yii\jui\DatePicker::classname(), [
       'language' => 'ru',
       'dateFormat' => 'yyyy-MM-dd',
-      'options' => ['class' => 'form-control'],
+      'inline' => '1',
+      // 'options' => ['class' => 'form-control'],
       'clientOptions' => [
-        'showAnim' => 'slide',
+        // 'showAnim' => 'slide',
         'changeMonth' => true,
         'changeYear' => true,
         'yearRange' => '2020:2030',
         // 'showButtonPanel' => true,
-
         // 'onClose' => new yii\web\JsExpression ('showtime'),
         // 'onClose' => new \yii\web\JsExpression('function(dateText,inst){alert(123);}'),
         // 'onSelect' => new \yii\web\JsExpression('function(dateText,inst){alert(123);}'),
@@ -41,13 +42,11 @@ $this->registerCss(".ui-datepicker-calendar { display: none; }");
         //     $(this).datepicker("setDate", dt);
         //     alert(dt);
         // }'),
-
-        'onClose' => new \yii\web\JsExpression('function(dateText, inst) {
-            var dt = new Date(inst.selectedYear, inst.selectedMonth);
-            $(this).datepicker("setDate", dt);
-            // alert(dt);
-        }'),
-
+        // 'onClose' => new \yii\web\JsExpression('function(dateText, inst) {
+        //     var dt = new Date(inst.selectedYear, inst.selectedMonth);
+        //     $(this).datepicker("setDate", dt);
+        //     // alert(dt);
+        // }'),
         // 'onClose' => new \yii\web\JsExpression('function(dateText, inst) {
         //   // alert(month);
         //     // var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();

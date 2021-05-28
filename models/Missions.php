@@ -12,11 +12,12 @@ class Missions extends \yii\db\ActiveRecord {
 
   public function rules()    {
     return [
-      [['mission_date', 'approve_post', 'approve_fio'], 'required'],
+      [['mission_name','mission_date','status','approve_post', 'approve_fio'], 'required'],
       // [['mission_date', 'status'], 'integer'],
       [[ 'status'], 'integer'],
       [['created', 'changed'], 'safe'],
       [['description', 'approve_post', 'approve_fio'], 'string', 'max' => 100],
+      [['mission_name'], 'string', 'max' => 256],
       [['url'], 'string', 'max' => 2048],
     ];
   }
@@ -24,7 +25,8 @@ class Missions extends \yii\db\ActiveRecord {
   public function attributeLabels()    {
     return [
       'uid' => 'Код',
-      'mission_date' => 'Дата',
+      'mission_name' => 'Наименование',
+      'mission_date' => 'Дата создания',
       'description' => 'Описание',
       'status' => 'Состояние',
       'approve_post' => 'Должность утверждающего',
@@ -34,12 +36,7 @@ class Missions extends \yii\db\ActiveRecord {
       'changed' => 'Дата изменения',
     ];
   }
-
-  public function getMissionitems()    {
-    return $this->hasMany(Missionitems::className(), ['missionuid' => 'uid']);
-  }
-
-  // public static function monthsDropdown(){
+  // public static function monthsDropdown() {
   //   $arr = [
   //     1=>'январь',
   //     2=>'февраль',
@@ -52,17 +49,44 @@ class Missions extends \yii\db\ActiveRecord {
   //     9=>'сентябрь',
   //     10=>'октябрь',
   //     11=>'ноябрь',
-  //     12=>'декабрь'
+  //     12=>'декабрь',
   //   ];
   //   return $arr;
   // }
 
+  public function getMissionitems()    {
+    return $this->hasMany(Missionitems::className(), ['missionuid' => 'uid']);
+  }
+
+  public static function monthsDropdown(){
+    $arr = [
+      1=>'январь',
+      2=>'февраль',
+      3=>'март',
+      4=>'апрель',
+      5=>'май',
+      6=>'июнь',
+      7=>'июль',
+      8=>'август',
+      9=>'сентябрь',
+      10=>'октябрь',
+      11=>'ноябрь',
+      12=>'декабрь'
+    ];
+    return $arr;
+  }
+
   public static function statesDropdown(){
     $arr = [
-      1001=>'Открыто',
-      1002=>'Закрыто',
-      1003=>'Удалено',
+      STATE_OPEN    =>'Открыто',
+      STATE_CLOSE   =>'Закрыто',
+      STATE_DELETED =>'Удалено',
     ];
+    return $arr;
+  }
+
+  public static function stateNames(){
+    $arr = array("Открыто","Закрыто","Удалено");
     return $arr;
   }
 
