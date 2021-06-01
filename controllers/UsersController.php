@@ -5,6 +5,8 @@ use Yii;
 use yii\web\Controller;
 use app\models\User;
 use app\models\History;
+use app\models\Assigners;
+use app\models\Executers;
 
 use yii\grid\GridView;
 use yii\data\ActiveDataProvider;
@@ -51,12 +53,16 @@ class UsersController extends Controller {
       $model->changed = $model->created;
       $model->password_hash = Yii::$app->getSecurity()->generatePasswordHash($model->password);
       $model->save();
-      History::log('SYSTEM','Добавлен новый пользователь '.$model->username);
+      History::log('В справочник пользователей добавлена запись',implode(';',$model->toArray()));
       return $this->redirect(['view', 'id' => $model->id]);
     } else    {
-      $assigners  = Assigners::dropdown();
-      $executers  = Executers::dropdown();
-      return $this->render('create', ['model' => $model,'assigners'=>$assigners,'executers'=>$executers]);
+      $model->usertype = 0;
+      return $this->render('create', [
+        'model'     => $model,
+        'assigners' => Assigners::dropdown(),
+        'executers' => Executers::dropdown(),
+        'usertypes' => User::typesDropdown(),
+      ]);
     }
   }
 
@@ -70,7 +76,12 @@ class UsersController extends Controller {
       History::log('SYSTEM','Отредактированы данные пользователя '.$model->username);
       return $this->redirect(['view', 'id' => $model->id]);
     } else {
-      return $this->render('update', ['model' => $model,]);
+      return $this->render('update', [
+        'model' => $model,
+        'assigners' => Assigners::dropdown(),
+        'executers' => Executers::dropdown(),
+        'usertypes' => User::typesDropdown(),
+      ]);
     }
   }
   public function actionDelete($id)  {

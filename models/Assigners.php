@@ -37,7 +37,7 @@ class Assigners extends \yii\db\ActiveRecord {
     }
 
     public static function dropdown()  {
-      $assigners = This->find()->select(['name', 'uid'])->orderBy('name')->indexBy('uid')->column();
+      $assigners = self::find()->select(['name', 'uid'])->orderBy('name')->indexBy('uid')->column();
       return $assigners;
     }
 

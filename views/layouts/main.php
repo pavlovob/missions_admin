@@ -53,6 +53,8 @@ AppAsset::register($this);
               ['label' => 'Просмотр истории событий', 'url' => ['/history']],
               ['label' => 'Настройки', 'url' => ['/settings']],
               ['label' => 'Пользователи', 'url' => ['/users']],
+              ['label' => 'Исполнители', 'url' => ['/executers']],
+              ['label' => 'Кураторы', 'url' => ['/assigners']],
         ]
       ];
     }

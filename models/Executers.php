@@ -37,7 +37,7 @@ class Executers extends \yii\db\ActiveRecord{
     }
 
     public static function dropdown()  {
-      $executers = This->find()->select(['name', 'uid'])->orderBy('name')->indexBy('uid')->column();
+      $executers = self::find()->select(['name', 'uid'])->orderBy('name')->indexBy('uid')->column();
       return $executers;
     }
 }

@@ -14,31 +14,30 @@ class User extends ActiveRecord implements IdentityInterface {
 
   public function attributeLabels ()  {
     return [
-      'uid'=>'Код',
-      'login'=>'Логин',
-      'password'=>'Пароль',
-      'password_check'=>'Проверка',
-      'password_hash'=>'Пароль',
-      'username'=>'Пользователь',
-      'usertype'=>'Тип записи',
-      'assignerid'  => 'Куратор от',
-      'executerid'  => 'Исполнитель от',
-      'rememberMe'=>'Запомнить меня',
-      'created'=>'Дата создания',
-      'changed'=>'Дата изменения',
+      'uid'           => 'Код',
+      'login'         => 'Логин',
+      'password'      => 'Пароль',
+      'password_check'=> 'Проверка',
+      'password_hash' => 'Пароль',
+      'username'      => 'Ф.И.О.',
+      'usertype'      => 'Тип записи',
+      'assignerid'    => 'Куратор от',
+      'executerid'    => 'Исполнитель от',
+      'rememberMe'    => 'Запомнить меня',
+      'created'       => 'Дата создания',
+      'changed'       => 'Дата изменения',
     ];
   }
 
   public function rules()  {
     return [
       [['login','password'], 'required', 'on' => 'login'],
-      [['login','username','password'], 'required', 'on' => 'insert'],
-      [['password_check','password'], 'safe'],
-      //  [['username'], 'required', 'on' => 'insert','on' => 'login'],
-      //  [['username', 'password'], 'required','on' => 'insert', 'on' => 'login'],
+      [['login','username','password','password_check','usertype'], 'required', 'on' => 'insert'],
       ['login', 'unique', 'on' => 'insert'],
+      [['password_check','password'], 'safe'],
+
       ['password', 'compare', 'compareAttribute' => 'password_check','on' => 'insert','on' => 'pwd_change'],
-                ['username', 'match', 'pattern' => '~^[A-Za-z][A-Za-z0-9]+$~', 'message'=> 'Должны быть только буквы на английском и цифры!', 'on' => 'insert', 'on' => 'update', 'on' => 'login'],
+      ['login', 'match', 'pattern' => '~^[A-Za-z][A-Za-z0-9]+$~', 'message'=> 'Должны быть только буквы на английском и цифры!', 'on' => 'insert', 'on' => 'update', 'on' => 'login'],
       ['rememberMe', 'boolean', 'on' => 'login'],
       // [['workeruid'], 'exist', 'skipOnError' => true, 'targetClass' => Workers::className(), 'targetAttribute' => ['workeruid' => 'UID'], 'on' => 'insert', 'on' => 'update'],
     ];
@@ -46,12 +45,10 @@ class User extends ActiveRecord implements IdentityInterface {
 
   public function scenarios()  {
     return [
-      'login' => ['login', 'password'],
-      'insert' => ['login','password_hash','username','usertype','assignerid','executerid','created','changed'],
-      // 'insert' => ['username', 'password', 'password_check','workeruid'],
+      'login'  => ['login', 'password'],
+      'insert' => ['login','username','password','password_check','usertype','assignerid','executerid'],
       'update' => ['login','username','usertype','assignerid','executerid'],
       'pwd_change' => ['password', 'password_check'],
-      // 'register' => ['username'],
     ];
   }
 
@@ -109,10 +106,11 @@ class User extends ActiveRecord implements IdentityInterface {
   }
 
   //Кастомная логика
+
+  //Добавление админа по умолчанию если справочник пуст admin/admin
   public static function checkAdmin(){ // Если в БД пусто, добавить администратора
-    // if (User::find()->count() == 0){
+    if (User::find()->count() == 0){
       $user                 = new User(['scenario' => 'insert']);
-      // $user                 = new User();
       $user->login          = 'admin';
       $user->username       = 'Администратор';
       $user->password       = 'admin';
@@ -123,8 +121,8 @@ class User extends ActiveRecord implements IdentityInterface {
       $user->created        = date('Y-m-d G:i:s', time());
       $user->changed        = date('Y-m-d G:i:s', time());
       $user->save();
-      Yii::info('В справочник пользователей добавлена учетная запись администратора по умолчанию ');
-    // }
+      History::log('В справочник пользователей добавлена учетная администратора по умолчанию');
+    }
   }
 
   public static function login($model)    { //Логиним пользователя по LDAP или БД
@@ -144,7 +142,7 @@ class User extends ActiveRecord implements IdentityInterface {
         $user = new User(['scenario' => 'insert']);
         $user->login      = $model->login;
         $user->username   = $model->username;
-        $user->usertype   = USERTYPE_NONE;
+        $user->usertype   = USERTYPE_BLOCKED; //по умолчанию при создании запись в БД заблокирована
         $user->executerid = null;
         $user->assignerid = null;
         $user->created = date('Y-m-d G:i:s', time());
@@ -153,22 +151,32 @@ class User extends ActiveRecord implements IdentityInterface {
         History::log('В справочник пользователей добавлена учетная запись',implode(';',$user->toArray()));
       }
       $user = User::findOne(['login' => $model->login]);
+      //Проверка на статус записи в БД
+      if ($user->usertype = USERTYPE_BLOCKED) return 'accesserror'; //если заблокировано в БД - ошибка
+      //логиним пользователя
       Yii::$app->user->login($user);
     }  else { //если нет доменной аутентификации
       $user = User::findOne(['login' => $model->login]);
       if ($user == null || !Yii::$app->getSecurity()->validatePassword($model->password, $user->password_hash)) {  //добавить проверку пароля по хэшу
         return 'autherror'; //нет учетки
       } else {
-        if ($user->usertype !== USERTYPE_ADMIN){
-          return 'accesserror'; //не админ
-        }
+        if ($user->usertype == USERTYPE_BLOCKED) return 'accesserror'; //Если заблокирована
         Yii::$app->user->login($user); //логин
       }
     }
     return $error;
   }
 
-
+  //Возвращает массив ролей пользователей. роли фиксированы
+  public static function typesDropdown(){
+    return  [
+      // USERTYPE_NONE     =>'Не задан',
+      USERTYPE_BLOCKED  =>'Заблокирован',
+      USERTYPE_ASSIGNER =>'Куратор',
+      USERTYPE_EXECUTER =>'Исполнитель',
+      USERTYPE_ADMIN    =>'Администратор',
+    ];
+  }
 
 
 }

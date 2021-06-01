@@ -20,14 +20,15 @@ $this->params['breadcrumbs'][] = $this->title;
       'id',
       'login',
       'username',
-      [
-        'attribute' => 'created',
-        'options' => ['width' => '300'],
-      ],
-      [
-        'attribute' => 'changed',
-        'options' => ['width' => '300'],
-      ],
+      
+      // [
+      //   'attribute' => 'created',
+      //   'options' => ['width' => '300'],
+      // ],
+      // [
+      //   'attribute' => 'changed',
+      //   'options' => ['width' => '300'],
+      // ],
       [
           'class' => 'yii\grid\ActionColumn',
           'template' => '{view} {update} {delete} {pwdchange}',
@@ -39,7 +40,7 @@ $this->params['breadcrumbs'][] = $this->title;
                   'title' => \Yii::t('yii', 'Смена пароля'),]);
               },
           ],
-          'options' => ['width' => '150'],
+          'options' => ['width' => '100'],
       ],
     ]
   ]);

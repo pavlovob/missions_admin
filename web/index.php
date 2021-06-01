@@ -12,7 +12,8 @@ define ('STATE_DELETED', 1003); //удалены
 define ('USERTYPE_NONE', 0);    //Пользователь по умолчанию
 define ('USERTYPE_ADMIN', 1);   //Администратор
 define ('USERTYPE_ASSIGNER', 2);//Кураторы
-define ('USERTYPE_EXECUTER', 3);//Исполнителиcd 
+define ('USERTYPE_EXECUTER', 3);//Исполнителиcd
+define ('USERTYPE_BLOCKED', 4);    //Пользователь заблокирован
 
 
 //------------------ конец определений
