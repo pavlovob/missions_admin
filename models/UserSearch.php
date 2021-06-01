@@ -7,40 +7,17 @@ use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\User;
 
-/**
- * UserSearch represents the model behind the search form about `app\models\User`.
- */
-class UserSearch extends User
-{
-    /**
-     * @inheritdoc
-     */
-    public function rules()
-    {
-        return [
-            [['id', 'workeruid'], 'integer'],
-            [['username', 'auth_key', 'password_hash', 'access_token'], 'safe'],
-        ];
+class UserSearch extends User{
+    public function rules()    {
+        return Parent::rules();
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function scenarios()
-    {
+    public function scenarios()    {
         // bypass scenarios() implementation in the parent class
-        return Model::scenarios();
+        return Parent::scenarios();
     }
 
-    /**
-     * Creates data provider instance with search query applied
-     *
-     * @param array $params
-     *
-     * @return ActiveDataProvider
-     */
-    public function search($params)
-    {
+    public function search($params)    {
         $query = User::find();
 
         // add conditions that should always apply here
@@ -60,13 +37,12 @@ class UserSearch extends User
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'workeruid' => $this->workeruid,
+            'login' => $this->login,
+            'username' => $this->username,
         ]);
 
         $query->andFilterWhere(['like', 'username', $this->username])
-            ->andFilterWhere(['like', 'auth_key', $this->auth_key])
-            ->andFilterWhere(['like', 'password_hash', $this->password_hash])
-            ->andFilterWhere(['like', 'access_token', $this->access_token]);
+            ->andFilterWhere(['like', 'login', $this->login]);
 
         return $dataProvider;
     }
