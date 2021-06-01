@@ -1,0 +1,43 @@
+<?php
+
+namespace app\models;
+
+use Yii;
+
+class Executers extends \yii\db\ActiveRecord{
+    public static function tableName()    {
+        return 'executers';
+    }
+
+    public function rules()    {
+        return [
+            [['name'], 'required'],
+            [['created', 'changed'], 'safe'],
+            [['name', 'description'], 'string', 'max' => 100],
+            [['name'], 'unique'],
+        ];
+    }
+
+    public function attributeLabels()    {
+        return [
+            'uid' => 'Uid',
+            'name' => 'Name',
+            'description' => 'Description',
+            'created' => 'Created',
+            'changed' => 'Changed',
+        ];
+    }
+
+    public function getUsers()    {
+        return $this->hasMany(User::className(), ['executerid' => 'uid']);
+    }
+
+    public static function find()    {
+        return new ExecutersQuery(get_called_class());
+    }
+
+    public static function dropdown()  {
+      $executers = This->find()->select(['name', 'uid'])->orderBy('name')->indexBy('uid')->column();
+      return $executers;
+    }
+}

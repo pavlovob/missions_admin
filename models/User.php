@@ -10,12 +10,14 @@ class User extends ActiveRecord implements IdentityInterface {
   public $accessToken;
   public $rememberMe;
   public $password; //Runtime var
+  public $password_check; //runtime for pass check
 
   public function attributeLabels ()  {
     return [
       'uid'=>'Код',
       'login'=>'Логин',
       'password'=>'Пароль',
+      'password_check'=>'Проверка',
       'password_hash'=>'Пароль',
       'username'=>'Пользователь',
       'usertype'=>'Тип записи',
@@ -30,23 +32,25 @@ class User extends ActiveRecord implements IdentityInterface {
   public function rules()  {
     return [
       [['login','password'], 'required', 'on' => 'login'],
-      // [['login','username','password'], 'required', 'on' => 'insert'],
+      [['login','username','password'], 'required', 'on' => 'insert'],
+      [['password_check','password'], 'safe'],
       //  [['username'], 'required', 'on' => 'insert','on' => 'login'],
       //  [['username', 'password'], 'required','on' => 'insert', 'on' => 'login'],
       ['login', 'unique', 'on' => 'insert'],
-      // ['password', 'compare', 'compareAttribute' => 'password_check','on' => 'insert','on' => 'pwd_change'],
-      //           ['username', 'match', 'pattern' => '~^[A-Za-z][A-Za-z0-9]+$~', 'message'=> 'Должны быть только буквы на английском и цифры!', 'on' => 'insert', 'on' => 'update', 'on' => 'login'],
-      // ['rememberMe', 'boolean', 'on' => 'login'],
+      ['password', 'compare', 'compareAttribute' => 'password_check','on' => 'insert','on' => 'pwd_change'],
+                ['username', 'match', 'pattern' => '~^[A-Za-z][A-Za-z0-9]+$~', 'message'=> 'Должны быть только буквы на английском и цифры!', 'on' => 'insert', 'on' => 'update', 'on' => 'login'],
+      ['rememberMe', 'boolean', 'on' => 'login'],
       // [['workeruid'], 'exist', 'skipOnError' => true, 'targetClass' => Workers::className(), 'targetAttribute' => ['workeruid' => 'UID'], 'on' => 'insert', 'on' => 'update'],
     ];
   }
+
   public function scenarios()  {
     return [
       'login' => ['login', 'password'],
       'insert' => ['login','password_hash','username','usertype','assignerid','executerid','created','changed'],
       // 'insert' => ['username', 'password', 'password_check','workeruid'],
-      // 'update' => ['username','workeruid'],
-      // 'pwd_change' => ['password', 'password_check'],
+      'update' => ['login','username','usertype','assignerid','executerid'],
+      'pwd_change' => ['password', 'password_check'],
       // 'register' => ['username'],
     ];
   }
@@ -69,7 +73,6 @@ class User extends ActiveRecord implements IdentityInterface {
         return new static($user);
       }
     }
-
     return null;
   }
 
@@ -79,7 +82,6 @@ class User extends ActiveRecord implements IdentityInterface {
         return new static($user);
       }
     }
-
     return null;
   }
 
@@ -108,19 +110,21 @@ class User extends ActiveRecord implements IdentityInterface {
 
   //Кастомная логика
   public static function checkAdmin(){ // Если в БД пусто, добавить администратора
-    if (User::find()->count() == 0){
-      //ДОБАВИТЬ ХЭШ ПАРОЛЬ ПО УМОЛЧАНИЮ
-      $user = new User(['scenario' => 'insert']);
-      $user->login      = 'admin';
-      $user->username   = 'Администратор';
-      $user->usertype   = USERTYPE_ADMIN;
-      $user->executerid = 0;
-      $user->assignerid = 0;
-      $user->created = date('Y-m-d G:i:s', time());
-      $user->changed = date('Y-m-d G:i:s', time());
+    // if (User::find()->count() == 0){
+      $user                 = new User(['scenario' => 'insert']);
+      // $user                 = new User();
+      $user->login          = 'admin';
+      $user->username       = 'Администратор';
+      $user->password       = 'admin';
+      $user->password_hash  = Yii::$app->getSecurity()->generatePasswordHash($user->password);
+      $user->usertype       = USERTYPE_ADMIN;
+      $user->executerid     = null;
+      $user->assignerid     = null;
+      $user->created        = date('Y-m-d G:i:s', time());
+      $user->changed        = date('Y-m-d G:i:s', time());
       $user->save();
       Yii::info('В справочник пользователей добавлена учетная запись администратора по умолчанию ');
-    }
+    // }
   }
 
   public static function login($model)    { //Логиним пользователя по LDAP или БД
@@ -141,20 +145,18 @@ class User extends ActiveRecord implements IdentityInterface {
         $user->login      = $model->login;
         $user->username   = $model->username;
         $user->usertype   = USERTYPE_NONE;
-        $user->executerid = 0;
-        $user->assignerid = 0;
+        $user->executerid = null;
+        $user->assignerid = null;
         $user->created = date('Y-m-d G:i:s', time());
         $user->changed = date('Y-m-d G:i:s', time());
         $user->save();
-        Yii::info('В справочник пользователей добавлена учетная запись '.$model->username);
+        History::log('В справочник пользователей добавлена учетная запись',implode(';',$user->toArray()));
       }
       $user = User::findOne(['login' => $model->login]);
       Yii::$app->user->login($user);
-    }
-    else //если нет доменной аутентификации
-    {
+    }  else { //если нет доменной аутентификации
       $user = User::findOne(['login' => $model->login]);
-      if($user == null){  //добавить проверку пароля по хэшу
+      if ($user == null || !Yii::$app->getSecurity()->validatePassword($model->password, $user->password_hash)) {  //добавить проверку пароля по хэшу
         return 'autherror'; //нет учетки
       } else {
         if ($user->usertype !== USERTYPE_ADMIN){

@@ -35,7 +35,7 @@ AppAsset::register($this);
       //Добавить нормальное имя пользователя
       // $user = Yii::$app->ad->search()->findBy('sAMAccountname', Yii::$app->user->identity->login);
       //$username = $user['displayname'][0];
-      $username = '';
+      $username = Yii::$app->user->identity->username;
     }
     NavBar::begin([
       // 'brandLabel' => Yii::$app->name,
@@ -52,6 +52,7 @@ AppAsset::register($this);
               ['label' => 'Поручения', 'url' => ['/missions']],
               ['label' => 'Просмотр истории событий', 'url' => ['/history']],
               ['label' => 'Настройки', 'url' => ['/settings']],
+              ['label' => 'Пользователи', 'url' => ['/users']],
         ]
       ];
     }
