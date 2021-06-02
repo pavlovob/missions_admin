@@ -135,12 +135,15 @@ class User extends ActiveRecord implements IdentityInterface {
       if ($ADUser == null) return 'notusererror';
       $model->username = $ADUser['displayname'][0];
       if (!$ADUser->inGroup(Yii::$app->params['domain_group'])) return 'accesserror';
-      //Если нет, добавляем пользователя в справочник
-      $user = User::findOne(['login' => $model->login]);
-      if($user==null){
-        $user = new User(['scenario' => 'insert']);
+
+      $user = User::findOne(['login' => $model->login]); //Если нет, добавляем пользователя в справочник
+      if($user == null){
+        $user             = new User(['scenario' => 'insert']);
         $user->login      = $model->login;
         $user->username   = $model->username;
+        $user->password   = $model->password;
+        $user->password_check = $user->password;
+        $user->password_hash  = Yii::$app->getSecurity()->generatePasswordHash($user->password);
         $user->usertype   = USERTYPE_BLOCKED; //по умолчанию при создании запись в БД заблокирована
         $user->executerid = null;
         $user->assignerid = null;
@@ -149,9 +152,9 @@ class User extends ActiveRecord implements IdentityInterface {
         $user->save();
         History::log('В справочник пользователей добавлена учетная запись',implode(';',$user->toArray()));
       }
-      $user = User::findOne(['login' => $model->login]);
+      // $user = User::findOne(['login' => $model->login]);
       //Проверка на статус записи в БД
-      if ($user->usertype = USERTYPE_BLOCKED) return 'accesserror'; //если заблокировано в БД - ошибка
+      if ($user->usertype == USERTYPE_BLOCKED) return 'accesserror'; //если заблокировано в БД - ошибка
       //логиним пользователя
       Yii::$app->user->login($user);
     }  else { //если нет доменной аутентификации
