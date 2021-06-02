@@ -17,18 +17,35 @@ $this->params['breadcrumbs'][] = $this->title;
     'dataProvider' => $dataProvider,
     'columns' => [
       // ['class' => 'yii\grid\SerialColumn'],
-      'id',
-      'login',
+      [
+          'attribute' => 'id',
+          'options' => ['width' => '80'],
+      ],
+      [
+          'attribute' => 'login',
+          'options' => ['width' => '150'],
+      ],
       'username',
-
-      // [
-      //   'attribute' => 'created',
-      //   'options' => ['width' => '300'],
-      // ],
-      // [
-      //   'attribute' => 'changed',
-      //   'options' => ['width' => '300'],
-      // ],
+      [
+        'attribute' => 'usertype',
+        'value'     =>  function ($model){
+          return $model->userTypeName($model->usertype);
+        }
+        // 'options' => ['width' => '100'],
+        // 'filter'=>$vendors,
+      ],
+      [
+        //'header' => 'Тип',
+        'attribute' => 'Assigners',
+        'options' => ['width' => '100'],
+        // 'filter'=>$vendors,
+      ],
+      [
+        //'header' => 'Тип',
+        'attribute' => 'Executers',
+        'options' => ['width' => '100'],
+        // 'filter'=>$vendors,
+      ],
       [
           'class' => 'yii\grid\ActionColumn',
           'template' => '{view} {update} {delete} {pwdchange}',

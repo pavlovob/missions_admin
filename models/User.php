@@ -106,6 +106,13 @@ class User extends ActiveRecord implements IdentityInterface {
 
   //Кастомная логика
 
+  public function getAssigner()  {
+    return $this->hasOne(Assigners::className(), ['uid' => 'assignerid']);
+  }
+  public function getExecuter()  {
+    return $this->hasOne(Executers::className(), ['uid' => 'executerid']);
+  }
+
   //Добавление админа по умолчанию если справочник пуст admin/admin
   public static function checkAdmin(){ // Если в БД пусто, добавить администратора
     if (User::find()->count() == 0){
@@ -180,5 +187,10 @@ class User extends ActiveRecord implements IdentityInterface {
     ];
   }
 
+  public static function userTypeName($id){
+    $arr  = self::typesDropdown();
+    return (array_key_exists($id,$arr)) ? $arr[$id] : 'Не задан';
+    // return $id;
+  }
 
 }
