@@ -19,12 +19,21 @@ class UserSearch extends User{
 
     public function search($params)    {
         $query = User::find();
+        $query->joinWith(['Assigners','Executers']);
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
+        $dataProvider->sort->attributes['assigner'] =   [
+                'asc' => ['assigner.name' => SORT_ASC],
+                'desc' => ['assigner.name' => SORT_DESC],
+            ];
+        $dataProvider->sort->attributes['executer'] =   [
+                'asc' => ['executer.name' => SORT_ASC],
+                'desc' => ['executer.name' => SORT_DESC],
+            ];
 
         $this->load($params);
 
@@ -37,12 +46,12 @@ class UserSearch extends User{
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'login' => $this->login,
-            'username' => $this->username,
         ]);
 
         $query->andFilterWhere(['like', 'username', $this->username])
-            ->andFilterWhere(['like', 'login', $this->login]);
+            ->andFilterWhere(['like', 'login', $this->login])
+            ->andFilterWhere(['like', 'assigner.name', $this->assigner])
+            ->andFilterWhere(['like', 'executer.name', $this->executer])            ;
 
         return $dataProvider;
     }

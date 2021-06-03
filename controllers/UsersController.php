@@ -4,6 +4,7 @@ namespace app\controllers;
 use Yii;
 use yii\web\Controller;
 use app\models\User;
+use app\models\UserSearch;
 use app\models\History;
 use app\models\Assigners;
 use app\models\Executers;
@@ -32,13 +33,19 @@ class UsersController extends Controller {
   }
 
   public function actionIndex()  {
+    $searchModel  = new UserSearch();
     $dataProvider = new ActiveDataProvider([
       'query' => User::find(),
       'pagination' => [
         'pageSize' => 50,
       ],
     ]);
-    return $this->render('index', [ 'dataProvider' => $dataProvider ]);
+    return $this->render('index', [
+      'searchModel'  => $searchModel,
+      'dataProvider' => $dataProvider,
+      'assigners'    => Assigners::dropdown(),
+      'executers'    => Executers::dropdown(),
+    ]);
   }
 
   public function actionView($id)  {

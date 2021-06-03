@@ -12,6 +12,10 @@ class User extends ActiveRecord implements IdentityInterface {
   public $password; //Runtime var
   public $password_check; //runtime for pass check
 
+  public static function tableName()  {
+    return 'user';
+  }
+
   public function attributeLabels ()  {
     return [
       'uid'           => 'Код',

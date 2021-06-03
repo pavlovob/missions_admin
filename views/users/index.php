@@ -15,6 +15,10 @@ $this->params['breadcrumbs'][] = $this->title;
   <?php
   echo GridView::widget([
     'dataProvider' => $dataProvider,
+    'filterModel' => $searchModel,
+    'tableOptions' => [
+      'class' => 'table table-striped table-bordered'
+    ],    
     'columns' => [
       // ['class' => 'yii\grid\SerialColumn'],
       [
@@ -30,21 +34,23 @@ $this->params['breadcrumbs'][] = $this->title;
         'attribute' => 'usertype',
         'value'     =>  function ($model){
           return $model->userTypeName($model->usertype);
-        }
+        },
+        'options' => ['width' => '100'],
+        // 'filter'=>$vendors,
+      ],
+      [
+        //'header' => 'Тип',
+        'attribute' => 'Куратор от',
+        'value' => 'assigner.name',
         // 'options' => ['width' => '100'],
-        // 'filter'=>$vendors,
+        'filter'=>$assigners,
       ],
       [
         //'header' => 'Тип',
-        'attribute' => 'Assigners',
-        'options' => ['width' => '100'],
-        // 'filter'=>$vendors,
-      ],
-      [
-        //'header' => 'Тип',
-        'attribute' => 'Executers',
-        'options' => ['width' => '100'],
-        // 'filter'=>$vendors,
+        'attribute' => 'Исполнитель от',
+        'value' => 'executer.name',
+        // 'options' => ['width' => '100'],
+        'filter'=>$executers,
       ],
       [
           'class' => 'yii\grid\ActionColumn',
