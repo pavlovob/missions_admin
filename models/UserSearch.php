@@ -9,12 +9,15 @@ use app\models\User;
 
 class UserSearch extends User{
     public function rules()    {
-        return Parent::rules();
+      return [
+          [['uid','usertype'], 'integer'],
+          [['uid','username', 'login','usertype', 'executerid','assignerid','assigner.name'], 'safe'],
+      ];
     }
 
     public function scenarios()    {
         // bypass scenarios() implementation in the parent class
-        return Parent::scenarios();
+        return Model::scenarios();
     }
 
     public function search($params)    {
@@ -45,7 +48,7 @@ class UserSearch extends User{
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
+            'uid' => $this->uid,
         ]);
 
         $query->andFilterWhere(['like', 'username', $this->username])

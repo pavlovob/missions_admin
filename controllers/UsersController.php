@@ -43,6 +43,7 @@ class UsersController extends Controller {
     return $this->render('index', [
       'searchModel'  => $searchModel,
       'dataProvider' => $dataProvider,
+      'usertypes'    => User::typesDropdown(),
       'assigners'    => Assigners::dropdown(),
       'executers'    => Executers::dropdown(),
     ]);

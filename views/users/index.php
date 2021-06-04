@@ -18,11 +18,11 @@ $this->params['breadcrumbs'][] = $this->title;
     'filterModel' => $searchModel,
     'tableOptions' => [
       'class' => 'table table-striped table-bordered'
-    ],    
+    ],
     'columns' => [
       // ['class' => 'yii\grid\SerialColumn'],
       [
-          'attribute' => 'id',
+          'attribute' => 'uid',
           'options' => ['width' => '80'],
       ],
       [
@@ -35,8 +35,8 @@ $this->params['breadcrumbs'][] = $this->title;
         'value'     =>  function ($model){
           return $model->userTypeName($model->usertype);
         },
-        'options' => ['width' => '100'],
-        // 'filter'=>$vendors,
+        'options' => ['width' => '150'],
+        'filter'=>$usertypes,
       ],
       [
         //'header' => 'Тип',
