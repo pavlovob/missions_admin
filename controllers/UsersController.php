@@ -34,12 +34,13 @@ class UsersController extends Controller {
 
   public function actionIndex()  {
     $searchModel  = new UserSearch();
-    $dataProvider = new ActiveDataProvider([
-      'query' => User::find(),
-      'pagination' => [
-        'pageSize' => 50,
-      ],
-    ]);
+    $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+    // $dataProvider = new ActiveDataProvider([
+    //   'query' => User::find(),
+    //   'pagination' => [
+    //     'pageSize' => 50,
+    //   ],
+    // ]);
     return $this->render('index', [
       'searchModel'  => $searchModel,
       'dataProvider' => $dataProvider,
@@ -81,7 +82,7 @@ class UsersController extends Controller {
       //$model->password_hash = Yii::$app->getSecurity()->generatePasswordHash($model->password);
       $model->changed = date('Y-m-d G:i:s', time());
       $model->save();
-      History::log('SYSTEM','Отредактированы данные пользователя '.$model->username);
+      History::log('Отредактирована запись пользователя '.$model->username,implode(';',$model->toArray()));
       return $this->redirect(['view', 'id' => $model->id]);
     } else {
       return $this->render('update', [
@@ -94,10 +95,16 @@ class UsersController extends Controller {
   }
   public function actionDelete($id)  {
     $user = User::findOne($id);
-    $username  = $user->username;
-    $user->delete();
-    History::log('SYSTEM','Удален пользователь  '.$username);
-    return $this->redirect(['index']);
+    try{
+      $user->delete();
+      History::log('Удалена запись пользователя',implode(', ',$user->toArray()));
+      Yii::$app->session->setFlash('info','Запись удалена!');
+      return $this->redirect(['index']);
+    } catch (\Exception $e) {
+      Yii::$app->session->setFlash('error','Удаление записи невозможно! Нарушение целостности данных! ');
+      // echo "Удаление невозможно! Данный расходный материал привязан к модели.";
+      return $this->redirect(Yii::$app->request->referrer);
+    }
   }
 
   public function actionPwdchange($id)  {

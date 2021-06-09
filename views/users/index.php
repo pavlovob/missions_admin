@@ -40,14 +40,14 @@ $this->params['breadcrumbs'][] = $this->title;
       ],
       [
         //'header' => 'Тип',
-        'attribute' => 'Куратор от',
+        'attribute' => 'assignerid',
         'value' => 'assigner.name',
         // 'options' => ['width' => '100'],
         'filter'=>$assigners,
       ],
       [
         //'header' => 'Тип',
-        'attribute' => 'Исполнитель от',
+        'attribute' => 'executerid',
         'value' => 'executer.name',
         // 'options' => ['width' => '100'],
         'filter'=>$executers,
@@ -63,7 +63,7 @@ $this->params['breadcrumbs'][] = $this->title;
                   'title' => \Yii::t('yii', 'Смена пароля'),]);
               },
           ],
-          'options' => ['width' => '100'],
+          'options' => ['width' => '90'],
       ],
     ]
   ]);

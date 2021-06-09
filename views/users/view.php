@@ -29,11 +29,21 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
+            'uid',
             'login',
             'username',
-            'auth_key',
-            'password_hash',
+            [
+              'attribute' => 'usertype',
+              'value' => $model->userTypeName($model->usertype),
+            ],
+            [
+              'attribute' => 'assignerid',
+              'value' => ($model->assigner !== null) ? $model->assigner->name : "",
+            ],
+            [
+              'attribute' => 'executerid',
+              'value' => ($model->executer !== null) ? $model->executer->name : "",
+            ],
             'created',
             'changed',
         ],

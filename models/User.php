@@ -40,9 +40,11 @@ class User extends ActiveRecord implements IdentityInterface {
       ['login', 'unique', 'on' => 'insert'],
       // [['password_check','password'], 'safe'],
       ['password', 'compare', 'compareAttribute' => 'password_check','on' => ['insert','pwd_change']  ],
-      ['login', 'match', 'pattern' => '~^[A-Za-z][A-Za-z0-9]+$~', 'message'=> 'Должны быть только буквы на английском и цифры!', 'on' => ['insert','update']],
+      [['login','password','password_check'], 'match', 'pattern' => '~^[A-Za-z][A-Za-z0-9]+$~', 'message'=> 'Должны быть только буквы на английском и цифры!', 'on' => ['insert','update','pwd_change']],
       ['rememberMe', 'boolean', 'on' => 'login'],
-      // [['workeruid'], 'exist', 'skipOnError' => true, 'targetClass' => Workers::className(), 'targetAttribute' => ['workeruid' => 'UID'], 'on' => 'insert', 'on' => 'update'],
+      [['uid','login','username','usertype','executerid', 'assignerid'], 'safe'],
+      [['assignerid'], 'exist', 'skipOnError' => true, 'targetClass' => Assigners::className(), 'targetAttribute' => ['assignerid' => 'uid'], 'on' => 'insert', 'on' => 'update'],
+      [['executerid'], 'exist', 'skipOnError' => true, 'targetClass' => Executers::className(), 'targetAttribute' => ['executerid' => 'uid'], 'on' => 'insert', 'on' => 'update'],
     ];
   }
 
@@ -193,7 +195,7 @@ class User extends ActiveRecord implements IdentityInterface {
 
   public static function userTypeName($id){
     $arr  = self::typesDropdown();
-    return (array_key_exists($id,$arr)) ? $arr[$id] : 'Не задан';
+    return (array_key_exists($id,$arr)) ? $arr[$id] : '';
     // return $id;
   }
 

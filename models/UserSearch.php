@@ -8,35 +8,37 @@ use yii\data\ActiveDataProvider;
 use app\models\User;
 
 class UserSearch extends User{
+
+    public $assignername;
+
+
     public function rules()    {
-      return [
-          [['uid','usertype'], 'integer'],
-          [['uid','username', 'login','usertype', 'executerid','assignerid','assigner.name'], 'safe'],
-      ];
+      return parent::rules();
     }
 
-    public function scenarios()    {
-        // bypass scenarios() implementation in the parent class
+      public function scenarios()    {
         return Model::scenarios();
     }
 
     public function search($params)    {
         $query = User::find();
-        $query->joinWith(['Assigners','Executers']);
+        $query->joinWith(['assigner']);
+        $query->joinWith(['executer']);
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            // 'key' => $this->tableName() . '.uid',
         ]);
-        $dataProvider->sort->attributes['assigner'] =   [
-                'asc' => ['assigner.name' => SORT_ASC],
-                'desc' => ['assigner.name' => SORT_DESC],
-            ];
-        $dataProvider->sort->attributes['executer'] =   [
-                'asc' => ['executer.name' => SORT_ASC],
-                'desc' => ['executer.name' => SORT_DESC],
-            ];
+        // $dataProvider->sort->attributes['assigner'] =   [
+        //         'asc' => ['assigner.name' => SORT_ASC],
+        //         'desc' => ['assigner.name' => SORT_DESC],
+        //     ];
+        // $dataProvider->sort->attributes['executer'] =   [
+        //         'asc' => ['executer.name' => SORT_ASC],
+        //         'desc' => ['executer.name' => SORT_DESC],
+        //     ];
 
         $this->load($params);
 
@@ -47,14 +49,12 @@ class UserSearch extends User{
         }
 
         // grid filtering conditions
-        $query->andFilterWhere([
-            'uid' => $this->uid,
-        ]);
-
-        $query->andFilterWhere(['like', 'username', $this->username])
+        $query->andFilterWhere([$this->tableName() .'.uid' => $this->uid])
             ->andFilterWhere(['like', 'login', $this->login])
-            ->andFilterWhere(['like', 'assigner.name', $this->assigner])
-            ->andFilterWhere(['like', 'executer.name', $this->executer])            ;
+            ->andFilterWhere(['usertype' => $this->usertype])
+            ->andFilterWhere(['assignerid' => $this->assignerid])
+            ->andFilterWhere(['executerid' => $this->executerid])
+            ->andFilterWhere(['like', 'username', $this->username]);
 
         return $dataProvider;
     }
