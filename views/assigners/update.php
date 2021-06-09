@@ -2,14 +2,13 @@
 
 use yii\helpers\Html;
 
-/* @var $this yii\web\View */
-/* @var $model app\models\Assigners */
 
-$this->title = 'Update Assigners: ' . $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Assigners', 'url' => ['index']];
+$this->title = 'Редактирование: ' . $model->name;
+$this->params['breadcrumbs'][] = ['label' => 'Кураторы', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->uid]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->params['breadcrumbs'][] = 'Редактирование';
 ?>
+
 <div class="assigners-update">
 
     <h1><?= Html::encode($this->title) ?></h1>

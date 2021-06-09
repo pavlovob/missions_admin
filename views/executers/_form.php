@@ -1,24 +1,22 @@
 <?php
 
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use yii\bootstrap\ActiveForm;
 
-/* @var $this yii\web\View */
-/* @var $model app\models\Executers */
-/* @var $form yii\widgets\ActiveForm */
 ?>
 
 <div class="executers-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+  <?php  $form = ActiveForm::begin([
+    'id'=>'project-form',
+    'layout' => 'horizontal',
+    ]);
+  ?>
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'description')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'description')->textarea(['rows' => 2, 'cols' => 5])?>
 
-    <?= $form->field($model, 'created')->textInput() ?>
-
-    <?= $form->field($model, 'changed')->textInput() ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

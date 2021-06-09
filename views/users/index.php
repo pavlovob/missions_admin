@@ -4,9 +4,6 @@ use yii\grid\GridView;
 $this->title = 'Пользователи';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="serviceacts-index">
-  <div class="w3-container">
-
 
 <div class="w3-row w3-small">
   <h3><?= Html::encode($this->title) ?></h3>
@@ -22,12 +19,12 @@ $this->params['breadcrumbs'][] = $this->title;
     'columns' => [
       // ['class' => 'yii\grid\SerialColumn'],
       [
-          'attribute' => 'uid',
-          'options' => ['width' => '80'],
+        'attribute' => 'uid',
+        'options' => ['width' => '80'],
       ],
       [
-          'attribute' => 'login',
-          'options' => ['width' => '150'],
+        'attribute' => 'login',
+        'options' => ['width' => '150'],
       ],
       'username',
       [
@@ -53,21 +50,19 @@ $this->params['breadcrumbs'][] = $this->title;
         'filter'=>$executers,
       ],
       [
-          'class' => 'yii\grid\ActionColumn',
-          'template' => '{view} {update} {delete} {pwdchange}',
-          'buttons' => [
-              'pwdchange' => function ($url,$model) {
-                  return Html::a(
-                  '<span class="glyphicon  glyphicon-sunglasses"></span>',
-                  $url,[
-                  'title' => \Yii::t('yii', 'Смена пароля'),]);
+        'class' => 'yii\grid\ActionColumn',
+        'template' => '{view} {update} {delete} {pwdchange}',
+        'buttons' => [
+          'pwdchange' => function ($url,$model) {
+            return Html::a(
+              '<span class="glyphicon  glyphicon-sunglasses"></span>',
+              $url,[
+                'title' => \Yii::t('yii', 'Смена пароля'),]);
               },
+            ],
+            'options' => ['width' => '90'],
           ],
-          'options' => ['width' => '90'],
-      ],
-    ]
-  ]);
-  ?>
-</div>
-</div>
-</div>
+        ]
+      ]);
+      ?>
+    </div>

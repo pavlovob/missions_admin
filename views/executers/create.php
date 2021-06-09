@@ -5,13 +5,13 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Executers */
 
-$this->title = 'Create Executers';
-$this->params['breadcrumbs'][] = ['label' => 'Executers', 'url' => ['index']];
+$this->title = 'Новая запись';
+$this->params['breadcrumbs'][] = ['label' => 'Исполнители', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="executers-create">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h2><?= Html::encode($this->title) ?></h2>
 
     <?= $this->render('_form', [
         'model' => $model,

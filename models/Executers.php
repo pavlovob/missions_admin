@@ -20,11 +20,11 @@ class Executers extends \yii\db\ActiveRecord{
 
     public function attributeLabels()    {
         return [
-            'uid' => 'Uid',
-            'name' => 'Name',
-            'description' => 'Description',
-            'created' => 'Created',
-            'changed' => 'Changed',
+          'uid' => 'Код',
+          'name' => 'Наименование',
+          'description' => 'Описание',
+          'created' => 'Дата создания',
+          'changed' => 'Дата изменения',
         ];
     }
 

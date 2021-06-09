@@ -3,19 +3,16 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
-/* @var $this yii\web\View */
-/* @var $searchModel app\models\ExecutersSearch */
-/* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Executers';
+$this->title = 'Исполнители';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="executers-index">
 
+<div class="executers-index">
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create Executers', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Создать', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php Pjax::begin(); ?>
@@ -24,19 +21,26 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'uid',
-            'name',
-            'description',
-            'created',
-            'changed',
-
-            ['class' => 'yii\grid\ActionColumn'],
+        'tableOptions' => [
+          //'class' => 'table table-striped table-bordered',
+          'class' => 'table table-bordered table-condensed ',
+          // 'style' => 'font-size:12px;'
+          //'style' => ' line-height: 30px',
+          // 'style' => 'width: 2500px;',
         ],
+        'columns' => [
+          [
+            'attribute' => 'uid',
+            'options' => ['width' => '100'],
+          ],
+
+            'name',
+            [
+              'class' => 'yii\grid\ActionColumn',
+              'options' => ['width' => '90'],
+            ],
+          ],
     ]); ?>
 
     <?php Pjax::end(); ?>
-
 </div>

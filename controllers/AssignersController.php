@@ -5,18 +5,12 @@ namespace app\controllers;
 use Yii;
 use app\models\Assigners;
 use app\models\AssignersSearch;
+use app\models\History;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
-/**
- * AssignersController implements the CRUD actions for Assigners model.
- */
-class AssignersController extends Controller
-{
-    /**
-     * {@inheritdoc}
-     */
+class AssignersController extends Controller {
     public function behaviors()
     {
         return [
@@ -29,12 +23,7 @@ class AssignersController extends Controller
         ];
     }
 
-    /**
-     * Lists all Assigners models.
-     * @return mixed
-     */
-    public function actionIndex()
-    {
+    public function actionIndex()    {
         $searchModel = new AssignersSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -44,29 +33,17 @@ class AssignersController extends Controller
         ]);
     }
 
-    /**
-     * Displays a single Assigners model.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionView($id)
-    {
+    public function actionView($id)    {
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
     }
 
-    /**
-     * Creates a new Assigners model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
-    public function actionCreate()
-    {
+    public function actionCreate()    {
         $model = new Assigners();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            History::log('В справочник добавлен новый куратор '.$model->name,implode(', ',$model->toArray()));
             return $this->redirect(['view', 'id' => $model->uid]);
         }
 
@@ -75,15 +52,7 @@ class AssignersController extends Controller
         ]);
     }
 
-    /**
-     * Updates an existing Assigners model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionUpdate($id)
-    {
+    public function actionUpdate($id)    {
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -95,29 +64,21 @@ class AssignersController extends Controller
         ]);
     }
 
-    /**
-     * Deletes an existing Assigners model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionDelete($id)
-    {
-        $this->findModel($id)->delete();
-
+    public function actionDelete($id)    {
+      $model = $this->findModel($id);
+      try{
+        $model->delete();
+        History::log('Из справочника удален куратор '.$model->name,implode(', ',$model->toArray()));
+        Yii::$app->session->setFlash('info','Запись удалена!');
         return $this->redirect(['index']);
+      } catch (\Exception $e) {
+        History::log('Ошибка удаления куратора '.$model->name.' из БД',implode(', ',$model->toArray()));
+        Yii::$app->session->setFlash('error','Удаление записи невозможно! Нарушение целостности данных! ');
+        return $this->redirect(Yii::$app->request->referrer);
+      }
     }
 
-    /**
-     * Finds the Assigners model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
-     * @return Assigners the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    protected function findModel($id)
-    {
+    protected function findModel($id)    {
         if (($model = Assigners::findOne($id)) !== null) {
             return $model;
         }
