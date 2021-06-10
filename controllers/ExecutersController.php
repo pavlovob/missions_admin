@@ -55,7 +55,10 @@ class ExecutersController extends Controller{
     public function actionUpdate($id)    {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post()))  {
+            $model->changed = date('Y-m-d G:i:s', time());
+            $model->save();
+            History::log('Отредактирован испонитель в справочнике',implode(', ',$model->toArray()));
             return $this->redirect(['view', 'id' => $model->uid]);
         }
 

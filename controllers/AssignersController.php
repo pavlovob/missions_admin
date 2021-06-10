@@ -53,15 +53,18 @@ class AssignersController extends Controller {
     }
 
     public function actionUpdate($id)    {
-        $model = $this->findModel($id);
+      $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->uid]);
-        }
+      if ($model->load(Yii::$app->request->post()))  {
+          $model->changed = date('Y-m-d G:i:s', time());
+          $model->save();
+          History::log('Отредактирован куратор в справочнике',implode(', ',$model->toArray()));
+          return $this->redirect(['view', 'id' => $model->uid]);
+      }
 
-        return $this->render('update', [
-            'model' => $model,
-        ]);
+      return $this->render('update', [
+          'model' => $model,
+      ]);
     }
 
     public function actionDelete($id)    {
