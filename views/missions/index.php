@@ -1,12 +1,28 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
 
 $this->title = 'Поручения';
 $this->params['breadcrumbs'][] = $this->title;
+
+// Скрипт обрабатывает клик по строке GridView
+$this->registerJs("
+
+    $('td').click(function (e) {
+        var id = $(this).closest('tr').data('id');
+        if(e.target == this)
+            location.href = '" . Url::to(['missions/view']) . "?id=' + id;
+    });
+
+");
+//CSS для измнеения курсора над GridView
+$this->registerCss("table { cursor: pointer; }");
+
 ?>
+
 <script>
     $(document).ready(function()
     {
@@ -16,6 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
         });
     });
 </script>
+
 
 <div class="missions-index">
   <!-- <div class="w3-row w3-large"> -->
@@ -39,6 +56,9 @@ $this->params['breadcrumbs'][] = $this->title;
         //'style' => ' line-height: 30px',
         // 'style' => 'width: 2500px;',
       ],
+      'rowOptions'   => function ($model, $key, $index, $grid) {
+          return ['data-id' => $model->uid];
+      },
       'columns' => [
         // ['class' => 'yii\grid\SerialColumn'],
         [
@@ -49,9 +69,7 @@ $this->params['breadcrumbs'][] = $this->title;
           'attribute' => 'status',
           'format' => 'raw',
           'options' => ['width' => '100'],
-          'filter' => [
-            $states
-          ],
+          'filter' => $states,
           'value' => function ($model, $key, $index, $column) {
             $active = $model->{$column->attribute} === STATE_OPEN;
             return \yii\helpers\Html::tag(

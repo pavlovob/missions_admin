@@ -36,6 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             'approve_post',
             'approve_fio',
+            'url',
             'created',
             'changed',
         ],

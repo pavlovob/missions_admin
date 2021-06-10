@@ -54,6 +54,10 @@ $config = [
             'rules' => [
             ],
         ],
+        'authManager' => [
+            'class' => 'yii\rbac\PhpManager',
+            'defaultRoles' => ['ASSIGNER', 'EXECUTER','ADMIN'],
+        ],        
         'ad' => [
           'class' => 'Edvlerblog\Adldap2\Adldap2Wrapper',
           'providers' => [
