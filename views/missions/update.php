@@ -6,13 +6,13 @@ use yii\helpers\Html;
 /* @var $model app\models\Missions */
 
 $this->title = 'Редактироавние: ' . $model->mission_name;
-$this->params['breadcrumbs'][] = ['label' => 'Missions', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->uid, 'url' => ['view', 'id' => $model->uid]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->params['breadcrumbs'][] = ['label' => 'Поручения', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => $model->mission_name, 'url' => ['view', 'id' => $model->uid]];
+$this->params['breadcrumbs'][] = 'Редактирование';
 ?>
 <div class="missions-update">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h2><?= Html::encode($this->title) ?></h2>
 
     <?= $this->render('_form', [
         'model'   => $model,

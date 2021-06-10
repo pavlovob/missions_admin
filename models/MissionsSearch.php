@@ -25,14 +25,14 @@ class MissionsSearch extends Missions {
     }
 
     public function search($params)    {
-        $query = Missions::find()->orderBy('mission_date DESC');
+        $query = Missions::find();
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'sort' => [
-                'defaultOrder' => ['mission_date' => SORT_DESC]
+                'defaultOrder' => ['mission_date' => SORT_DESC,'uid'=>SORT_DESC]
             ]
         ]);
 

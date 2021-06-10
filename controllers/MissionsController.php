@@ -57,14 +57,14 @@ class MissionsController extends Controller {
     public function actionCreate()    {
         $model = new Missions();
         if ($model->load(Yii::$app->request->post())) {
-            $model->save();
-            $msg = 'Поручения созданы';
-            Yii::$app->session->setFlash('info', $msg);
-            History::Log($msg,implode(',',$model->toArray()));
-            return $this->redirect(['view', 'id' => $model->uid]);
+            $model->mission_date  = date('Y-m-d',time());
+            if ($model->save()) {
+              $msg = 'Поручения созданы';
+              Yii::$app->session->setFlash('info', $msg);
+              History::Log($msg,implode(',',$model->toArray()));
+              return $this->redirect(['view', 'id' => $model->uid]);
+            }
         }
-        $model->mission_date  = date('Y-m-d',time());
-        $model->description   = "" ;
         $model->mission_name  = Inifile::getIni('missions','DefaultDescription');
         $model->approve_fio   = Inifile::getIni('committee','s1f');
         $model->approve_post  = Inifile::getIni('committee','s1p');
