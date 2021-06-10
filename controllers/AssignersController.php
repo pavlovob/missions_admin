@@ -9,18 +9,30 @@ use app\models\History;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
 
 class AssignersController extends Controller {
     public function behaviors()
     {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
+      return [
+        'verbs' => [
+          'class' => VerbFilter::className(),
+          'actions' => [
+            'delete' => ['POST'],
+          ],
+        ],
+        'access' => [
+          'class' => AccessControl::className(),
+          'only' => ['update', 'index','view','create','delete'],
+          'rules' => [
+            [
+              'allow' => true,
+              'actions' =>['update', 'index','view','create','delete'],
+              'roles' => ['@'],
             ],
-        ];
+          ],
+        ],
+      ];
     }
 
     public function actionIndex()    {

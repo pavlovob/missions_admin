@@ -10,12 +10,14 @@ use app\models\Missions;
  * MissionsSearch represents the model behind the search form of `app\models\Missions`.
  */
 class MissionsSearch extends Missions {
-    public function rules()    {
-        return [
-            [['uid', 'mission_date', 'status'], 'integer'],
-            [['description', 'approve_post', 'approve_fio','url', 'created', 'changed'], 'safe'],
-        ];
-    }
+      public function rules()
+      {
+          return [
+              [['uid'], 'integer'],
+              [['uid','status','mission_name', 'approve_fio'], 'safe'],
+          ];
+      }
+
 
     public function scenarios()    {
         // bypass scenarios() implementation in the parent class
@@ -29,6 +31,9 @@ class MissionsSearch extends Missions {
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort' => [
+                'defaultOrder' => ['mission_date' => SORT_DESC]
+            ]
         ]);
 
         $this->load($params);
@@ -49,9 +54,7 @@ class MissionsSearch extends Missions {
             'changed' => $this->changed,
         ]);
 
-        $query->andFilterWhere(['like', 'description', $this->description])
-            // ->andFilterWhere(['like', 'mission_year', $this->mission_year])
-            ->andFilterWhere(['like', 'approve_post', $this->approve_post])
+        $query->andFilterWhere(['like', 'mission_name', $this->mission_name])
             ->andFilterWhere(['like', 'approve_fio', $this->approve_fio]);
 
         return $dataProvider;

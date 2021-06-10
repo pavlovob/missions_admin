@@ -35,12 +35,16 @@ $this->params['breadcrumbs'][] = $this->title;
       'tableOptions' => [
         //'class' => 'table table-striped table-bordered',
         'class' => 'table table-bordered table-condensed ',
-        'style' => 'font-size:12px;'
+        // 'style' => 'font-size:12px;'
         //'style' => ' line-height: 30px',
         // 'style' => 'width: 2500px;',
       ],
       'columns' => [
-        ['class' => 'yii\grid\SerialColumn'],
+        // ['class' => 'yii\grid\SerialColumn'],
+        [
+          'attribute' => 'uid',
+          'options' => ['width' => '70'],
+        ],
         [
           'attribute' => 'status',
           'format' => 'raw',
@@ -59,129 +63,19 @@ $this->params['breadcrumbs'][] = $this->title;
             );
           },
         ],
-        [
-          'attribute' => 'mission_date',
-          'format' => 'raw',
-          'options' => ['width' => '70'],
-          'filter' => [
-            // $states
-          ],
-          'value' => function ($model, $key, $index, $column) {
-              $ts = strtotime($model->{$column->attribute});
-                $month = '';
-                switch (date('n',$ts)) {
-                  case 1:
-                  $month = 'январь';
-                  break;
-                  case 2:
-                  $month = 'февраль';
-                  break;
-                  case 3:
-                  $month = 'март';
-                  break;
-                  case 4:
-                  $month = 'апрель';
-                  break;
-                  case 5:
-                  $month = 'май';
-                  break;
-                  case 6:
-                  $month = 'июнь';
-                  break;
-                  case 7:
-                  $month = 'июль';
-                  break;
-                  case 8:
-                  $month = 'август';
-                  break;
-                  case 9:
-                  $month = 'сентябрь';
-                  break;
-                  case 10:
-                  $month = 'октябрь';
-                  break;
-                  case 11:
-                  $month = 'ноябрь';
-                  break;
-                  case 12:
-                  $month = 'декабрь';
-                  break;
-                }
-                // $dateObj = DateTime::createFromFormat('!m', $model->{$column->attribute});
-                // $month = $dateObj->format('F');
-                return $month;
-          },
-        ],
-        [
-          'attribute' => 'mission_date',
-          'options' => ['width' => '70'],
-        ],
-        // [
-        //   'attribute' => 'mission_month',
-        //   'format' => 'raw',
-        //   'options' => ['width' => '100'],
-        //   'filter' => $months,
-        //   'value' => function ($model, $key, $index, $column) {
-        //     $month = '';
-        //     switch ($model->{$column->attribute}) {
-        //       case 1:
-        //       $month = 'январь';
-        //       break;
-        //       case 2:
-        //       $month = 'февраль';
-        //       break;
-        //       case 3:
-        //       $month = 'март';
-        //       break;
-        //       case 4:
-        //       $month = 'апрель';
-        //       break;
-        //       case 5:
-        //       $month = 'май';
-        //       break;
-        //       case 6:
-        //       $month = 'июнь';
-        //       break;
-        //       case 7:
-        //       $month = 'июль';
-        //       break;
-        //       case 8:
-        //       $month = 'август';
-        //       break;
-        //       case 9:
-        //       $month = 'сентябрь';
-        //       break;
-        //       case 10:
-        //       $month = 'октябрь';
-        //       break;
-        //       case 11:
-        //       $month = 'ноябрь';
-        //       break;
-        //       case 12:
-        //       $month = 'декабрь';
-        //       break;
-        //     }
-        //     // $dateObj = DateTime::createFromFormat('!m', $model->{$column->attribute});
-        //     // $month = $dateObj->format('F');
-        //     return $month;
-        //     // return \yii\helpers\Html::tag(
-        //     //   'span',
-        //     //   $month,
-        //     //   // [
-        //     //   //   'class' => 'label label-' . ($active ? 'success' : 'danger'),
-        //     //   // ]
-        //     // );
-        //   },
-        // ],
-        // 'description',
-        'approve_post',
+        'mission_name',
         'approve_fio',
+        [
+          'attribute' => 'mission_date',
+          'options' => ['width' => '70'],
+        ],
+        // 'approve_post',
         //'created',
         //'changed',
 
         [
           'class' => 'yii\grid\ActionColumn',
-          'options' => ['width' => '70'],
+          'options' => ['width' => '90'],
         ],
       ],
     ]); ?>

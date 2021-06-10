@@ -10,7 +10,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="missions-view">
 
-    <h2><?= Html::encode($this->title) ?></h2>
+    <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
         <?= Html::a('Редактировать', ['update', 'id' => $model->uid], ['class' => 'btn btn-primary']) ?>
@@ -27,9 +27,13 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'uid',
+            'mission_name',
             'mission_date',
             'description',
-            'status',
+            [
+              'attribute' => 'status',
+              'value' => $model->stateName($model->status),
+            ],
             'approve_post',
             'approve_fio',
             'created',
