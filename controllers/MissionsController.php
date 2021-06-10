@@ -29,7 +29,7 @@ class MissionsController extends Controller {
             [
               'allow' => true,
               'actions' =>['update', 'index','view','create','delete'],
-              'roles' => ['ADMIN','ASSIGNER','EXECUTER'],
+              'roles' => ['ASSIGNER','EXECUTER'],
             ],
           ],
         ],
