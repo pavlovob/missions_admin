@@ -40,7 +40,7 @@ class User extends ActiveRecord implements IdentityInterface {
       ['login', 'unique', 'on' => 'insert'],
       // [['password_check','password'], 'safe'],
       ['password', 'compare', 'compareAttribute' => 'password_check','on' => ['insert','pwd_change']  ],
-      [['login','password','password_check'], 'match', 'pattern' => '~^[A-Za-z][A-Za-z0-9]+$~', 'message'=> 'Должны быть только буквы на английском и цифры!', 'on' => ['insert','update','pwd_change']],
+      [['login'], 'match', 'pattern' => '~^[A-Za-z][A-Za-z0-9]+$~', 'message'=> 'Должны быть только буквы на английском и цифры!', 'on' => ['insert','update','pwd_change']],
       ['rememberMe', 'boolean', 'on' => 'login'],
       [['uid','login','username','usertype','executerid', 'assignerid'], 'safe'],
       [['assignerid'], 'exist', 'skipOnError' => true, 'targetClass' => Assigners::className(), 'targetAttribute' => ['assignerid' => 'uid'], 'on' => 'insert', 'on' => 'update'],
