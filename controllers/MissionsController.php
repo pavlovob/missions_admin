@@ -115,7 +115,7 @@ class MissionsController extends Controller {
     }
 
     public function actionIndexitems()    {
-        $searchModel = new MissionsSearch();
+        $searchModel = new MissionSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
