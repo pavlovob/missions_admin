@@ -24,12 +24,22 @@ class MissionsController extends Controller {
         ],
         'access' => [
           'class' => AccessControl::className(),
-          'only' => ['update', 'index','view','create','delete'],
+          'only' => ['update', 'index','view','create','delete','indexitems','createitem','viewitem','deleteitem','updateitem','updatereport'],
           'rules' => [
             [
               'allow' => true,
-              'actions' =>['update', 'index','view','create','delete'],
-              'roles' => ['ASSIGNER','EXECUTER'],
+              'actions' =>['update', 'index','view','create','delete','indexitems','createitem','viewitem','deleteitem','updateitem','updatereport'],
+              'roles' => ['ADMIN'],
+            ],
+            [
+              'allow' => true,
+              'actions' =>['index','view','indexitems','createitem','viewitem','deleteitem','updateitem'],
+              'roles' => ['ASSIGNER'],
+            ],
+            [
+              'allow' => true,
+              'actions' =>['index','view','indexitems','viewitem','updateitem','updatereport'],
+              'roles' => ['EXECUTER'],
             ],
           ],
         ],

@@ -114,7 +114,7 @@ class UsersController extends Controller {
       $model->password_hash = Yii::$app->getSecurity()->generatePasswordHash($model->password);
       $model->changed = date('Y-m-d G:i:s', time());
       $model->save();
-      History::log('SYSTEM','Изменен пароль учетной записи пользователя '.$model->username);
+      History::log('Изменен пароль учетной записи пользователя '.$model->username);
       return $this->redirect(['view', 'id' => $model->id]);
     } else    {
       return $this->render('pwdchange', ['model' => $model]);
