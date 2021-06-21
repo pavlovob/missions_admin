@@ -114,6 +114,18 @@ class MissionsController extends Controller {
         }
     }
 
+    public function actionIndexitems()    {
+        $searchModel = new MissionsSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'states'  => Missions::statesDropdown(),
+            // 'states'  => Missions::statesDropdown(),
+        ]);
+    }
+
     protected function findModel($id)    {
         if (($model = Missions::findOne($id)) !== null) {
             return $model;

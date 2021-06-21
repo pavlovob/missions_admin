@@ -14,7 +14,7 @@ $this->registerJs("
     $('td').click(function (e) {
         var id = $(this).closest('tr').data('id');
         if(e.target == this)
-            location.href = '" . Url::to(['missions/view']) . "?id=' + id;
+            location.href = '" . Url::to(['missions/indexitems']) . "?id=' + id;
     });
 
 ");
