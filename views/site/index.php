@@ -1,14 +1,14 @@
 <?php
 use yii\helpers\Html;
 
-$this->title = 'ИС "Поручения. Администратор"';
+$this->title = 'ИС "Поручения"';
 ?>
 <div class="site-index">
 
     <div class="jumbotron">
         <img src= <?= Yii::$app->params['org_logo_file']?>  height="45" width="250">
       <!-- <img src="tn.png"  height="45" width="250"> -->
-        <h2>ИС "Поручения. Администратор"</h2>
+        <h2>ИС "Поручения"</h2>
         <!-- <p class="lead">Выберите соответствующий пункт меню для работы.</p> -->
 
         <?= (!Yii::$app->user->isGuest) ? Html::tag('p',Html::encode('Выберите соответствующий пункт меню для работы'),['class' => 'lead']) : Html::tag('p',Html::encode('Для начала работы выполните вход в систему'),['class' => 'lead'])?>

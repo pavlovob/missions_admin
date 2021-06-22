@@ -5,6 +5,10 @@ namespace app\controllers;
 use Yii;
 use app\models\Missions;
 use app\models\MissionsSearch;
+use app\models\Missionitems;
+use app\models\MissionitemsSearch;
+use app\models\Executers;
+use app\models\Assigners;
 use app\models\History;
 use app\models\Inifile;
 use yii\web\Controller;
@@ -114,15 +118,40 @@ class MissionsController extends Controller {
         }
     }
 
-    public function actionIndexitems()    {
-        $searchModel = new MissionSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+    public function actionIndexitems($id)    {
+        $searchModel = new MissionitemsSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams,$id);
 
-        return $this->render('index', [
+        return $this->render('indexitems', [
             'searchModel' => $searchModel,
+            'model' => Missions::findOne($id),
             'dataProvider' => $dataProvider,
-            'states'  => Missions::statesDropdown(),
             // 'states'  => Missions::statesDropdown(),
+            // 'states'  => Missions::statesDropdown(),
+        ]);
+    }
+
+    public function actionCreateitem($id)    {
+        $model = new Missionitems();
+        if ($model->load(Yii::$app->request->post())) {
+            // $model->executer_name  = ($model->executeruid !== null) ? Executers::findOne($model->assigneruid)->name : "Неопределен";
+            if ($model->save()) {
+              $msg = 'Пункт поручений создан';
+              Yii::$app->session->setFlash('info', $msg);
+              History::Log($msg,implode('|',$model->toArray()));
+              return $this->redirect(['view', 'id' => $model->uid]);
+            }
+        }
+        $model->missionuid    = $id;
+        $model->assigneruid   = Yii::$app->user->identity->assignerid;
+        $model->assigner_name = Yii::$app->user->identity->username;
+        // $model->assigner_name = ($model->assigneruid !== null) ? Assigners::findOne($model->assigneruid)->name : "Неопределен";
+        // $model->approve_fio   = Inifile::getIni('committee','s1f');
+        // $model->approve_post  = Inifile::getIni('committee','s1p');
+        return $this->render('createitem', [
+            'model' => $model,
+            'executers'  => Executers::Dropdown(),
+            'assigners'  => Assigners::Dropdown(),
         ]);
     }
 

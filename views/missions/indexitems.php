@@ -6,7 +6,9 @@ use yii\grid\GridView;
 use yii\widgets\Pjax;
 
 $this->title = 'Поручения';
-$this->params['breadcrumbs'][] = $this->title;
+$this->params['breadcrumbs'][] = ['label' => $this->title, 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => $model->mission_name];
+
 
 // Скрипт обрабатывает клик по строке GridView
 $this->registerJs("
@@ -20,10 +22,11 @@ $this->registerJs("
 ");
 //CSS для измнеения курсора над GridView
 $this->registerCss("table { cursor: pointer; }");
-
+//CSS для многострочного отображения в Gridview
+$this->registerCss("grid-view td {white-space: inherit;}");
 ?>
 
-<!-- <script>
+<script>
     $(document).ready(function()
     {
         $('body').on('dblclick', '#files-grid tbody tr', function(event)
@@ -31,7 +34,7 @@ $this->registerCss("table { cursor: pointer; }");
             //Do something...
         });
     });
-</script> -->
+</script>
 
 
 <div class="missions-index">
@@ -39,7 +42,7 @@ $this->registerCss("table { cursor: pointer; }");
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-      <?= Html::a('Создать поручения', ['create'], ['class' => 'btn btn-success']) ?>
+      <?= Html::a('Добавить пункт поручений', ['createitem', 'id'=>$model->uid], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php Pjax::begin(); ?>
@@ -52,7 +55,7 @@ $this->registerCss("table { cursor: pointer; }");
       'tableOptions' => [
         //'class' => 'table table-striped table-bordered',
         'class' => 'table table-bordered table-condensed ',
-        // 'style' => 'font-size:12px;'
+        'style' => 'font-size:12px;'
         //'style' => ' line-height: 30px',
         // 'style' => 'width: 2500px;',
       ],
@@ -62,29 +65,33 @@ $this->registerCss("table { cursor: pointer; }");
       'columns' => [
         // ['class' => 'yii\grid\SerialColumn'],
         [
-          'attribute' => 'uid',
+          'attribute' => 'num_pp',
           'options' => ['width' => '70'],
         ],
+        // [
+        //   'attribute' => 'status',
+        //   'format' => 'raw',
+        //   'options' => ['width' => '100'],
+        //   'filter' => $states,
+        //   'value' => function ($model, $key, $index, $column) {
+        //     $active = $model->{$column->attribute} === STATE_OPEN;
+        //     return \yii\helpers\Html::tag(
+        //       'span',
+        //       $active ? 'Открыто' : 'Закрыто',
+        //       [
+        //         'class' => 'label label-' . ($active ? 'success' : 'danger'),
+        //       ]
+        //     );
+        //   },
+        // ],
+        'task',
         [
-          'attribute' => 'status',
-          'format' => 'raw',
-          'options' => ['width' => '100'],
-          'filter' => $states,
-          'value' => function ($model, $key, $index, $column) {
-            $active = $model->{$column->attribute} === STATE_OPEN;
-            return \yii\helpers\Html::tag(
-              'span',
-              $active ? 'Открыто' : 'Закрыто',
-              [
-                'class' => 'label label-' . ($active ? 'success' : 'danger'),
-              ]
-            );
-          },
+          'attribute' => 'Executer',
+          'options' => ['width' => '70'],
+          'value' => 'executer->name',
         ],
-        'mission_name',
-        'approve_fio',
         [
-          'attribute' => 'mission_date',
+          'attribute' => 'deadline  ',
           'options' => ['width' => '70'],
         ],
         // 'approve_post',
