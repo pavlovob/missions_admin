@@ -2,11 +2,11 @@
 
 use yii\helpers\Html;
 
-$this->title = 'Новый пункт поручений';
+$this->title = 'Редактирование поручения';
 $this->params['breadcrumbs'][] = ['label' => 'Поручения', 'url' => ['indexitems?id='.$model->missionuid]];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="missions-create">
+<div class="missions-update">
 
     <h2><?= Html::encode($this->title) ?></h2>
 

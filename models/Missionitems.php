@@ -13,12 +13,14 @@ class Missionitems extends \yii\db\ActiveRecord {
     public function rules()
     {
         return [
-            [['uid', 'missionuid', 'num_pp', 'deadline', 'assigneruid', 'assigner_name', 'executeruid', 'executer_name', 'task'], 'required'],
-            [['uid', 'missionuid', 'num_pp', 'assigneruid', 'executeruid'], 'integer'],
-            [['deadline', 'date_created', 'date_changed'], 'safe'],
-            [['assigner_name', 'executer_name'], 'string', 'max' => 45],
-            [['task', 'description'], 'string', 'max' => 1000],
             [['uid'], 'unique'],
+            [['uid', 'missionuid', 'num_pp', 'deadline', 'assigneruid', 'assigner_name', 'executeruid', 'executer_name', 'task'], 'required'],
+            [['uid', 'missionuid', 'assigneruid', 'executeruid'], 'integer'],
+            [['date_created', 'date_changed'], 'safe'],
+            [['num_pp'], 'string', 'max' => 10],
+            [['assigner_name', 'executer_name'], 'string', 'max' => 45],
+            [['deadline'], 'string', 'max' => 100],
+            [['task', 'description'], 'string', 'max' => 1000],
             [['missionuid'], 'exist', 'skipOnError' => true, 'targetClass' => Missions::className(), 'targetAttribute' => ['missionuid' => 'uid']],
         ];
     }
@@ -33,7 +35,7 @@ class Missionitems extends \yii\db\ActiveRecord {
             'assigneruid' => 'Куратор',
             'assigner_name' => 'Ф.И.О.',
             'executeruid' => 'Исполнитель',
-            'executer_name' => 'Ф.И.О.',
+            'executer_name' => 'Ответственный',
             'task' => 'Поручение',
             'description' => 'Примечание',
             'date_created' => 'Дата создания',
@@ -41,7 +43,7 @@ class Missionitems extends \yii\db\ActiveRecord {
         ];
     }
 
-    public function getMissionu()
+    public function getMission()
     {
         return $this->hasOne(Missions::className(), ['uid' => 'missionuid']);
     }
