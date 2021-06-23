@@ -30,6 +30,11 @@ class MissionsController extends Controller {
           'class' => AccessControl::className(),
           'only' => ['update', 'index','view','create','delete','indexitems','createitem','viewitem','deleteitem','updateitem','updatereport'],
           'rules' => [
+            // [
+            //   'allow' => true,
+            //   'actions' =>['update', 'index','view','create','delete','indexitems','createitem','viewitem','deleteitem','updateitem','updatereport'],
+            //   'roles' => ['@'],
+            // ],
             [
               'allow' => true,
               'actions' =>['update', 'index','view','create','delete','indexitems','createitem','viewitem','deleteitem','updateitem','updatereport'],
@@ -118,7 +123,7 @@ class MissionsController extends Controller {
         }
     }
 
-    public function actionIndexitems($id)    {
+    public function actionIndexitems($id)    { //$id - код поручений для фильтра
         $searchModel = new MissionitemsSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams,$id);
 

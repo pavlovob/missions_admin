@@ -2,7 +2,7 @@
 namespace app\rbac;
 
 use Yii;
-use app\models\History;
+// use app\models\History;
 use yii\rbac\Rule;
 class UserGroupRule extends Rule {
 
@@ -12,11 +12,11 @@ class UserGroupRule extends Rule {
     {
         if (!Yii::$app->user->isGuest) {
             $group = Yii::$app->user->identity->usertype;
-            History::log($group);
+            // History::log($group);
             if ($item->name === 'ASSIGNER') return $group == USERTYPE_ASSIGNER;
             if ($item->name === 'EXECUTER') return $group == USERTYPE_EXECUTER;
             if ($item->name === 'ADMIN') return $group == USERTYPE_ADMIN;
         }
-        return true;
+        return false  ;
     }
 }
