@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\Missionitems;
@@ -24,14 +25,18 @@ class MissionitemsSearch extends Missionitems {
     }
 
     public function search($params,$missionid=null)    {
-        $query = Missionitems::find()->where(['missionuid'=>$missionid]);
+        //запрос по текущему ИД поручений и ИД куратора пользователя
+        $query = Missionitems::find()->where(
+          ['missionuid'=>$missionid,
+          'assigneruid'=>Yii::$app->user->identity->assignerid,
+        ]);
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'sort' => [
-                'defaultOrder' => ['uid' => SORT_DESC,'uid'=>SORT_DESC]
+                'defaultOrder' => ['num_pp' => SORT_DESC]
             ]
         ]);
 

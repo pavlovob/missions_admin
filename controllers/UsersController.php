@@ -11,21 +11,29 @@ use app\models\Executers;
 
 use yii\grid\GridView;
 use yii\data\ActiveDataProvider;
+use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use yii\bootstrap\Alert;
 
 class UsersController extends Controller {
 
-  public function behaviors()  {
+  //доступ только у администратора
+  public function behaviors()     {
     return [
+      'verbs' => [
+        'class' => VerbFilter::className(),
+        'actions' => [
+          'delete' => ['POST'],
+        ],
+      ],
       'access' => [
         'class' => AccessControl::className(),
-        'only' => ['update', 'index','delete','view','create','pwdchange'],
+        'only' => ['update', 'index','view','create','delete','pwdchange'],
         'rules' => [
           [
             'allow' => true,
-            'actions' => ['update', 'index','delete','view','create','pwdchange'],
-            'roles' => ['@'],
+            'actions' =>['update', 'index','view','create','delete','pwdchange'],
+            'roles' => ['ADMIN'],
           ],
         ],
       ],
@@ -35,12 +43,6 @@ class UsersController extends Controller {
   public function actionIndex()  {
     $searchModel  = new UserSearch();
     $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-    // $dataProvider = new ActiveDataProvider([
-    //   'query' => User::find(),
-    //   'pagination' => [
-    //     'pageSize' => 50,
-    //   ],
-    // ]);
     return $this->render('index', [
       'searchModel'  => $searchModel,
       'dataProvider' => $dataProvider,

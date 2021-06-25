@@ -12,8 +12,7 @@ use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 
 class AssignersController extends Controller {
-    public function behaviors()
-    {
+    public function behaviors()     {
       return [
         'verbs' => [
           'class' => VerbFilter::className(),
@@ -28,57 +27,57 @@ class AssignersController extends Controller {
             [
               'allow' => true,
               'actions' =>['update', 'index','view','create','delete'],
-              'roles' => ['@'],
+              'roles' => ['ADMIN'],
             ],
           ],
         ],
       ];
     }
 
+    //просмотр списка кураторов
     public function actionIndex()    {
         $searchModel = new AssignersSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
 
+    //просмотр записи куратора
     public function actionView($id)    {
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
     }
 
+    //создание куратора
     public function actionCreate()    {
         $model = new Assigners();
-
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             History::log('В справочник добавлен новый куратор '.$model->name,implode(', ',$model->toArray()));
             return $this->redirect(['view', 'id' => $model->uid]);
         }
-
         return $this->render('create', [
             'model' => $model,
         ]);
     }
 
+    //редактирование куратора
     public function actionUpdate($id)    {
       $model = $this->findModel($id);
-
       if ($model->load(Yii::$app->request->post()))  {
           $model->changed = date('Y-m-d G:i:s', time());
           $model->save();
           History::log('Отредактирован куратор в справочнике',implode(', ',$model->toArray()));
           return $this->redirect(['view', 'id' => $model->uid]);
       }
-
       return $this->render('update', [
           'model' => $model,
       ]);
     }
 
+    //Удалить куратора
     public function actionDelete($id)    {
       $model = $this->findModel($id);
       try{
@@ -97,7 +96,6 @@ class AssignersController extends Controller {
         if (($model = Assigners::findOne($id)) !== null) {
             return $model;
         }
-
-        throw new NotFoundHttpException('The requested page does not exist.');
+        throw new NotFoundHttpException('Не найден куратор в справочнике');
     }
 }
