@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 
 $this->title = 'Новый пункт поручений';
-$this->params['breadcrumbs'][] = ['label' => 'Поручения', 'url' => ['indexitems?id='.$model->missionuid]];
+$this->params['breadcrumbs'][] = ['label' => 'Поручения', 'url' => ['indexitems?id='.$missionuid]];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="missions-create">
@@ -12,6 +12,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= $this->render('_formitem', [
         'model' => $model,
+        'missionuid' => $missionuid,
+        'title' => $title,
         'executers'  => $executers,
         // 'assigners'  => $assigners,
     ]) ?>

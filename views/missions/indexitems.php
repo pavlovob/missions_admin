@@ -26,20 +26,9 @@ $this->registerCss("table { cursor: pointer; }");
 $this->registerCss("grid-view td {white-space: inherit;}");
 ?>
 
-<script>
-$(document).ready(function()
-{
-  $('body').on('dblclick', '#files-grid tbody tr', function(event)
-  {
-    //Do something...
-  });
-});
-</script>
-
-
 <div class="missions-index">
   <!-- <div class="w3-row w3-large"> -->
-  <h3><?= Html::encode($this->title .'. '. $assigner->name.'.') ?></h3>
+  <h3><?= Html::encode($this->title) ?></h3>
 
   <p>
     <?= Html::a('Добавить пункт поручений', ['createitem', 'id'=>$model->uid], ['class' => 'btn btn-success']) ?>
@@ -63,7 +52,7 @@ $(document).ready(function()
       return ['data-id' => $model->uid];
     },
     'columns' => [
-      // ['class' => 'yii\grid\SerialColumn'],
+      ['class' => 'yii\grid\SerialColumn'],
       [
         'attribute' => 'num_pp',
         'options' => ['width' => '70'],
@@ -89,6 +78,12 @@ $(document).ready(function()
         'attribute' => 'deadline',
         'options' => ['width' => '70'],
       ],
+      [
+        'attribute' => 'executer.name',
+        'filter'  => $executers,
+        // 'options' => ['width' => '70'],
+      ],
+
       'executer_name',
       'assigner_name',
       // [

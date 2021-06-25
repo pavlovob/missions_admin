@@ -69,7 +69,8 @@ class MissionsController extends Controller {
       'searchModel' => $searchModel,
       'model' => Missions::findOne($id),
       'dataProvider' => $dataProvider,
-      'assigner'  => Assigners::findOne(Yii::$app->user->identity->assignerid),
+      'executers' => Executers::Dropdown(),
+      // 'assigner'  => Assigners::findOne(Yii::$app->user->identity->assignerid),
     ]);
   }
 
@@ -123,13 +124,15 @@ class MissionsController extends Controller {
         return $this->redirect(['indexitems', 'id' => $model->missionuid]);
       }
     }
-    // $model->assigner_name = ($model->assigneruid !== null) ? Assigners::findOne($model->assigneruid)->name : "Неопределен";
-    // $model->approve_fio   = Inifile::getIni('committee','s1f');
-    // $model->approve_post  = Inifile::getIni('committee','s1p');
+    $model->assigner_name = Yii::$app->user->identity->username;
     return $this->render('createitem', [
+
       'model' => $model,
+      'missionuid'  => $id,
+      'title' => $this->findModel($id)->mission_name,
       'executers'  => Executers::Dropdown(),
-      // 'nextnum'   => 
+      // 'assigners'  => Assigners::Dropdown(),
+      // 'nextnum'   =>
       // 'assigners'  => Assigners::Dropdown(),
     ]);
   }

@@ -36,8 +36,16 @@ class Executers extends \yii\db\ActiveRecord{
         return new ExecutersQuery(get_called_class());
     }
 
-    public static function dropdown()  {
-      $executers = self::find()->select(['name', 'uid'])->orderBy('name')->indexBy('uid')->column();
-      return $executers;
+    public static function dropdown($mode=null)  {
+      if ($mode !== null){
+          $executers = self::find()->select(['name', 'name'])->indexBy('name')->column();
+      } else {
+          $executers = self::find()->select(['name', 'uid'])->orderBy('name')->indexBy('uid')->column();
+      }
+      if (null !== $executers)    {
+        return $executers;
+      } else {
+        throw new NotFoundHttpException('Ошибка запроса списка исполнителей!');
+      }
     }
 }

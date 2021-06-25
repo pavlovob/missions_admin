@@ -13,9 +13,11 @@ use app\assets\AppAsset;
       <?= $form->field($model, 'num_pp')->textInput(['maxlength' => true]) ?>
       <?= $form->field($model, 'executeruid')->dropdownList($executers)?>
       <?= $form->field($model, 'executer_name')->textInput(['maxlength' => true]) ?>
+      <?= $form->field($model, 'assigner_name')->textInput(['maxlength' => true]) ?>
       <?= $form->field($model, 'task')->textarea(['rows' => 5, 'cols' => 5])?>
       <?= $form->field($model, 'deadline')->textarea(['rows' => 2,'cols' => 1])?>
-      <?= $form->field($model, 'description')->textarea(['rows' => 3, 'cols' => 5])?>
+      <?= $form->field($model, 'description')->textarea(['rows' => 2, 'cols' => 5])?>
+
 
 
       <div class="form-group">
