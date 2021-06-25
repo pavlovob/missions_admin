@@ -47,24 +47,7 @@ class Missions extends \yii\db\ActiveRecord {
       return new MissionsQuery(get_called_class());
   }
 
-  // public static function monthsDropdown(){
-  //   $arr = [
-  //     1=>'январь',
-  //     2=>'февраль',
-  //     3=>'март',
-  //     4=>'апрель',
-  //     5=>'май',
-  //     6=>'июнь',
-  //     7=>'июль',
-  //     8=>'август',
-  //     9=>'сентябрь',
-  //     10=>'октябрь',
-  //     11=>'ноябрь',
-  //     12=>'декабрь'
-  //   ];
-  //   return $arr;
-  // }
-
+  //формирует массив сотсояний поручений
   public static function statesDropdown(){
     return [
       STATE_OPEN    =>'Открыто',
@@ -73,14 +56,21 @@ class Missions extends \yii\db\ActiveRecord {
     ];
   }
 
+  //возвращает наименование состояния поручения из массива по ИД
   public static function stateName($id){
     $arr  = self::statesDropdown();
     return (array_key_exists($id,$arr)) ? $arr[$id] : '';
   }
 
+  //Простой массив наименований состояния
   public static function stateNames(){
     $arr = array("Открыто","Закрыто");
     return $arr;
+  }
+
+  //Возвращает текущее состояние поручений
+  public static function getMissionstate($id){
+      return self::find($id)->status;
   }
 
   // public static function monthName($month){
@@ -102,7 +92,23 @@ class Missions extends \yii\db\ActiveRecord {
   //     break;
   //     case 6:
   //     return  'июнь';
-  //     break;
+  //     break;  // public static function monthsDropdown(){
+  //   $arr = [
+  //     1=>'январь',
+  //     2=>'февраль',
+  //     3=>'март',
+  //     4=>'апрель',
+  //     5=>'май',
+  //     6=>'июнь',
+  //     7=>'июль',
+  //     8=>'август',
+  //     9=>'сентябрь',
+  //     10=>'октябрь',
+  //     11=>'ноябрь',
+  //     12=>'декабрь'
+  //   ];
+  //   return $arr;
+  // }
   //     case 7:
   //     return  'июль';
   //     break;
@@ -122,6 +128,24 @@ class Missions extends \yii\db\ActiveRecord {
   //     return  'декабрь';
   //     break;
   //   }
+  // }
+
+  // public static function monthsDropdown(){
+  //   $arr = [
+  //     1=>'январь',
+  //     2=>'февраль',
+  //     3=>'март',
+  //     4=>'апрель',
+  //     5=>'май',
+  //     6=>'июнь',
+  //     7=>'июль',
+  //     8=>'август',
+  //     9=>'сентябрь',
+  //     10=>'октябрь',
+  //     11=>'ноябрь',
+  //     12=>'декабрь'
+  //   ];
+  //   return $arr;
   // }
 
 }

@@ -11,10 +11,10 @@ class Assigners extends \yii\db\ActiveRecord {
 
     public function rules()    {
         return [
-            [['name'], 'required'],
+            [['name','ordernumber'], 'required'],
             [['created', 'changed'], 'safe'],
             [['name', 'description'], 'string', 'max' => 100],
-            [['name'], 'unique'],
+            [['name','ordernumber'], 'unique'],
         ];
     }
 
@@ -22,6 +22,7 @@ class Assigners extends \yii\db\ActiveRecord {
         return [
             'uid' => 'Код',
             'name' => 'Наименование',
+            'ordernumber' => 'Номер раздела',
             'description' => 'Описание',
             'created' => 'Дата создания',
             'changed' => 'Дата изменения',
@@ -30,6 +31,10 @@ class Assigners extends \yii\db\ActiveRecord {
 
     public function getUsers()    {
         return $this->hasMany(User::className(), ['assignerid' => 'uid']);
+    }
+
+    public function getMissionitems()    {
+        return $this->hasMany(Missionitems::className(), ['assignerid' => 'uid']);
     }
 
     public static function find()    {

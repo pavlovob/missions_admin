@@ -39,7 +39,7 @@ $(document).ready(function()
 
 <div class="missions-index">
   <!-- <div class="w3-row w3-large"> -->
-  <h1><?= Html::encode($this->title) ?></h1>
+  <h3><?= Html::encode($this->title .'. '. $assigner->name.'.') ?></h3>
 
   <p>
     <?= Html::a('Добавить пункт поручений', ['createitem', 'id'=>$model->uid], ['class' => 'btn btn-success']) ?>
@@ -89,11 +89,13 @@ $(document).ready(function()
         'attribute' => 'deadline',
         'options' => ['width' => '70'],
       ],
-      [
-        'attribute' => 'Executer',
-        'options' => ['width' => '70'],
-        'value' => 'executer->name',
-      ],
+      'executer_name',
+      'assigner_name',
+      // [
+      //   'attribute' => 'Executer',
+      //   // 'options' => ['width' => '70'],
+      //   'value' => 'executer->name' ,
+      // ],
 
       // 'approve_post',
       //'created',

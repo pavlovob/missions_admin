@@ -22,6 +22,7 @@ class Missionitems extends \yii\db\ActiveRecord {
             [['deadline'], 'string', 'max' => 100],
             [['task', 'description'], 'string', 'max' => 1000],
             [['missionuid'], 'exist', 'skipOnError' => true, 'targetClass' => Missions::className(), 'targetAttribute' => ['missionuid' => 'uid']],
+            [['executeruid'], 'exist', 'skipOnError' => true, 'targetClass' => Executers::className(), 'targetAttribute' => ['executeruid' => 'uid']],
         ];
     }
 
@@ -33,7 +34,7 @@ class Missionitems extends \yii\db\ActiveRecord {
             'num_pp' => '№ п.п',
             'deadline' => 'Срок исполнения',
             'assigneruid' => 'Куратор',
-            'assigner_name' => 'Ф.И.О.',
+            'assigner_name' => 'Контроль',
             'executeruid' => 'Исполнитель',
             'executer_name' => 'Ответственный',
             'task' => 'Поручение',
@@ -43,9 +44,12 @@ class Missionitems extends \yii\db\ActiveRecord {
         ];
     }
 
-    public function getMission()
-    {
+    public function getMission()    {
         return $this->hasOne(Missions::className(), ['uid' => 'missionuid']);
+    }
+
+    public function getExecuter()    {
+        return $this->hasOne(Executers::className(), ['uid' => 'executeruid']);
     }
 
     public static function find()

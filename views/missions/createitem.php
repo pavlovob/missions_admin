@@ -8,7 +8,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="missions-create">
 
-    <h2><?= Html::encode($this->title) ?></h2>
+    <h3><?= Html::encode($this->title) ?></h3>
 
     <?= $this->render('_formitem', [
         'model' => $model,
