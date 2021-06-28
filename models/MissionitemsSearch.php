@@ -9,13 +9,14 @@ use app\models\Missionitems;
 use app\models\User;
 
 class MissionitemsSearch extends Missionitems {
-      public function rules()
-      {
-          // return parent::rules();
+      public function rules()      {
+          // return Model  ::rules();
           return [
-              [['uid'], 'integer'],
+              [['uid','assigneruid','executeruid'], 'integer'],
                 // [['uid','status','mission_name', 'approve_fio'], 'safe'],
-              [['uid', 'missionuid', 'num_pp', 'deadline', 'assigneruid', 'assigner_name', 'executeruid', 'executer_name', 'task'], 'safe'],
+              [['uid', 'missionuid', 'num_pp', 'deadline', 'assigneru id', 'assigner_name', 'executeruid', 'executer_name', 'task'], 'safe'],
+              // [['executeruid'], 'exist', 'skipOnError' => true, 'targetClass' => Executers::className(), 'targetAttribute' => ['executeruid' => 'uid']],
+              // [['assigneruid'], 'exist', 'skipOnError' => true, 'targetClass' => Assigners::className(), 'targetAttribute' => ['assigneruid' => 'uid']],
           ];
       }
 
@@ -26,22 +27,20 @@ class MissionitemsSearch extends Missionitems {
     }
 
     public function search($params,$missionid=null,$usertype=null)    {
-        //запрос по текущему ИД поручений
-        $query = Missionitems::find()->where(['missionuid'=>$missionid]);
+        $query = Missionitems::find();
+        $query->andWhere(['missionuid'=>$missionid]);  //запрос по текущему ИД поручений
         //доп.условие если это куратор - только свой ИД
         if (Yii::$app->user->identity->usertype == USERTYPE_ASSIGNER){
             $query->andWhere(['assigneruid'=>Yii::$app->user->identity->assignerid]);
-            $query->join('LEFT JOIN', 'executers', 'executers.uid = executeruid'); //для подгрузки исполнителей
+            // $query->join('LEFT JOIN', 'executers', 'executers.uid = executeruid'); //для подгрузки исполнителей
         }
         //доп.условие если это исполнитель - только свой ИД
         if (Yii::$app->user->identity->usertype == USERTYPE_EXECUTER){
             $query->andWhere(['executeruid'=>Yii::$app->user->identity->executerid]);
-            $query->join('LEFT JOIN', 'assigners', 'assigners.uid = assigneruid'); //для подгрузки кураторов
-
+            // $query->join('LEFT JOIN', 'assigners', 'assigners.uid = assigneruid'); //для подгрузки кураторов
         }
-        $query->andWhere(['assigneruid'=>Yii::$app->user->identity->assignerid]);
-        $query->join('LEFT JOIN', 'executers1', 'executers.uid = executeruid'); //для подгрузки исполнителей
-        // add conditions that should always apply here
+        $query->joinWith(['assigner']);
+        $query->joinWith(['executer']);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -62,7 +61,8 @@ class MissionitemsSearch extends Missionitems {
         $query->andFilterWhere([
             'uid' => $this->uid,
             'num_pp' => $this->num_pp,
-            'executers.name'=> ($this->executer !== null) ? $this->executer->name : "",
+            'assigneruid' => $this->assigneruid,
+            'executeruid' => $this->executeruid,
             // 'mission_date' => $this->mission_month,
             // 'mission_year' => $this->mission_year,
             // 'status' => $this->status,
@@ -71,7 +71,9 @@ class MissionitemsSearch extends Missionitems {
         ]);
 
         $query->andFilterWhere(['like', 'task', $this->task])
-              ->andFilterWhere(['like', 'deadline', $this->deadline]);
+              ->andFilterWhere(['like', 'deadline', $this->deadline])
+              ->andFilterWhere(['like', 'executer_name', $this->executer_name])
+              ->andFilterWhere(['like', 'assigner_name', $this->assigner_name]);
 
         return $dataProvider;
     }

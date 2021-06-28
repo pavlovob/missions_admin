@@ -11,7 +11,7 @@ $this->params['breadcrumbs'][] = $this->title;
 // Скрипт обрабатывает клик по строке GridView
 $this->registerJs("
 
-    $('td').click(function (e) {
+    $('tbody td').click(function (e) {
         var id = $(this).closest('tr').data('id');
         if(e.target == this)
             location.href = '" . Url::to(['missions/indexitems']) . "?id=' + id;
@@ -94,6 +94,7 @@ $this->registerCss("table { cursor: pointer; }");
         [
           'class' => 'yii\grid\ActionColumn',
           'options' => ['width' => '90'],
+          'visible' => $usertype == USERTYPE_ADMIN,
         ],
       ],
     ]); ?>

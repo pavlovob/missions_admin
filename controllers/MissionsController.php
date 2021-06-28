@@ -58,6 +58,7 @@ class MissionsController extends Controller {
       'searchModel' => $searchModel,
       'dataProvider' => $dataProvider,
       'states'  => Missions::statesDropdown(),
+      'usertype'  => Yii::$app->user->identity->usertype, //для отображения нужных столбцов
     ]);
   }
 
@@ -65,11 +66,14 @@ class MissionsController extends Controller {
   public function actionIndexitems($id)    { //$id - код поручений для фильтра
     $searchModel = new MissionitemsSearch();
     $dataProvider = $searchModel->search(Yii::$app->request->queryParams,$id);
+    // Yii::$app->session->setFlash('info', Yii::$app->user->identity->usertype);
     return $this->render('indexitems', [
       'searchModel' => $searchModel,
       'model' => Missions::findOne($id),
       'dataProvider' => $dataProvider,
       'executers' => Executers::Dropdown(),
+      'assigners' => Assigners::Dropdown(),
+      'usertype'  => Yii::$app->user->identity->usertype, //для отображения нужных столбцов
       // 'assigner'  => Assigners::findOne(Yii::$app->user->identity->assignerid),
     ]);
   }

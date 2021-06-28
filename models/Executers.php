@@ -21,7 +21,7 @@ class Executers extends \yii\db\ActiveRecord{
     public function attributeLabels()    {
         return [
           'uid' => 'Код',
-          'name' => 'Наименование',
+          'name' => 'Исполнитель',
           'description' => 'Описание',
           'created' => 'Дата создания',
           'changed' => 'Дата изменения',
@@ -44,6 +44,7 @@ class Executers extends \yii\db\ActiveRecord{
       }
       if (null !== $executers)    {
         return $executers;
+        // return ['1'=>'test'];
       } else {
         throw new NotFoundHttpException('Ошибка запроса списка исполнителей!');
       }

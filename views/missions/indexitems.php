@@ -13,7 +13,7 @@ $this->params['breadcrumbs'][] = ['label' => $model->mission_name];
 // Скрипт обрабатывает клик по строке GridView
 $this->registerJs("
 
-$('td').click(function (e) {
+$('tbody td').click(function (e) {
   var id = $(this).closest('tr').data('id');
   if(e.target == this)
   location.href = '" . Url::to(['missions/viewitem']) . "?id=' + id;
@@ -79,11 +79,15 @@ $this->registerCss("grid-view td {white-space: inherit;}");
         'options' => ['width' => '70'],
       ],
       [
+        'attribute' => 'assigner.name',
+        'filter'  => $assigners,
+        // 'options' => ['width' => '70'],
+      ],
+      [
         'attribute' => 'executer.name',
         'filter'  => $executers,
         // 'options' => ['width' => '70'],
       ],
-
       'executer_name',
       'assigner_name',
       // [

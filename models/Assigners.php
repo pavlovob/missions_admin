@@ -21,7 +21,7 @@ class Assigners extends \yii\db\ActiveRecord {
     public function attributeLabels()    {
         return [
             'uid' => 'Код',
-            'name' => 'Наименование',
+            'name' => 'Куратор',
             'ordernumber' => 'Номер раздела',
             'description' => 'Описание',
             'created' => 'Дата создания',
