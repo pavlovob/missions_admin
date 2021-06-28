@@ -79,31 +79,25 @@ $this->registerCss("grid-view td {white-space: inherit;}");
         'options' => ['width' => '70'],
       ],
       [
-        'attribute' => 'assigner.name',
-        'filter'  => $assigners,
-        // 'options' => ['width' => '70'],
+        'attribute' => 'assigneruid',
+        'value' => 'assigner.name',
+        'filter'=>$assigners,
+        'visible' => $usertype !== USERTYPE_ASSIGNER,
       ],
       [
-        'attribute' => 'executer.name',
-        'filter'  => $executers,
-        // 'options' => ['width' => '70'],
+        'attribute' => 'executeruid',
+        'value' => 'executer.name',
+        'filter'=>$executers,
+        'visible' => $usertype !== USERTYPE_EXECUTER,
       ],
-      'executer_name',
-      'assigner_name',
-      // [
-      //   'attribute' => 'Executer',
-      //   // 'options' => ['width' => '70'],
-      //   'value' => 'executer->name' ,
-      // ],
-
-      // 'approve_post',
-      //'created',
-      //'changed',
-
-      // [
-      //   'class' => 'yii\grid\ActionColumn',
-      //   'options' => ['width' => '90'],
-      // ],
+      [
+        'attribute' => 'executer_name',
+        'visible' => $usertype !== USERTYPE_EXECUTER,
+      ],
+      [
+        'attribute' => 'assigner_name',
+        'visible' => $usertype !== USERTYPE_ASSIGNER,
+      ],
       [
         'class' => 'yii\grid\ActionColumn',
         'template' => '{viewitem} {updateitem} {deleteitem}',

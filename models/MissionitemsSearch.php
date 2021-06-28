@@ -10,11 +10,11 @@ use app\models\User;
 
 class MissionitemsSearch extends Missionitems {
       public function rules()      {
-          // return Model  ::rules();
+          // return Parent::rules();
           return [
               [['uid','assigneruid','executeruid'], 'integer'],
                 // [['uid','status','mission_name', 'approve_fio'], 'safe'],
-              [['uid', 'missionuid', 'num_pp', 'deadline', 'assigneru id', 'assigner_name', 'executeruid', 'executer_name', 'task'], 'safe'],
+              [['uid', 'missionuid', 'num_pp', 'deadline', 'assigneruid', 'assigner_name', 'executeruid', 'executer_name', 'task'], 'safe'],
               // [['executeruid'], 'exist', 'skipOnError' => true, 'targetClass' => Executers::className(), 'targetAttribute' => ['executeruid' => 'uid']],
               // [['assigneruid'], 'exist', 'skipOnError' => true, 'targetClass' => Assigners::className(), 'targetAttribute' => ['assigneruid' => 'uid']],
           ];
@@ -61,14 +61,17 @@ class MissionitemsSearch extends Missionitems {
         $query->andFilterWhere([
             'uid' => $this->uid,
             'num_pp' => $this->num_pp,
-            'assigneruid' => $this->assigneruid,
-            'executeruid' => $this->executeruid,
+            // 'assigneruid' => $this->assigneruid,
+            // 'executeruid' => $this->executeruid,
             // 'mission_date' => $this->mission_month,
             // 'mission_year' => $this->mission_year,
             // 'status' => $this->status,
             // 'created' => $this->created,
             // 'changed' => $this->changed,
         ]);
+
+        $query->andFilterWhere(['assigneruid' => $this->assigneruid])
+        ->andFilterWhere(['executeruid' => $this->executeruid]);
 
         $query->andFilterWhere(['like', 'task', $this->task])
               ->andFilterWhere(['like', 'deadline', $this->deadline])

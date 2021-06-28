@@ -14,7 +14,8 @@ $this->params['breadcrumbs'][] = $this->title;
     'dataProvider' => $dataProvider,
     'filterModel' => $searchModel,
     'tableOptions' => [
-      'class' => 'table table-striped table-bordered'
+      'class' => 'table table-striped table-bordered',
+      'style' => 'font-size:12px;',
     ],
     'columns' => [
       // ['class' => 'yii\grid\SerialColumn'],
