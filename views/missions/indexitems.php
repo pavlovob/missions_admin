@@ -81,7 +81,7 @@ $this->registerCss("grid-view td {white-space: inherit;}");
       [
         'attribute' => 'assigneruid',
         'value' => 'assigner.name',
-        'filter'=>$assigners,
+        'filter'  =>  $assigners,
         'visible' => $usertype !== USERTYPE_ASSIGNER,
       ],
       [

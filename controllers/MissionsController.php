@@ -133,20 +133,20 @@ class MissionsController extends Controller {
       Yii::$app->session->setFlash('info', 'Создано пунктов поручений: '.count($template->executeruids));
       return $this->redirect(['indexitems', 'id' => $model->missionuid]);
     }
+    if (Yii::$app->user->identity->assignerid == null) { //проверка на открытость поручений
+      Yii::$app->session->setFlash('warning','В настройках пользователя не указан куратор поручений');
+      return $this->redirect(['indexitems', 'id' => $id]);
+    }
     if (Missions::getMissionstate($id) == STATE_CLOSE) { //проверка на открытость поручений
-      Yii::$app->session->setFlash('warning','Поручения закрыты администратором.');
+      Yii::$app->session->setFlash('warning','Поручения закрыты для внесения изменений');
       return $this->redirect(['index']);
     }
     $model->assigner_name = Yii::$app->user->identity->username;
     return $this->render('createitem', [
-
       'model' => $model,
       'missionuid'  => $id,
       'title' => $this->findModel($id)->mission_name,
       'executers'  => Executers::Dropdown(),
-      // 'assigners'  => Assigners::Dropdown(),
-      // 'nextnum'   =>
-      // 'assigners'  => Assigners::Dropdown(),
     ]);
   }
 

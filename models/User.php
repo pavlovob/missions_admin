@@ -132,7 +132,7 @@ class User extends ActiveRecord implements IdentityInterface {
       $user->assignerid     = null;
       $user->created        = date('Y-m-d G:i:s', time());
       $user->changed        = date('Y-m-d G:i:s', time());
-      $user->save();
+      $user->save(false);
       History::log('В справочник пользователей добавлена учетная администратора по умолчанию');
     }
   }
