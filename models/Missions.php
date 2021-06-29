@@ -70,7 +70,7 @@ class Missions extends \yii\db\ActiveRecord {
 
   //Возвращает текущее состояние поручений
   public static function getMissionstate($id){
-      return self::find($id)->status;
+      return self::findOne($id)->status;
   }
 
   // public static function monthName($month){

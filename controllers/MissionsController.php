@@ -69,7 +69,7 @@ class MissionsController extends Controller {
     // Yii::$app->session->setFlash('info', Yii::$app->user->identity->usertype);
     return $this->render('indexitems', [
       'searchModel' => $searchModel,
-      'model' => Missions::findOne($id),
+      'model' => Missions::findOne($id),// модель поручений
       'dataProvider' => $dataProvider,
       'executers' => Executers::Dropdown(),
       'assigners' => Assigners::Dropdown(),
@@ -115,18 +115,27 @@ class MissionsController extends Controller {
 
   //создание пункта поручений
   public function actionCreateitem($id)    {
-    $model = new Missionitems();
+    $model = new Missionitems(['scenario'=>'insert']);
     if ($model->load(Yii::$app->request->post())) {
+      // History::Log('111',implode('|',$model->executeruids));
       // $model->executer_name  = ($model->executeruid !== null) ? Executers::findOne($model->assigneruid)->name : "Неопределен";
-      $model->missionuid    = $id;
-      $model->assigneruid   = Yii::$app->user->identity->assignerid;
-      $model->assigner_name = Yii::$app->user->identity->username;
-      if ($model->save(false)) {
-        $msg = 'Пункт поручений создан';
-        Yii::$app->session->setFlash('info', $msg);
-        History::Log($msg,implode('|',$model->toArray()));
-        return $this->redirect(['indexitems', 'id' => $model->missionuid]);
+      $template = $model;
+      $template->missionuid    = $id;
+      $template->assigneruid = Yii::$app->user->identity->assignerid;
+      foreach ($template->executeruids as $executer) { //Проходим по массиву отмеченных исполнителей, для каждого записываем поручение.
+        $model = new Missionitems(['scenario'=>'insert']);
+        $model->attributes    = $template->attributes;
+        $model->executeruid   = $executer;
+        if ($model->save(false)) {
+          History::Log('Создан пункт поручений',implode('|',$model->toArray()));
+        }
       }
+      Yii::$app->session->setFlash('info', 'Создано пунктов поручений: '.count($template->executeruids));
+      return $this->redirect(['indexitems', 'id' => $model->missionuid]);
+    }
+    if (Missions::getMissionstate($id) == STATE_CLOSE) { //проверка на открытость поручений
+      Yii::$app->session->setFlash('warning','Поручения закрыты администратором.');
+      return $this->redirect(['index']);
     }
     $model->assigner_name = Yii::$app->user->identity->username;
     return $this->render('createitem', [
@@ -171,8 +180,6 @@ class MissionsController extends Controller {
     ]);
   }
 
-
-
   public function actionDelete($id)    {
     $model = $this->findModel($id);
     try{
@@ -187,15 +194,19 @@ class MissionsController extends Controller {
     }
   }
 
-
-
-
-
-
-
-
-
-
+  public function actionDeleteitem($id)    {
+    $model = $this->findModelitem($id);
+    try{
+      $model->delete();
+      History::log('Удален пункт поручений с кодом '.$id,implode(', ',$model->toArray()));
+      Yii::$app->session->setFlash('info','Запись удалена!');
+      return $this->redirect(['indexitems','id' => $model->missionuid]);
+    } catch (\Exception $e) {
+      History::log('Ошибка удаления пункта поручения с кодом '.$id.' из БД',implode(', ',$model->toArray()));
+      Yii::$app->session->setFlash('error','Удаление записи невозможно! Нарушение целостности данных! ');
+      return $this->redirect(Yii::$app->request->referrer);
+    }
+  }
 
   protected function findModel($id)    {
     if (($model = Missions::findOne($id)) !== null) {

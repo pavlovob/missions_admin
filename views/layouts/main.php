@@ -48,15 +48,17 @@ AppAsset::register($this);
     //меню только для залогиненного юзера
     $menuItems[] = ['label' => 'ИС Поручения', 'url' => ['/']];
     if (Yii::$app->user->id !== null) {
-      $menuItems[] = ['label' => 'Меню', 'items' => [
-              ['label' => 'Поручения', 'url' => ['/missions']],
-              ['label' => 'Просмотр истории событий', 'url' => ['/history']],
-              ['label' => 'Настройки', 'url' => ['/settings']],
-              ['label' => 'Пользователи', 'url' => ['/users']],
-              ['label' => 'Исполнители', 'url' => ['/executers']],
-              ['label' => 'Кураторы', 'url' => ['/assigners']],
-        ]
-      ];
+      $menuItems[] = ['label' => 'Поручения', 'url' => ['/missions']];
+      if(Yii::$app->user->identity->usertype == USERTYPE_ADMIN){
+        $menuItems[] = ['label' => 'Настройки', 'items' => [
+                ['label' => 'Просмотр истории событий', 'url' => ['/history']],
+                ['label' => 'Настройки', 'url' => ['/settings']],
+                ['label' => 'Пользователи', 'url' => ['/users']],
+                ['label' => 'Исполнители', 'url' => ['/executers']],
+                ['label' => 'Кураторы', 'url' => ['/assigners']],
+          ]
+        ];
+      };
     }
 
     echo Nav::widget([

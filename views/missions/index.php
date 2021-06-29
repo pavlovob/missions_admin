@@ -36,10 +36,10 @@ $this->registerCss("table { cursor: pointer; }");
 
 <div class="missions-index">
   <!-- <div class="w3-row w3-large"> -->
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h3><?= Html::encode($this->title) ?></h3>
 
     <p>
-      <?= Html::a('Создать поручения', ['create'], ['class' => 'btn btn-success']) ?>
+      <?= Yii::$app->user->identity->usertype == USERTYPE_ADMIN ? Html::a('Создать поручения', ['create'], ['class' => 'btn btn-success']) : ''?>
     </p>
 
     <?php Pjax::begin(); ?>
@@ -52,7 +52,7 @@ $this->registerCss("table { cursor: pointer; }");
       'tableOptions' => [
         //'class' => 'table table-striped table-bordered',
         'class' => 'table table-bordered table-condensed ',
-        // 'style' => 'font-size:12px;'
+        'style' => 'font-size:12px;'
         //'style' => ' line-height: 30px',
         // 'style' => 'width: 2500px;',
       ],

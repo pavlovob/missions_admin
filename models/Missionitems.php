@@ -5,6 +5,7 @@ namespace app\models;
 use Yii;
 
 class Missionitems extends \yii\db\ActiveRecord {
+    public $executeruids; //для хранения массива ИД исполнителей для множественного добавления
     public static function tableName()    {
         return 'missionitems';
     }
@@ -18,6 +19,7 @@ class Missionitems extends \yii\db\ActiveRecord {
             'assigneruid' => 'Куратор',
             'assigner_name' => 'Контроль',
             'executeruid' => 'Исполнитель',
+            'executeruids' => 'Исполнители',
             'executer_name' => 'Ответственный',
             'task' => 'Поручение',
             'description' => 'Примечание',
@@ -30,6 +32,7 @@ class Missionitems extends \yii\db\ActiveRecord {
         return [
             [['uid'], 'unique'],
             [['uid', 'missionuid', 'num_pp', 'deadline', 'assigneruid', 'assigner_name', 'executeruid', 'executer_name', 'task'], 'required'],
+            [['executeruids'], 'required','on'=>'insert'],
             [['uid', 'num_pp','missionuid', 'assigneruid', 'executeruid'], 'integer'],
             [['date_created', 'date_changed'], 'safe'],
             // [['num_pp'], 'string', 'max' => 10],
