@@ -61,10 +61,10 @@ $this->registerCss("table { cursor: pointer; }");
       },
       'columns' => [
         // ['class' => 'yii\grid\SerialColumn'],
-        [
-          'attribute' => 'uid',
-          'options' => ['width' => '70'],
-        ],
+        // [
+        //   'attribute' => 'uid',
+        //   'options' => ['width' => '70'],
+        // ],
         [
           'attribute' => 'status',
           'format' => 'raw',

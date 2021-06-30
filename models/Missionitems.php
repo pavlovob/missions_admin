@@ -23,8 +23,8 @@ class Missionitems extends \yii\db\ActiveRecord {
             'executer_name' => 'Ответственный',
             'task' => 'Поручение',
             'description' => 'Примечание',
-            'date_created' => 'Дата создания',
-            'date_changed' => 'Дата изменения',
+            'created' => 'Дата создания',
+            'changed' => 'Дата изменения',
         ];
     }
 
@@ -34,7 +34,7 @@ class Missionitems extends \yii\db\ActiveRecord {
             [['uid', 'missionuid', 'num_pp', 'deadline', 'assigneruid', 'assigner_name', 'executeruid', 'executer_name', 'task'], 'required'],
             [['executeruids'], 'required','on'=>'insert'],
             [['uid', 'num_pp','missionuid', 'assigneruid', 'executeruid'], 'integer'],
-            [['date_created', 'date_changed'], 'safe'],
+            [['created', 'changed'], 'safe'],
             // [['num_pp'], 'string', 'max' => 10],
             [['assigner_name', 'executer_name'], 'string', 'max' => 45],
             [['deadline'], 'string', 'max' => 100],

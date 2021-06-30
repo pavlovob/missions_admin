@@ -102,8 +102,7 @@ $this->registerCss("grid-view td {white-space: inherit;}");
         'class' => 'yii\grid\ActionColumn',
         'template' => '{viewitem} {updateitem} {deleteitem}',
         'buttons' => [
-          'viewitem' => function ($url,$model)
-          {
+          'viewitem' => function ($url,$model)          {
             return Html::a(
               '<span class="glyphicon glyphicon-eye-open"></span>',
               $url,[
@@ -115,43 +114,44 @@ $this->registerCss("grid-view td {white-space: inherit;}");
               $url,[
                 'title' => \Yii::t('yii', 'Редактировать'),]);
               },
-              'deleteitem' => function($url, $model){
-                  return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['deleteitem', 'id' => $model->uid], [
-                      'class' => '',
-                      'data' => [
-                          'confirm' => 'Вы действительно хотите удалить выбранный пункт поручений?',
-                          'method' => 'post',
-                      ],
-                  ]);
-              }
-            ],
-        'visible' => $usertype !== USERTYPE_EXECUTER,
-        'options' => ['width' => '90'],
-        ],
-        [//элементы управления для исполнителя
-          'class' => 'yii\grid\ActionColumn',
-          'template' => '{viewitem}{reportitem}',
-          'buttons' => [
-            'viewitem' => function ($url,$model)
-            {
-              return Html::a(
-                '<span class="glyphicon glyphicon-eye-open"></span>',
-                $url,[
-                  'title' => \Yii::t('yii', 'Просмотр'),]);
-                },
-            'reportitem' => function ($url,$model) {
-              return Html::a(
-                '<span class="glyphicon  glyphicon-pencil"></span>',
-                $url,[
-                  'title' => \Yii::t('yii', 'Редактировать'),]);
-                },
+          'deleteitem' => function($url, $model){
+            return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['deleteitem', 'id' => $model->uid], [
+              'class' => '',
+              'data' => [
+                'confirm' => 'Вы действительно хотите удалить выбранный пункт поручений?',
+                'method' => 'post',
               ],
-          'visible' => $usertype !== USERTYPE_ASSIGNER,
-          'options' => ['width' => '90'],
+            ]);
+          }
           ],
-      ],
-    ]); ?>
+          'visible' => $usertype !== USERTYPE_EXECUTER ,
+          // 'visible' => false,
+          'options' => ['width' => '90'],
+        ],
+              [//элементы управления для исполнителя
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{viewitem}{reportitem}',
+                'buttons' => [
+                  'viewitem' => function ($url,$model)
+                  {
+                    return Html::a(
+                      '<span class="glyphicon glyphicon-eye-open"></span>',
+                      $url,[
+                        'title' => \Yii::t('yii', 'Просмотр'),]);
+                      },
+                  'reportitem' => function ($url,$model) {
+                    return Html::a(
+                      '<span class="glyphicon glyphicon-list-alt"></span>',
+                      $url,[
+                        'title' => \Yii::t('yii', 'Редактировать'),]);
+                      },
+                    ],
+                  'visible' => $usertype !== USERTYPE_ASSIGNER && $usertype !== USERTYPE_ADMIN,
+                  'options' => ['width' => '90'],
+                ],
+        ],
+      ]); ?>
 
-              <?php Pjax::end(); ?>
-              <!-- </div> -->
-            </div>
+    <?php Pjax::end(); ?>
+    <!-- </div> -->
+  </div>

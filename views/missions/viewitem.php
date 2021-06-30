@@ -39,8 +39,8 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'approve_post',
             // 'approve_fio',
             // 'url',
-            'date_created',
-            'date_changed',
+            'created',
+            'changed',
         ],
     ]) ?>
 
