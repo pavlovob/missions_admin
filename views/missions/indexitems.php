@@ -13,12 +13,11 @@ $this->params['breadcrumbs'][] = ['label' => $model->mission_name];
 // Скрипт обрабатывает клик по строке GridView
 $this->registerJs("
 
-$('tbody td').click(function (e) {
-  var id = $(this).closest('tr').data('id');
-  if(e.target == this)
-  location.href = '" . Url::to(['missions/viewitem']) . "?id=' + id;
-});
-
+  $('tbody td').click(function (e) {
+    var id = $(this).closest('tr').data('id');
+    if(e.target == this)
+      location.href = '" . ($user->usertype !== USERTYPE_EXECUTER ? Url::to(['missions/viewitem']) : Url::to(['missions/reportitem'])) . "?id=' + id;
+  });
 ");
 //CSS для измнеения курсора над GridView
 $this->registerCss("table { cursor: pointer; }");
@@ -28,10 +27,12 @@ $this->registerCss("grid-view td {white-space: inherit;}");
 
 <div class="missions-index">
   <!-- <div class="w3-row w3-large"> -->
-  <h3><?= Html::encode($this->title) ?></h3>
 
+  <h3><?= Html::encode($this->title) ?></h3>
+  <h3><?= ($user->usertype == USERTYPE_EXECUTER ? Html::encode($user->executer->name) : '') ?></h3>
+  <h3><?= ($user->usertype == USERTYPE_ASSIGNER ? Html::encode($user->assigner->name) : '') ?></h3>
   <p>
-    <?= ($usertype !== USERTYPE_EXECUTER) ? Html::a('Добавить пункт поручений', ['createitem', 'id'=>$model->uid], ['class' => 'btn btn-success']) : '' ?>
+    <?= ($user->usertype !== USERTYPE_EXECUTER) ? Html::a('Добавить пункт поручений', ['createitem', 'id'=>$model->uid], ['class' => 'btn btn-success']) : '' ?>
   </p>
 
   <?php Pjax::begin(); ?>
@@ -59,7 +60,7 @@ $this->registerCss("grid-view td {white-space: inherit;}");
       ],
       // [
       //   'attribute' => 'status',
-      //   'format' => 'raw',
+      //   'format' => 'raw',Url::to(['missions/viewitem']) . "?id=' + id
       //   'options' => ['width' => '100'],
       //   'filter' => $states,
       //   'value' => function ($model, $key, $index, $column) {
@@ -82,23 +83,23 @@ $this->registerCss("grid-view td {white-space: inherit;}");
         'attribute' => 'assigneruid',
         'value' => 'assigner.name',
         'filter'  =>  $assigners,
-        'visible' => $usertype !== USERTYPE_ASSIGNER,
+        'visible' => $user->usertype !== USERTYPE_ASSIGNER,
       ],
       [
         'attribute' => 'executeruid',
         'value' => 'executer.name',
         'filter'=>$executers,
-        'visible' => $usertype !== USERTYPE_EXECUTER,
+        'visible' => $user->usertype !== USERTYPE_EXECUTER,
       ],
       [
         'attribute' => 'executer_name',
-        'visible' => $usertype !== USERTYPE_EXECUTER,
+        'visible' => $user->usertype !== USERTYPE_EXECUTER,
       ],
       [
         'attribute' => 'assigner_name',
-        'visible' => $usertype !== USERTYPE_ASSIGNER,
+        'visible' => $user->usertype !== USERTYPE_ASSIGNER,
       ],
-      [ //элементы управления для куратора
+      [ //элементы управления для куратораUrl::to(['missions/viewitem']) . "?id=' + id
         'class' => 'yii\grid\ActionColumn',
         'template' => '{viewitem} {updateitem} {deleteitem}',
         'buttons' => [
@@ -124,31 +125,30 @@ $this->registerCss("grid-view td {white-space: inherit;}");
             ]);
           }
           ],
-          'visible' => $usertype !== USERTYPE_EXECUTER ,
+          'visible' => $user->usertype !== USERTYPE_EXECUTER ,
           // 'visible' => false,
           'options' => ['width' => '90'],
         ],
-              [//элементы управления для исполнителя
-                'class' => 'yii\grid\ActionColumn',
-                'template' => '{viewitem}{reportitem}',
-                'buttons' => [
-                  'viewitem' => function ($url,$model)
-                  {
-                    return Html::a(
-                      '<span class="glyphicon glyphicon-eye-open"></span>',
-                      $url,[
-                        'title' => \Yii::t('yii', 'Просмотр'),]);
-                      },
-                  'reportitem' => function ($url,$model) {
-                    return Html::a(
-                      '<span class="glyphicon glyphicon-list-alt"></span>',
-                      $url,[
-                        'title' => \Yii::t('yii', 'Редактировать'),]);
-                      },
-                    ],
-                  'visible' => $usertype !== USERTYPE_ASSIGNER && $usertype !== USERTYPE_ADMIN,
-                  'options' => ['width' => '90'],
-                ],
+        [//элементы управления для исполнителя
+          'class' => 'yii\grid\ActionColumn',
+          'template' => '{viewitem}{reportitem}',
+          'buttons' => [
+            // 'viewitem' => function ($url,$model)
+            // {
+            //   return Html::a(
+            //     '<span class="glyphicon glyphicon-eye-open"></span>',
+            //     $url,[
+            //       'title' => \Yii::t('yii', 'Просмотр'),]);
+            //     },
+            'reportitem' => function ($url,$model) {
+              return Html::a(
+                '<span class="glyphicon glyphicon-list-alt"></span>',
+                $url,['title' => 'Отчет о выполнении']);
+                },
+              ],
+            'visible' => $user->usertype !== USERTYPE_ASSIGNER && $user->usertype !== USERTYPE_ADMIN,
+            'options' => ['width' => '90'],
+          ],
         ],
       ]); ?>
 

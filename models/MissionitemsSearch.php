@@ -45,7 +45,7 @@ class MissionitemsSearch extends Missionitems {
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'sort' => [
-                'defaultOrder' => ['num_pp' => SORT_ASC]
+                'defaultOrder' => ['uid' => SORT_ASC]
             ]
         ]);
 

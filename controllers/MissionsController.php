@@ -28,11 +28,11 @@ class MissionsController extends Controller {
       ],
       'access' => [
         'class' => AccessControl::className(),
-        'only' => ['update', 'index','view','create','delete','indexitems','createitem','viewitem','deleteitem','updateitem','updatereport'],
+        'only' => ['update', 'index','view','create','delete','indexitems','createitem','viewitem','deleteitem','updateitem','reportitem'],
         'rules' => [
           [
             'allow' => true,
-            'actions' =>['update', 'index','view','create','delete','indexitems','createitem','viewitem','deleteitem','updateitem','updatereport'],
+            'actions' =>['update', 'index','view','create','delete','indexitems','createitem','viewitem','deleteitem','updateitem','reportitem'],
             'roles' => ['ADMIN'],
           ],
           [
@@ -42,7 +42,7 @@ class MissionsController extends Controller {
           ],
           [
             'allow' => true,
-            'actions' =>['index','view','indexitems','viewitem','updatereport'],
+            'actions' =>['index','view','indexitems','reportitem'],
             'roles' => ['EXECUTER'],
           ],
         ],
@@ -74,6 +74,7 @@ class MissionsController extends Controller {
       'executers' => Executers::Dropdown(),
       'assigners' => Assigners::Dropdown(),
       'usertype'  => Yii::$app->user->identity->usertype, //для отображения нужных столбцов
+      'user'  => Yii::$app->user->identity, //для отображения нужных столбцов
       // 'assigner'  => Assigners::findOne(Yii::$app->user->identity->assignerid),
     ]);
   }
@@ -189,6 +190,26 @@ class MissionsController extends Controller {
     ]);
   }
 
+  //редактирование отчета пункта поручений
+  public function actionReportitem($id)    {
+    $model = $this->findModelitem($id);
+    if ($model->load(Yii::$app->request->post()))  {
+      $model->changed = date('Y-m-d G:i:s', time());
+      $model->save();
+      History::log('Отредактирован отчет по пункту поручений',implode(', ',$model->toArray()));
+      return $this->redirect(['indexitems', 'id' => $model->missionuid]);
+    }
+    if (Missions::getMissionstate($model->missionuid) == STATE_CLOSE) { //проверка на открытость поручений
+      Yii::$app->session->setFlash('warning','Поручения закрыты для внесения изменений');
+      // return $this->redirect(['indexitems', 'id' => $model->missionuid]);
+      return $this->redirect(Yii::$app->request->referrer);
+    }
+    return $this->render('reportitem', [
+      'model' => $model,
+      // 'executers'  => Executers::Dropdown(),
+    ]);
+  }
+
   public function actionDelete($id)    {
     $model = $this->findModel($id);
     try{
@@ -226,14 +247,14 @@ class MissionsController extends Controller {
     if (($model = Missions::findOne($id)) !== null) {
       return $model;
     }
-    throw new NotFoundHttpException('The requested page does not exist.');
+    throw new NotFoundHttpException('Не найдена запись поручений');
   }
 
   protected function findModelitem($id)    {
     if (($model = Missionitems::findOne($id)) !== null) {
       return $model;
     }
-    throw new NotFoundHttpException('The requested page does not exist.');
+    throw new NotFoundHttpException('Не найдена запись пункта поручений');
   }
 
 }

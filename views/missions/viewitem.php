@@ -31,7 +31,6 @@ $this->params['breadcrumbs'][] = $this->title;
             'deadline',
             'task',
             'executer_name',
-            'description',
             // [
             //   'attribute' => 'status',
             //   'value' => $model->stateName($model->status),

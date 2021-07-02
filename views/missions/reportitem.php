@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 
-$this->title = 'Редактирование поручения';
+$this->title = 'Отчет о выполнении поручения';
 $this->params['breadcrumbs'][] = ['label' => 'Поручения', 'url' => ['indexitems?id='.$model->missionuid]];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -10,9 +10,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h3><?= Html::encode($this->title) ?></h3 >
 
-    <?= $this->render('_formitem', [
+    <?= $this->render('_formreportitem', [
         'model' => $model,
-        'executers'  => $executers,
+        // 'executers'  => $executers,
         // 'assigners'  => $assigners,
     ]) ?>
 
