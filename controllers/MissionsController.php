@@ -28,16 +28,16 @@ class MissionsController extends Controller {
       ],
       'access' => [
         'class' => AccessControl::className(),
-        'only' => ['update', 'index','view','create','delete','indexitems','createitem','viewitem','deleteitem','updateitem','reportitem'],
+        'only' => ['update', 'index','view','create','delete','indexitems','createitem','viewitem','deleteitem','updateitem','reportitem','copyitems'],
         'rules' => [
           [
             'allow' => true,
-            'actions' =>['update', 'index','view','create','delete','indexitems','createitem','viewitem','deleteitem','updateitem','reportitem'],
+            'actions' =>['update', 'index','view','create','delete','indexitems','createitem','viewitem','deleteitem','updateitem','reportitem','copyitems'],
             'roles' => ['ADMIN'],
           ],
           [
             'allow' => true,
-            'actions' =>['index','view','indexitems','createitem','viewitem','deleteitem','updateitem'],
+            'actions' =>['index','view','indexitems','createitem','viewitem','deleteitem','updateitem','copyitems'],
             'roles' => ['ASSIGNER'],
           ],
           [
@@ -187,6 +187,27 @@ class MissionsController extends Controller {
     return $this->render('updateitem', [
       'model' => $model,
       'executers'  => Executers::Dropdown(),
+    ]);
+  }
+
+  //копирование поручений
+  public function actionCopyitems($id=null)    {
+    if ($id !== null){
+      Missions::copy($id);
+      return $this->redirect(Yii::$app->request->referrer);
+    }
+    // $model = new Missions();
+    // if ($model->load(Yii::$app->request->post())) {
+    //   return $this->redirect(Yii::$app->request->referrer);
+    // }
+
+    $searchModel = new MissionsSearch();
+    $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+    return $this->render('selectmission', [
+      'searchModel' => $searchModel,
+      'dataProvider' => $dataProvider,
+      'states'  => Missions::statesDropdown(),
+      // 'usertype'  => Yii::$app->user->identity->usertype, //для отображения нужных столбцов
     ]);
   }
 

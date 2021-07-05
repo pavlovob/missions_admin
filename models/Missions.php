@@ -73,6 +73,11 @@ class Missions extends \yii\db\ActiveRecord {
       return self::findOne($id)->status;
   }
 
+  //Возвращает текущее состояние поручений
+  public static function copy($id){
+      return self::findOne($id)->status;
+  }
+
   // public static function monthName($month){
   //   switch ($month) {
   //     case 1:

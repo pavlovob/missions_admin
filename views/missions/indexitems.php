@@ -33,6 +33,7 @@ $this->registerCss("grid-view td {white-space: inherit;}");
   <h3><?= ($user->usertype == USERTYPE_ASSIGNER ? Html::encode($user->assigner->name) : '') ?></h3>
   <p>
     <?= ($user->usertype !== USERTYPE_EXECUTER) ? Html::a('Добавить пункт поручений', ['createitem', 'id'=>$model->uid], ['class' => 'btn btn-success']) : '' ?>
+    <?= ($user->usertype !== USERTYPE_EXECUTER) ? Html::a('Скопировать предыдущие поручения...', ['copyitems'], ['class' => 'btn btn-success']) : '' ?>
   </p>
 
   <?php Pjax::begin(); ?>
