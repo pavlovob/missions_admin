@@ -16,7 +16,7 @@ $this->registerJs("
   $('tbody td').click(function (e) {
     var id = $(this).closest('tr').data('id');
     if(e.target == this)
-      location.href = '" . ($user->usertype !== USERTYPE_EXECUTER ? Url::to(['missions/viewitem']) : Url::to(['missions/reportitem'])) . "?id=' + id;
+      location.href = '" . ($user->usertype !== USERTYPE_EXECUTER ? Url::to(['missions/updateitem']) : Url::to(['missions/reportitem'])) . "?id=' + id;
   });
 ");
 //CSS для измнеения курсора над GridView
@@ -56,25 +56,27 @@ $this->registerCss("grid-view td {white-space: inherit;}");
     'columns' => [
       // ['class' => 'yii\grid\SerialColumn'],
       [
+        'attribute' => '№ п.',
+        'value' => 'assigner.ordernumber',
+        // 'filter'  =>  $assigners,
+        'visible' => $user->usertype !== USERTYPE_ASSIGNER,
+      ],
+      [
+        'attribute' => 'num_pp',
+        'options' => ['width' => '70'],
+      ],
+      [
         'attribute' => 'status',
         'format' => 'raw',
         'options' => ['width' => '100'],
         'filter' => $states,
         'value' => function ($model, $key, $index, $column) {
           $active = $model->{$column->attribute} === STATE_OPEN;
-          return \yii\helpers\Html::tag(
-            'span',
-            $active ? 'Открыто' : 'Закрыто',
-            [
-              'class' => 'label label-' . ($active ? 'success' : 'danger'),
-            ]
-          );
+          if ($model->{$column->attribute} === STATE_INWORK) return \yii\helpers\Html::tag('span','В работе',['class' => 'label label-warning']);
+          if ($model->{$column->attribute} === STATE_DONE) return \yii\helpers\Html::tag('span','Выполнен',['class' => 'label label-success ']);
         },
       ],
-      [
-        'attribute' => 'num_pp',
-        'options' => ['width' => '70'],
-      ],
+
       // [
       //   'attribute' => 'status',
       //   'format' => 'raw',Url::to(['missions/viewitem']) . "?id=' + id
