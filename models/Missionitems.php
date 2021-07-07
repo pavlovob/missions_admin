@@ -14,6 +14,7 @@ class Missionitems extends \yii\db\ActiveRecord {
         return [
             'uid' => 'Код',
             'missionuid' => 'Код поручений',
+            'status'      => 'Статус',
             'num_pp' => '№ п.п',
             'deadline' => 'Срок исполнения',
             'assigneruid' => 'Куратор',
