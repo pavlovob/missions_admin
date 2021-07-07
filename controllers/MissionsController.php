@@ -73,8 +73,9 @@ class MissionsController extends Controller {
       'dataProvider' => $dataProvider,
       'executers' => Executers::Dropdown(),
       'assigners' => Assigners::Dropdown(),
-      'usertype'  => Yii::$app->user->identity->usertype, //для отображения нужных столбцов
+      // 'usertype'  => Yii::$app->user->identity->usertype, //для отображения нужных столбцов
       'user'  => Yii::$app->user->identity, //для отображения нужных столбцов
+      'states'  => Missionitems::statesDropdown(),
       // 'assigner'  => Assigners::findOne(Yii::$app->user->identity->assignerid),
     ]);
   }

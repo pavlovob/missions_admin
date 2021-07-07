@@ -56,6 +56,22 @@ $this->registerCss("grid-view td {white-space: inherit;}");
     'columns' => [
       // ['class' => 'yii\grid\SerialColumn'],
       [
+        'attribute' => 'status',
+        'format' => 'raw',
+        'options' => ['width' => '100'],
+        'filter' => $states,
+        'value' => function ($model, $key, $index, $column) {
+          $active = $model->{$column->attribute} === STATE_OPEN;
+          return \yii\helpers\Html::tag(
+            'span',
+            $active ? 'Открыто' : 'Закрыто',
+            [
+              'class' => 'label label-' . ($active ? 'success' : 'danger'),
+            ]
+          );
+        },
+      ],
+      [
         'attribute' => 'num_pp',
         'options' => ['width' => '70'],
       ],
