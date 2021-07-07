@@ -72,5 +72,9 @@ class Missionitems extends \yii\db\ActiveRecord {
     public static function stateName($id){
       $arr  = self::statesDropdown();
       return (array_key_exists($id,$arr)) ? $arr[$id] : '';
-    }    
+    }
+    //Возвращает текущее состояние поручений
+    public static function getState($id){
+        return self::findOne($id)->status;
+    }
 }
