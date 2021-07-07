@@ -14,7 +14,7 @@ class MissionitemsSearch extends Missionitems {
           return [
               [['uid','assigneruid','executeruid'], 'integer'],
                 // [['uid','status','mission_name', 'approve_fio'], 'safe'],
-              [['uid', 'missionuid', 'num_pp', 'deadline', 'assigneruid', 'assigner_name', 'executeruid', 'executer_name', 'task'], 'safe'],
+              [['uid', 'missionuid', 'status', 'num_pp', 'deadline', 'assigneruid', 'assigner_name', 'executeruid', 'executer_name', 'task'], 'safe'],
               // [['executeruid'], 'exist', 'skipOnError' => true, 'targetClass' => Executers::className(), 'targetAttribute' => ['executeruid' => 'uid']],
               // [['assigneruid'], 'exist', 'skipOnError' => true, 'targetClass' => Assigners::className(), 'targetAttribute' => ['assigneruid' => 'uid']],
           ];
@@ -44,9 +44,11 @@ class MissionitemsSearch extends Missionitems {
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'sort' => [
-                'defaultOrder' => ['uid' => SORT_ASC]
-            ]
+            'sort'  => false,
+            // 'sort' => [
+            //     'defaultOrder' => ['uid' => SORT_ASC],
+            //     'attributes'  => [],
+            // ]
         ]);
 
         $this->load($params);
@@ -60,6 +62,7 @@ class MissionitemsSearch extends Missionitems {
         // grid filtering conditions
         $query->andFilterWhere([
             'uid' => $this->uid,
+            'status'  => $this->status,
             'num_pp' => $this->num_pp,
             // 'assigneruid' => $this->assigneruid,
             // 'executeruid' => $this->executeruid,
