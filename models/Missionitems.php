@@ -32,9 +32,9 @@ class Missionitems extends \yii\db\ActiveRecord {
     public function rules()    {
         return [
             [['uid'], 'unique'],
-            [['uid', 'missionuid', 'num_pp', 'deadline', 'assigneruid', 'assigner_name', 'executeruid', 'executer_name', 'task'], 'required'],
+            [['uid', 'missionuid', 'status', 'num_pp', 'deadline', 'assigneruid', 'assigner_name', 'executeruid', 'executer_name', 'task'], 'required'],
             [['executeruids'], 'required','on'=>'insert'],
-            [['uid', 'num_pp','missionuid', 'assigneruid', 'executeruid'], 'integer'],
+            [['uid', 'status', 'num_pp','missionuid', 'assigneruid', 'executeruid'], 'integer'],
             [['created', 'changed'], 'safe'],
             // [['num_pp'], 'string', 'max' => 10],
             [['assigner_name', 'executer_name'], 'string', 'max' => 45],
@@ -57,8 +57,20 @@ class Missionitems extends \yii\db\ActiveRecord {
     public function getAssigner()    {
         return $this->hasOne(Assigners::className(), ['uid' => 'assigneruid']);
     }
-    public static function find()
-    {
+    public static function find()    {
         return new MissionitemsQuery(get_called_class());
     }
+
+    //формирует массив сотсояний
+    public static function statesDropdown(){
+      return [
+        STATE_INWORK  =>'В работе',
+        STATE_DONE    =>'Выполнен',
+      ];
+    }
+    //возвращает наименование состояния поручения из массива по ИД
+    public static function stateName($id){
+      $arr  = self::statesDropdown();
+      return (array_key_exists($id,$arr)) ? $arr[$id] : '';
+    }    
 }
