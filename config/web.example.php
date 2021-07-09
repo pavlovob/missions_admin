@@ -19,7 +19,7 @@ $config = [
     'components' => [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
-            'cookieValidationKey' => 'SfB9yPSXdYweADo5yJtC-y3saLiVz5vw',
+            'cookieValidationKey' => 'specialmissionscookiekey',
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
@@ -57,7 +57,7 @@ $config = [
         'authManager' => [
             'class' => 'yii\rbac\PhpManager',
             'defaultRoles' => ['ASSIGNER', 'EXECUTER','ADMIN'],
-        ],        
+        ],
         'ad' => [
           'class' => 'Edvlerblog\Adldap2\Adldap2Wrapper',
           'providers' => [
