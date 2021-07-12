@@ -115,8 +115,16 @@ class MissionsController extends Controller {
 
   //создание пункта поручений
   public function actionCreateitem($id)    {
+    if (Missions::getMissionstate($id) == STATE_CLOSE) { //проверка на открытость поручений
+      Yii::$app->session->setFlash('warning','Поручения закрыты для внесения изменений');
+      return $this->redirect(['indexitems', 'id' => $id]);
+    }
+    if (Yii::$app->user->identity->assignerid == null) { //проверка на начличие кода куратора пользователя
+      Yii::$app->session->setFlash('warning','В настройках пользователя не указан куратор поручений');
+      return $this->redirect(['indexitems', 'id' => $id]);
+    }
     $model = new Missionitems(['scenario'=>'insert']);
-    if ($model->load(Yii::$app->request->post())) {
+    if ($model->load(Yii::$app->request->post()) && $model->validate()) {
       // History::Log('111',implode('|',$model->executeruids));
       // $model->executer_name  = ($model->executeruid !== null) ? Executers::findOne($model->assigneruid)->name : "Неопределен";
       $template = $model;
@@ -128,21 +136,23 @@ class MissionsController extends Controller {
         $model = new Missionitems(['scenario'=>'insert']);
         $model->attributes    = $template->attributes;
         $model->executeruid   = $executer;
-        if ($model->save(false)) {
+        if ($model->save()) {
           History::Log('Создан пункт поручений',implode('|',$model->toArray()));
+        } else {
+          $model->assigner_name = Yii::$app->user->identity->username;
+          return $this->render('createitem', [
+            'model' => $model,
+            'missionuid'  => $id,
+            'title' => $this->findModel($id)->mission_name,
+            'executers'  => Executers::Dropdown(),
+          ]);
         }
       }
       Yii::$app->session->setFlash('info', 'Создано пунктов поручений: '.count($template->executeruids));
       return $this->redirect(['indexitems', 'id' => $model->missionuid]);
     }
-    if (Yii::$app->user->identity->assignerid == null) { //проверка на открытость поручений
-      Yii::$app->session->setFlash('warning','В настройках пользователя не указан куратор поручений');
-      return $this->redirect(['indexitems', 'id' => $id]);
-    }
-    if (Missions::getMissionstate($id) == STATE_CLOSE) { //проверка на открытость поручений
-      Yii::$app->session->setFlash('warning','Поручения закрыты для внесения изменений');
-      return $this->redirect(['indexitems', 'id' => $id]);
-    }
+
+
     $model->assigner_name = Yii::$app->user->identity->username;
     return $this->render('createitem', [
       'model' => $model,

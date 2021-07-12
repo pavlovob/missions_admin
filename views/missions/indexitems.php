@@ -10,15 +10,16 @@ $this->params['breadcrumbs'][] = ['label' => 'Поручения', 'url' => ['in
 $this->params['breadcrumbs'][] = ['label' => $model->mission_name];
 
 
-// Скрипт обрабатывает клик по строке GridView
+//-- Скрипт обрабатывает клик по строке GridView
+//  Если пользователь не исполнитель, редактирование. Иначе - в отчет
 $this->registerJs("
-
   $('tbody td').click(function (e) {
     var id = $(this).closest('tr').data('id');
     if(e.target == this)
       location.href = '" . ($user->usertype !== USERTYPE_EXECUTER ? Url::to(['missions/updateitem']) : Url::to(['missions/reportitem'])) . "?id=' + id;
   });
 ");
+
 //CSS для измнеения курсора над GridView
 $this->registerCss("table { cursor: pointer; }");
 //CSS для многострочного отображения в Gridview

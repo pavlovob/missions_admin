@@ -32,10 +32,12 @@ class Missionitems extends \yii\db\ActiveRecord {
     public function rules()    {
         return [
             [['uid'], 'unique'],
-            [['uid', 'missionuid', 'status', 'num_pp', 'deadline', 'assigneruid', 'assigner_name', 'executeruid', 'executer_name', 'task'], 'required'],
+            [['uid', 'missionuid', 'status', 'num_pp', 'deadline', 'assigneruid', 'assigner_name', 'executer_name', 'task'], 'required'],
+            [['executeruids'], 'safe'],
             [['executeruids'], 'required','on'=>'insert'],
+            [['executeruid'], 'required','on'=>'update'],
             [['uid', 'status', 'num_pp','missionuid', 'assigneruid', 'executeruid'], 'integer'],
-            [['created', 'changed'], 'safe'],
+
             // [['num_pp'], 'string', 'max' => 10],
             [['assigner_name', 'executer_name'], 'string', 'max' => 45],
             [['deadline'], 'string', 'max' => 100],
