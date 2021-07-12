@@ -97,16 +97,12 @@ class MissionsController extends Controller {
   //создание поручений
   public function actionCreate()    {
     $model = new Missions();
-    if ($model->load(Yii::$app->request->post())) {
-      $model->mission_date  = date('Y-m-d',time());
-      $model->created = date('Y-m-d G:i:s', time());
-      $model->changed = $model->created;
-      if ($model->save()) {
-        $msg = 'Поручения созданы';
+    $model->mission_date  = date('Y-m-d',time());
+    if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        $msg = 'Создана запись "'.$model->mission_name.'"';
         Yii::$app->session->setFlash('info', $msg);
         History::Log($msg,implode(',',$model->toArray()));
         return $this->redirect(['view', 'id' => $model->uid]);
-      }
     }
     $model->mission_name  = Inifile::getIni('missions','DefaultDescription');
     $model->approve_fio   = Inifile::getIni('committee','s1f');
@@ -159,9 +155,8 @@ class MissionsController extends Controller {
   //редактирование поручений
   public function actionUpdate($id)    {
     $model = $this->findModel($id);
-    if ($model->load(Yii::$app->request->post()))  {
-      $model->changed = date('Y-m-d G:i:s', time());
-      $model->save();
+    $model->changed = date('Y-m-d G:i:s', time());
+    if ($model->load(Yii::$app->request->post()) && $model->save())  {
       History::log('Отредактированы поручения',implode(', ',$model->toArray()));
       return $this->redirect(['view', 'id' => $model->uid]);
     }
@@ -174,16 +169,16 @@ class MissionsController extends Controller {
   //редактирование пункта поручений
   public function actionUpdateitem($id)    {
     $model = $this->findModelitem($id);
-    if ($model->load(Yii::$app->request->post()))  {
-      $model->changed = date('Y-m-d G:i:s', time());
-      $model->save();
-      History::log('Отредактированы поручения',implode(', ',$model->toArray()));
-      return $this->redirect(['viewitem', 'id' => $model->uid]);
-    }
+    //поручения должны быть открыты
     if (Missions::getMissionstate($model->missionuid) == STATE_CLOSE) { //проверка на открытость поручений
       Yii::$app->session->setFlash('warning','Поручения закрыты для внесения изменений');
       // return $this->redirect(['indexitems', 'id' => $model->missionuid]);
       return $this->redirect(Yii::$app->request->referrer);
+    }
+    $model->changed = date('Y-m-d G:i:s', time());
+    if ($model->load(Yii::$app->request->post()) && $model->save())  {
+      History::log('Отредактированы поручения',implode(', ',$model->toArray()));
+      return $this->redirect(['viewitem', 'id' => $model->uid]);
     }
     return $this->render('updateitem', [
       'model' => $model,
@@ -236,7 +231,7 @@ class MissionsController extends Controller {
     $model = $this->findModel($id);
     try{
       $model->delete();
-      History::log('Удалены поручения '.$model->mission_name,implode(', ',$model->toArray()));
+      History::log('Удалены поручения: "'.$model->mission_name.'"',implode(', ',$model->toArray()));
       Yii::$app->session->setFlash('info','Запись удалена!');
       return $this->redirect(['index']);
     } catch (\Exception $e) {
