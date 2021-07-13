@@ -115,12 +115,12 @@ class MissionsController extends Controller {
 
   //создание пункта поручений
   public function actionCreateitem($id)    {
-    if (Missions::getMissionstate($id) == STATE_CLOSE) { //проверка на открытость поручений
-      Yii::$app->session->setFlash('warning','Поручения закрыты для внесения изменений');
+    if (in_array(Missions::getMissionstate($id),[STATE_REPORT,STATE_CLOSED,STATE_DELETED])) { //Создание только для статуса ASSIGNE!
+      Yii::$app->session->setFlash('danger','Поручения закрыты для внесения изменений');
       return $this->redirect(['indexitems', 'id' => $id]);
     }
     if (Yii::$app->user->identity->assignerid == null) { //проверка на начличие кода куратора пользователя
-      Yii::$app->session->setFlash('warning','В настройках пользователя не указан куратор поручений');
+      Yii::$app->session->setFlash('danger','В настройках пользователя не указан куратор поручений');
       return $this->redirect(['indexitems', 'id' => $id]);
     }
     $model = new Missionitems(['scenario'=>'insert']);
@@ -179,15 +179,16 @@ class MissionsController extends Controller {
   //редактирование пункта поручений
   public function actionUpdateitem($id)    {
     $model = $this->findModelitem($id);
-    //поручения должны быть открыты
-    if (Missions::getMissionstate($model->missionuid) == STATE_CLOSE) { //проверка на открытость поручений
-      Yii::$app->session->setFlash('warning','Поручения закрыты для внесения изменений');
+    //Добавление только если статус ФОРМИРОВАНИЕ
+    if (!in_array(Missions::getMissionstate($model->missionuid),[STATE_ASSIGN])) {
+    // if (Missions::getMissionstate($model->missionuid) == STATE_CLOSE) { //проверка на открытость поручений (старое)
+      Yii::$app->session->setFlash('danger','Поручения закрыты для внесения изменений');
       // return $this->redirect(['indexitems', 'id' => $model->missionuid]);
       return $this->redirect(Yii::$app->request->referrer);
     }
     $model->changed = date('Y-m-d G:i:s', time());
     if ($model->load(Yii::$app->request->post()) && $model->save())  {
-      History::log('Отредактированы поручения',implode(', ',$model->toArray()));
+      History::log('Отредактирован пункт поручений',implode(', ',$model->toArray()));
       return $this->redirect(['viewitem', 'id' => $model->uid]);
     }
     return $this->render('updateitem', [
