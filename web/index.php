@@ -13,7 +13,6 @@ define ('STATE_DELETED', 1003); //удалены
 define ('STATE_INWORK', 1011);  //Назначены, в работе. по умолчанию устанавливается в БД при создании
 define ('STATE_DONE', 1012);    //Выполнены (устанавливается куратором)
 //роли пользователей
-define ('USERTYPE_NONE', 0);      //Пользователь по умолчанию
 define ('USERTYPE_ADMIN', 1);     //Администратор
 define ('USERTYPE_ASSIGNER', 2);  //Кураторы
 define ('USERTYPE_EXECUTER', 3);  //Исполнителиcd

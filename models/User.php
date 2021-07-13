@@ -185,7 +185,6 @@ class User extends ActiveRecord implements IdentityInterface {
   //Возвращает массив ролей пользователей. роли фиксированы
   public static function typesDropdown(){
     return  [
-      // USERTYPE_NONE     =>'Не задан',
       USERTYPE_BLOCKED  =>'Заблокирован',
       USERTYPE_ASSIGNER =>'Куратор',
       USERTYPE_EXECUTER =>'Исполнитель',
