@@ -115,7 +115,7 @@ class MissionsController extends Controller {
 
   //создание пункта поручений
   public function actionCreateitem($id)    {
-    if (in_array(Missions::getMissionstate($id),[STATE_REPORT,STATE_CLOSED,STATE_DELETED])) { //Создание только для статуса ASSIGNE!
+    if (!in_array(Missions::getMissionstate($id),[STATE_ASSIGN])) { //Создание только для статуса ASSIGN!
       Yii::$app->session->setFlash('danger','Поручения закрыты для внесения изменений');
       return $this->redirect(['indexitems', 'id' => $id]);
     }
@@ -255,7 +255,9 @@ class MissionsController extends Controller {
 
   public function actionDeleteitem($id)    {
     $model = $this->findModelitem($id);
-    if (Missions::getMissionstate($model->missionuid) == STATE_CLOSE) { //проверка на открытость поручений
+     //Удалять только если статус ФОРМИРОВАНИЕ
+     // if (Missions::getMissionstate($model->missionuid) == STATE_CLOSE) {
+    if (!in_array(Missions::getMissionstate($model->missionuid),[STATE_ASSIGN])) {
       Yii::$app->session->setFlash('warning','Поручения закрыты для внесения изменений');
       // return $this->redirect(['indexitems', 'id' => $model->missionuid]);
       return $this->redirect(Yii::$app->request->referrer);
