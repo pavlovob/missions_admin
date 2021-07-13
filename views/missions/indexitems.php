@@ -72,28 +72,10 @@ $this->registerCss("grid-view td {white-space: inherit;}");
         'options' => ['width' => '100'],
         'filter' => $states,
         'value' => function ($model, $key, $index, $column) {
-          $active = $model->{$column->attribute} === STATE_OPEN;
           if ($model->{$column->attribute} === STATE_INWORK) return \yii\helpers\Html::tag('span','В работе',['class' => 'label label-warning']);
           if ($model->{$column->attribute} === STATE_DONE) return \yii\helpers\Html::tag('span','Выполнен',['class' => 'label label-success ']);
         },
       ],
-
-      // [
-      //   'attribute' => 'status',
-      //   'format' => 'raw',Url::to(['missions/viewitem']) . "?id=' + id
-      //   'options' => ['width' => '100'],
-      //   'filter' => $states,
-      //   'value' => function ($model, $key, $index, $column) {
-      //     $active = $model->{$column->attribute} === STATE_OPEN;
-      //     return \yii\helpers\Html::tag(
-      //       'span',
-      //       $active ? 'Открыто' : 'Закрыто',
-      //       [
-      //         'class' => 'label label-' . ($active ? 'success' : 'danger'),
-      //       ]
-      //     );
-      //   },
-      // ],
       'task',
       [
         'attribute' => 'deadline',

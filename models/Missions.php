@@ -50,9 +50,10 @@ class Missions extends \yii\db\ActiveRecord {
   //формирует массив сотсояний поручений
   public static function statesDropdown(){
     return [
-      STATE_OPEN    =>'Открыто',
-      STATE_CLOSE   =>'Закрыто',
-      // STATE_DELETED =>'Удалено',
+      STATE_ASSIGN  =>'Формирование',
+      STATE_REPORT  =>'Отчетность',
+      STATE_CLOSED  =>'Закрыто',
+      STATE_DELETED =>'Удалено',
     ];
   }
 
@@ -62,10 +63,11 @@ class Missions extends \yii\db\ActiveRecord {
     return (array_key_exists($id,$arr)) ? $arr[$id] : '';
   }
 
-  //Простой массив наименований состояния
+  //Простой массив наименований состояний
   public static function stateNames(){
-    $arr = array("Открыто","Закрыто");
-    return $arr;
+    // $arr = array("Открыто","Закрыто");
+    return array_values(self::statesDropdown());
+    // return $arr;
   }
 
   //Возвращает текущее состояние поручений
@@ -74,65 +76,8 @@ class Missions extends \yii\db\ActiveRecord {
   }
 
   //Возвращает текущее состояние поручений
-  public static function copy($id){
-      return self::findOne($id)->status;
-  }
-
-  // public static function monthName($month){
-  //   switch ($month) {
-  //     case 1:
-  //     return 'январь';
-  //     break;
-  //     case 2:
-  //     return  'февраль';
-  //     break;
-  //     case 3:
-  //     return 'март';
-  //     break;
-  //     case 4:
-  //     return  'апрель';
-  //     break;
-  //     case 5:
-  //     return  'май';
-  //     break;
-  //     case 6:
-  //     return  'июнь';
-  //     break;  // public static function monthsDropdown(){
-  //   $arr = [
-  //     1=>'январь',
-  //     2=>'февраль',
-  //     3=>'март',
-  //     4=>'апрель',
-  //     5=>'май',
-  //     6=>'июнь',
-  //     7=>'июль',
-  //     8=>'август',
-  //     9=>'сентябрь',
-  //     10=>'октябрь',
-  //     11=>'ноябрь',
-  //     12=>'декабрь'
-  //   ];
-  //   return $arr;
-  // }
-  //     case 7:
-  //     return  'июль';
-  //     break;
-  //     case 8:
-  //     return  'август';
-  //     break;
-  //     case 9:
-  //     return  'сентябрь';
-  //     break;
-  //     case 10:
-  //     return  'октябрь';
-  //     break;
-  //     case 11:
-  //     return 'ноябрь';
-  //     break;
-  //     case 12:
-  //     return  'декабрь';
-  //     break;
-  //   }
+  // public static function copy($id){
+  //     return self::findOne($id)->status;
   // }
 
   // public static function monthsDropdown(){

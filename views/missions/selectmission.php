@@ -48,37 +48,23 @@ $this->registerCss("table { cursor: pointer; }");
       'rowOptions'   => function ($model, $key, $index, $grid) {
           return ['data-id' => $model->uid];
       },
-      'columns' => [
-        // [
-        //     'class' => 'yii\grid\RadioButtonColumn',
-        //     'radioOptions' => function ($model) {
-        //          return [
-        //              'value' => $model['mission_name'],
-        //              // 'checked' => $model['value'] == 2
-        //          ];
-        //      }
-        // ],
-        // ['class' => 'yii\grid\SerialColumn'],
-        // [
-        //   'attribute' => 'uid',
-        //   'options' => ['width' => '70'],
-        // ],
-        [
-          'attribute' => 'status',
-          'format' => 'raw',
-          'options' => ['width' => '100'],
-          'filter' => $states,
-          'value' => function ($model, $key, $index, $column) {
-            $active = $model->{$column->attribute} === STATE_OPEN;
-            return \yii\helpers\Html::tag(
-              'span',
-              $active ? 'Открыто' : 'Закрыто',
-              [
-                'class' => 'label label-' . ($active ? 'success' : 'danger'),
-              ]
-            );
-          },
-        ],
+      // 'columns' => [
+      //   [
+      //     'attribute' => 'status',
+      //     'format' => 'raw',
+      //     'options' => ['width' => '100'],
+      //     'filter' => $states,
+      //     'value' => function ($model, $key, $index, $column) {
+      //       $active = $model->{$column->attribute} === STATE_OPEN;
+      //       return \yii\helpers\Html::tag(
+      //         'span',
+      //         $active ? 'Открыто' : 'Закрыто',
+      //         [
+      //           'class' => 'label label-' . ($active ? 'success' : 'danger'),
+      //         ]
+      //       );
+      //     },
+      //   ],
         'mission_name',
         'approve_fio',
         [
