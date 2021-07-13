@@ -87,10 +87,6 @@ $this->registerCss("table { cursor: pointer; }");
           'attribute' => 'mission_date',
           'options' => ['width' => '70'],
         ],
-        // 'approve_post',
-        //'created',
-        //'changed',
-
         [
           'class' => 'yii\grid\ActionColumn',
           'options' => ['width' => '90'],

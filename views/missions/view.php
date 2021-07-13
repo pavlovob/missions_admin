@@ -21,6 +21,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'method' => 'post',
             ],
         ]) ?>
+        <?= Html::a('Выгрузить в Excel', ['reportxls', 'id' => $model->uid], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?= DetailView::widget([
