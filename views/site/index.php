@@ -6,7 +6,8 @@ $this->title = 'ИС "Поручения"';
 <div class="site-index">
 
     <div class="jumbotron">
-        <img src= <?= Yii::$app->params['org_logo_file']?>  height="45" width="250">
+        <!-- <img src= <?= Yii::$app->params['org_logo_file']?>  height="45" width="250"> -->
+        <img src= <?= Yii::$app->params['org_logo_file']?> style="max-height:10%; max-width:10%">
       <!-- <img src="tn.png"  height="45" width="250"> -->
         <h2>ИС "Поручения"</h2>
         <!-- <p class="lead">Выберите соответствующий пункт меню для работы.</p> -->
