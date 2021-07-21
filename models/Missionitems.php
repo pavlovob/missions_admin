@@ -5,7 +5,7 @@ namespace app\models;
 use Yii;
 
 class Missionitems extends \yii\db\ActiveRecord {
-    public $executeruids; //для хранения массива ИД исполнителей для множественного добавления
+    // public  $executeruids; //для хранения массива ИД исполнителей для множественного добавления
     public static function tableName()    {
         return 'missionitems';
     }
@@ -20,7 +20,7 @@ class Missionitems extends \yii\db\ActiveRecord {
             'assigneruid' => 'Куратор',
             'assigner_name' => 'Контроль',
             'executeruid' => 'Исполнитель',
-            'executeruids' => 'Исполнители',
+            // 'executeruids' => 'Исполнители',
             'executer_name' => 'Ответственный',
             'task' => 'Поручение',
             'report' => 'Отчет о выполнении',
@@ -32,10 +32,10 @@ class Missionitems extends \yii\db\ActiveRecord {
     public function rules()    {
         return [
             [['uid'], 'unique'],
-            [['num_pp', 'deadline', 'assigner_name', 'executer_name', 'task'], 'required'],
-            [['missionuid','assigneruid','status'], 'safe'],
-            [['executeruids'], 'required','on'=>'insert'],
-            [['executeruid'], 'required','on'=>'update'],
+            [['deadline', 'assigner_name', 'executer_name', 'task','executeruid'], 'required'],
+            [['num_pp','missionuid','assigneruid','status'], 'safe'],
+            // [['executeruids'], 'required','on'=>'insert'],
+            // [['executeruid'], 'required','on'=>'update'],
             [['uid', 'status', 'num_pp','missionuid', 'assigneruid', 'executeruid'], 'integer'],
 
             // [['num_pp'], 'string', 'max' => 10],
@@ -77,6 +77,12 @@ class Missionitems extends \yii\db\ActiveRecord {
     }
     //Возвращает текущее состояние поручений
     public static function getState($id){
+        return self::findOne($id)->status;
+    }
+
+    //Возвращает новый порядковый номер для поручений
+    public static function getNumpp($missionid,$assignerid,$excuterid){
+        //доделать!!!
         return self::findOne($id)->status;
     }
 }

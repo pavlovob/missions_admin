@@ -35,6 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
           ],
 
             'name',
+            'personname',
             [
               'class' => 'yii\grid\ActionColumn',
               'options' => ['width' => '90'],

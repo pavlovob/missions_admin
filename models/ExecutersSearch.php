@@ -18,7 +18,7 @@ class ExecutersSearch extends Executers
     {
         return [
             [['uid'], 'integer'],
-            [['name', 'description', 'created', 'changed'], 'safe'],
+            [['name', 'personname', 'description', 'created', 'changed'], 'safe'],
         ];
     }
 
@@ -64,6 +64,7 @@ class ExecutersSearch extends Executers
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name])
+            ->andFilterWhere(['like', 'personname', $this->personname])
             ->andFilterWhere(['like', 'description', $this->description]);
 
         return $dataProvider;

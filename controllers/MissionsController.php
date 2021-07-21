@@ -123,37 +123,23 @@ class MissionsController extends Controller {
       Yii::$app->session->setFlash('danger','В настройках пользователя не указан куратор поручений');
       return $this->redirect(['indexitems', 'id' => $id]);
     }
-    $model = new Missionitems(['scenario'=>'insert']);
-    if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-      // History::Log('111',implode('|',$model->executeruids));
-      // $model->executer_name  = ($model->executeruid !== null) ? Executers::findOne($model->assigneruid)->name : "Неопределен";
-      $template = $model;
-      $template->missionuid    = $id;
-      $template->assigneruid = Yii::$app->user->identity->assignerid;
-      $template->created = date('Y-m-d G:i:s', time());
-      $template->changed = $model->created;
-      foreach ($template->executeruids as $executer) { //Проходим по массиву отмеченных исполнителей, для каждого записываем поручение.
-        $model = new Missionitems(['scenario'=>'insert']);
-        $model->attributes    = $template->attributes;
-        $model->executeruid   = $executer;
-        if ($model->save()) {
-          History::Log('Создан пункт поручений',implode('|',$model->toArray()));
-        } else {
-          $model->assigner_name = Yii::$app->user->identity->username;
-          return $this->render('createitem', [
-            'model' => $model,
-            'missionuid'  => $id,
-            'title' => $this->findModel($id)->mission_name,
-            'executers'  => Executers::Dropdown(),
-          ]);
-        }
+    // $model = new Missionitems(['scenario'=>'insert']);
+    $model = new Missionitems();
+    $model->missionuid = $id;
+    $model->num_pp = 1;
+    $model->assigneruid = Yii::$app->user->identity->assignerid;
+    $model->created = date('Y-m-d G:i:s', time());
+    $model->changed = date('Y-m-d G:i:s', time());
+    $model->status = STATE_INWORK;
+    if ($model->load(Yii::$app->request->post())) {
+      if ($model->save()) {
+        History::Log('Создан пункт поручений',implode('|',$model->toArray()));
+        Yii::$app->session->setFlash('info', 'Создано пунктов поручений: '.count($template->executeruids));
+        return $this->redirect(['indexitems', 'id' => $model->missionuid]);
       }
-      Yii::$app->session->setFlash('info', 'Создано пунктов поручений: '.count($template->executeruids));
-      return $this->redirect(['indexitems', 'id' => $model->missionuid]);
+    } else {
+      $model->assigner_name = Yii::$app->user->identity->username;
     }
-
-
-    $model->assigner_name = Yii::$app->user->identity->username;
     return $this->render('createitem', [
       'model' => $model,
       'missionuid'  => $id,

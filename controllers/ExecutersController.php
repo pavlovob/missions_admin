@@ -97,4 +97,9 @@ class ExecutersController extends Controller{
     }
     throw new NotFoundHttpException('Не найден исполнитель в справочнике');
   }
+
+  public function actionGetname($id){
+    $model = Executers::findOne($id);
+    return $model !== null ? $model->personname : "";
+  }
 }

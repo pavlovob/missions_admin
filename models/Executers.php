@@ -13,7 +13,7 @@ class Executers extends \yii\db\ActiveRecord{
         return [
             [['name'], 'required'],
             [['created', 'changed'], 'safe'],
-            [['name', 'description'], 'string', 'max' => 100],
+            [['name', 'personname', 'description'], 'string', 'max' => 100],
             [['name'], 'unique'],
         ];
     }
@@ -23,6 +23,7 @@ class Executers extends \yii\db\ActiveRecord{
           'uid' => 'Код',
           'name' => 'Исполнитель',
           'description' => 'Описание',
+          'personname' => 'Ф.И.О. Отвественного',
           'created' => 'Дата создания',
           'changed' => 'Дата изменения',
         ];

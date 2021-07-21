@@ -10,3 +10,7 @@ ADD COLUMN `status` INT NOT NULL DEFAULT 1011 AFTER `missionuid`;
 ALTER TABLE `missions`.`missionitems`
 CHANGE COLUMN `date_created` `created` DATETIME NULL DEFAULT CURRENT_TIMESTAMP ,
 CHANGE COLUMN `date_changed` `changed` DATETIME NULL DEFAULT CURRENT_TIMESTAMP ;
+
+-- 21/07/2021
+ALTER TABLE `missions`.`executers`
+ADD COLUMN `personname` VARCHAR(100) NULL AFTER `name`;

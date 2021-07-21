@@ -11,14 +11,16 @@ use app\assets\AppAsset;
 
 
     <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
-    <?= $form->field($model, 'num_pp')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'executeruid')->dropdownList($executers,[
+      'id'=>'_executersdropdown',
+      'prompt'=>'Выберите испонителя',
+      'onchange'=>'$.post("'.Yii::$app->urlManager->createUrl(['executers/getname','id'=>'']).'"+$(this).val() , function( data ){
+        $("#_executername").val(data);}
+      );',
+      ])?>
+    <!-- <?= $form->field($model, 'num_pp')->textInput(['maxlength' => true]) ?> -->
     <?= $form->field($model, 'task')->textarea(['rows' => 5, 'cols' => 5])?>
-    <?= $model->isNewRecord ? $form->field($model, 'executeruids')->listBox($executers,[
-      'multiple' => true,
-      'size'=>7,
-      ]) : ''?>
-      <?= !$model->isNewRecord ? $form->field($model, 'executeruid')->dropdownList($executers) : ''?>
-      <?= $form->field($model, 'executer_name')->textInput(['maxlength' => true]) ?>
+      <?= $form->field($model, 'executer_name')->textInput(['maxlength' => true,'id'=>'_executername']) ?>
       <?= $form->field($model, 'assigner_name')->textInput(['maxlength' => true]) ?>
       <?= $form->field($model, 'deadline')->textarea(['rows' => 2,'cols' => 1])?>
 
