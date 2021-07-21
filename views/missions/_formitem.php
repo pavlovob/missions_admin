@@ -18,9 +18,10 @@ use app\assets\AppAsset;
         $("#_executername").val(data);}
       );',
       ])?>
-    <!-- <?= $form->field($model, 'num_pp')->textInput(['maxlength' => true]) ?> -->
-    <?= $form->field($model, 'task')->textarea(['rows' => 5, 'cols' => 5])?>
-      <?= $form->field($model, 'executer_name')->textInput(['maxlength' => true,'id'=>'_executername']) ?>
+      <?= $form->field($model, 'executer_name')->textInput(['maxlength' => true,'id'=>'_executername']) ?>      
+      <!-- <?= $form->field($model, 'num_pp')->textInput(['maxlength' => true]) ?> -->
+      <?= $form->field($model, 'task')->textarea(['rows' => 5, 'cols' => 5])?>
+
       <?= $form->field($model, 'assigner_name')->textInput(['maxlength' => true]) ?>
       <?= $form->field($model, 'deadline')->textarea(['rows' => 2,'cols' => 1])?>
 
