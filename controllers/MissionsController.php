@@ -134,7 +134,7 @@ class MissionsController extends Controller {
     if ($model->load(Yii::$app->request->post())) {
       if ($model->save()) {
         History::Log('Создан пункт поручений',implode('|',$model->toArray()));
-        Yii::$app->session->setFlash('info', 'Создано пунктов поручений: '.count($template->executeruids));
+        Yii::$app->session->setFlash('info', 'Создан пункт поручений');
         return $this->redirect(['indexitems', 'id' => $model->missionuid]);
       }
     } else {
