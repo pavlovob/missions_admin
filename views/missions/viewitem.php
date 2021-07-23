@@ -28,13 +28,23 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'uid',
             'num_pp',
-            'deadline',
             'task',
+            'deadline',
+            [
+              'attribute' => 'executeruid',
+              'value' => $model->executer->name,
+            ],
             'executer_name',
-            // [
-            //   'attribute' => 'status',
-            //   'value' => $model->stateName($model->status),
-            // ],
+            [
+              'attribute' => 'assigneruid',
+              'value' => $model->assigner->name,
+            ],
+            'assigner_name',
+
+            [
+              'attribute' => 'status',
+              'value' => $model->stateName($model->status),
+            ],
             // 'approve_post',
             // 'approve_fio',
             // 'url',
