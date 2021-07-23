@@ -20,6 +20,15 @@ $this->registerJs("
   });
 ");
 
+//Регистрация Draggable
+// <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+// <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+// $this->registerJs("
+// $( function() {
+//     $( '#draggable' ).draggable();
+//   } );
+// ");
+
 //CSS для измнеения курсора над GridView
 $this->registerCss("table { cursor: pointer; }");
 //CSS для многострочного отображения в Gridview
@@ -41,7 +50,7 @@ $this->registerCss("grid-view td {white-space: inherit;}");
   <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
   <?= GridView::widget([
-    'id'  => 'gridWidget',
+    'id'  => 'draggable',
     'dataProvider' => $dataProvider,
     'filterModel' => $searchModel,
     'tableOptions' => [
@@ -52,7 +61,7 @@ $this->registerCss("grid-view td {white-space: inherit;}");
       // 'style' => 'width: 2500px;',
     ],
     'rowOptions'   => function ($model, $key, $index, $grid) {
-      return ['data-id' => $model->uid];
+      return ['data-id' => $model->uid,'id'=>'draggable'];
     },
     'columns' => [
       // ['class' => 'yii\grid\SerialColumn'],
