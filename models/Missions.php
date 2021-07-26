@@ -4,6 +4,10 @@ namespace app\models;
 
 use Yii;
 
+// require 'vendor/autoload.php';
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+
 class Missions extends \yii\db\ActiveRecord {
 
   // public $approvepostfio  //Runtime property in gridview
@@ -79,6 +83,13 @@ class Missions extends \yii\db\ActiveRecord {
   public static function export($id){
       $model = Self::findOne($id);
       if ($model !== null){
+
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setCellValue('A1', $model->mission_name);
+
+        $writer = new Xlsx($spreadsheet);
+        $writer->save('hello world.xlsx');
         History::log('Поручения с кодом '.$id.' выгружены в MS Excel');
       }else{
         throw new NotFoundHttpException('Не найдена запись поручений');
