@@ -95,11 +95,26 @@ $('body').on('dblclick', '#files-grid tbody tr', function(event)
         'attribute' => 'mission_date',
         'options' => ['width' => '70'],
       ],
-      [
+      [//Элементы управления для администратора
         'class' => 'yii\grid\ActionColumn',
-        'options' => ['width' => '90'],
+        'options' => ['width' => '70'],
         'visible' => $usertype == USERTYPE_ADMIN,
       ],
+      [ //элементы управления для куратора
+        'class' => 'yii\grid\ActionColumn',
+        'template' => '{export}',
+        'buttons' => [
+          'export' => function ($url,$model)          {
+            return Html::a(
+              '<span class="glyphicon glyphicon-export"></span>',
+              $url,
+              ['title' => 'Экспорт в Excel']);
+              },
+          ],
+          // 'visible' => $user->usertype !== USERTYPE_EXECUTER,
+          // 'visible' => false,
+          'options' => ['width' => '30'],
+        ],
     ],
   ]); ?>
 

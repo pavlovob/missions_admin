@@ -274,4 +274,10 @@ class MissionsController extends Controller {
     throw new NotFoundHttpException('Не найдена запись пункта поручений');
   }
 
+  //Экспорт в Excel
+  public function actionExport($id)    {
+    Missions::export($id);
+    return $this->redirect(Yii::$app->request->referrer);
+  }
+
 }

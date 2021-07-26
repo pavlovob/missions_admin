@@ -75,6 +75,16 @@ class Missions extends \yii\db\ActiveRecord {
       return self::findOne($id)->status;
   }
 
+  //Экспот в Excel
+  public static function export($id){
+      $model = Self::findOne($id);
+      if ($model !== null){
+        History::log('Поручения с кодом '.$id.' выгружены в MS Excel');
+      }else{
+        throw new NotFoundHttpException('Не найдена запись поручений');
+      }
+  }
+
   //Возвращает текущее состояние поручений
   // public static function copy($id){
   //     return self::findOne($id)->status;
