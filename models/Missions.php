@@ -3,8 +3,6 @@
 namespace app\models;
 
 use Yii;
-
-// require 'vendor/autoload.php';
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
@@ -79,7 +77,7 @@ class Missions extends \yii\db\ActiveRecord {
       return self::findOne($id)->status;
   }
 
-  //Экспот в Excel
+  //Экспот в Exceldisplay instead of download
   public static function export($id){
       $model = Self::findOne($id);
       if ($model !== null){
@@ -94,21 +92,25 @@ class Missions extends \yii\db\ActiveRecord {
         $file = 'hello world.xlsx';
 
         if (file_exists($file)) {
-            header('Content-Description: File Transfer');
-            header('Content-Type: application/octet-stream');
-            header('Content-Disposition: attachment; filename='.basename($file));
-            header('Content-Transfer-Encoding: binary');
-            header('Expires: 0');
-            header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-            header('Pragma: public');
-            header('Content-Length: ' . filesize($file));
-            ob_clean();
-            flush();
+          ob_clean();
+          header('Content-Description: File Transfer');
+          header('Content-Type: application/octet-stream');
+          header('Content-Disposition: attachment; filename=' . basename($file));
+          header('Content-Transfer-Encoding: binary');
+          header('Expires: 0');
+          header('Cache-Control: must-revalidate');
+          header('Pragma: public');
+          header('Content-Length: ' . filesize($file));
+
+
             readfile($file);
+            flush();
+            unlink($file);
+
             // exit;
         }
 
-        History::log('Поручения с кодом '.$id.' выгружены в MS Excel');
+        // History::log('Поручения с кодом '.$id.' выгружены в MS Excel');
       }else{
         throw new NotFoundHttpException('Не найдена запись поручений');
       }

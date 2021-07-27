@@ -277,7 +277,7 @@ class MissionsController extends Controller {
   //Экспорт в Excel
   public function actionExport($id)    {
     Missions::export($id);
-    return $this->redirect(Yii::$app->request->referrer);
+    // return $this->redirect(Yii::$app->request->referrer);
   }
 
 }
