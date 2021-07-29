@@ -16,23 +16,12 @@ $('tbody td').click(function (e) {
   if(e.target == this)
   location.href = '" . Url::to(['missions/indexitems']) . "?id=' + id;
 });
-
 ");
-//CSS для измнеения курсора над GridView
+
+// CSS для измнеения курсора над GridView
 $this->registerCss("table { cursor: pointer; }");
 
 ?>
-
-<!-- <script>
-$(document).ready(function()
-{
-$('body').on('dblclick', '#files-grid tbody tr', function(event)
-{
-//Do something...
-});
-});
-</script> -->
-
 
 <div class="missions-index">
   <!-- <div class="w3-row w3-large"> -->
@@ -40,6 +29,7 @@ $('body').on('dblclick', '#files-grid tbody tr', function(event)
 
   <p>
     <?= Yii::$app->user->identity->usertype == USERTYPE_ADMIN ? Html::a('Создать поручения', ['create'], ['class' => 'btn btn-success']) : ''?>
+    <?= Html::a('Создать поручения', ['export','id'=>56], ['class' => 'btn btn-success'])?>
   </p>
 
   <?php Pjax::begin(); ?>
@@ -100,21 +90,23 @@ $('body').on('dblclick', '#files-grid tbody tr', function(event)
         'options' => ['width' => '70'],
         'visible' => $usertype == USERTYPE_ADMIN,
       ],
-      [ //элементы управления для куратора
-        'class' => 'yii\grid\ActionColumn',
-        'template' => '{export}',
-        'buttons' => [
-          'export' => function ($url,$model)          {
-            return Html::a(
-              '<span class="glyphicon glyphicon-export"></span>',
-              $url,
-              ['title' => 'Экспорт в Excel']);
-              },
-          ],
-          // 'visible' => $user->usertype !== USERTYPE_EXECUTER,
-          // 'visible' => false,
-          'options' => ['width' => '30'],
-        ],
+      // [ //элементы управления для куратора
+      //   'class' => 'yii\grid\ActionColumn',
+      //   'template' => '{export}',
+      //   'buttons' => [
+      //     'export' => function ($url,$model)          {
+      //       return Html::a(
+      //         '<span class="glyphicon glyphicon-export"></span>',
+      //         // $url,
+      //         ['export','id'=>56],
+      //         // ['class' => 'btn btn-success','title' => 'Экспорт в Excel']
+      //       );
+      //     },
+      //   ],
+      //   // 'visible' => $user->usertype !== USERTYPE_EXECUTER,
+      //   // 'visible' => false,
+      //   'options' => ['width' => '30'],
+      // ],
     ],
   ]); ?>
 

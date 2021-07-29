@@ -92,7 +92,7 @@ class Missions extends \yii\db\ActiveRecord {
         $file = 'hello world.xlsx';
 
         if (file_exists($file)) {
-          ob_clean();
+          // ob_clean();
           header('Content-Description: File Transfer');
           header('Content-Type: application/octet-stream');
           header('Content-Disposition: attachment; filename=' . basename($file));
