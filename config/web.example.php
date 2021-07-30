@@ -64,7 +64,6 @@ $config = [
             'default' => [ //Providername default
               'autoconnect' => true,
               'config' => [
-                // Your account suffix, for example: matthias.maderer@example.lan
                 //Change theese params with your own ones for domain auth //
                 'account_suffix'        => '',
                 'hosts'                 => ['your_host_IP_1', 'your_host_IP_2'],
