@@ -101,13 +101,10 @@ class Missions extends \yii\db\ActiveRecord {
           header('Cache-Control: must-revalidate');
           header('Pragma: public');
           header('Content-Length: ' . filesize($file));
-
-
-            readfile($file);
-            flush();
-            unlink($file);
-
-            // exit;
+          readfile($file);
+          flush();
+          unlink($file);
+          exit;
         }
 
         // History::log('Поручения с кодом '.$id.' выгружены в MS Excel');

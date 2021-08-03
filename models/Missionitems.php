@@ -29,7 +29,7 @@ class Missionitems extends \yii\db\ActiveRecord {
         ];
     }
 
-    public function rules()   
+    public function rules()  {   
         return [
             [['uid'], 'unique'],
             [['deadline', 'assigner_name', 'executer_name', 'task','executeruid'], 'required'],
