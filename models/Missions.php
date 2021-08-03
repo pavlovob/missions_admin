@@ -102,39 +102,73 @@ class Missions extends \yii\db\ActiveRecord {
         $lastassigner = null;
         if ($missionItems !== null){
           foreach ($missionItems as $item) {
+            //Заголовок исполнителя
             if ($lastexecuter !== $item->executeruid){
               $sheet->setCellValue('A'.$row, 'Поручения для '.$item->executer->name);
               $sheet->mergeCells('A'.$row.':'.'F'.$row);
               $sheet->getStyle('A'.$row.':'.'F'.$row)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+              $sheet->getStyle('A'.$row.':'.'F'.$row)->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
               $sheet->getStyle('A'.$row.':'.'F'.$row)->getFont()->setBold(true);
               $num = 1;
               $row = $row + 1;
               $lastexecuter = $item->executeruid;
+              $lastassigner = null;
             }
+            //Заголовок куратора
             if ($lastassigner !== $item->assigneruid){
               // $sheet->setCellValue('A'.$row, 'От '.$item->assigner->name);
               $sheet->setCellValue('A'.$row, $item->assigner->ordernumber.'. '.$item->assigner->name);
               $sheet->mergeCells('A'.$row.':'.'F'.$row);
               $sheet->getStyle('A'.$row.':'.'F'.$row)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+              $sheet->getStyle('A'.$row.':'.'F'.$row)->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
               $sheet->getStyle('A'.$row.':'.'F'.$row)->getFont()->setBold(true);
               $row = $row + 1;
               $lastassigner = $item->assigneruid;
             }
+            //табличная часть
             $sheet->setCellValue('A'.$row, $num);
-            $sheet->setCellValue('B'.$row, $item->task);
-            $sheet->setCellValue('C'.$row, $item->deadline);
-            $sheet->setCellValue('D'.$row, $item->report);
-            $sheet->setCellValue('E'.$row, $item->executer_name);
-            $sheet->setCellValue('F'.$row, $item->assigner_name);
             $sheet->getStyle('A'.$row)->getAlignment()->setWrapText(true);
+            $sheet->getStyle('A'.$row)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+            $sheet->getStyle('A'.$row)->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_TOP);
+
+            $sheet->setCellValue('B'.$row, $item->task);
             $sheet->getStyle('B'.$row)->getAlignment()->setWrapText(true);
+            $sheet->getStyle('B'.$row)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
+            $sheet->getStyle('B'.$row)->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_TOP);
+
+            $sheet->setCellValue('C'.$row, $item->deadline);
             $sheet->getStyle('C'.$row)->getAlignment()->setWrapText(true);
+            $sheet->getStyle('C'.$row)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+            $sheet->getStyle('C'.$row)->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_TOP);
+
+            $sheet->setCellValue('D'.$row, $item->report);
             $sheet->getStyle('D'.$row)->getAlignment()->setWrapText(true);
+            $sheet->getStyle('D'.$row)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
+            $sheet->getStyle('D'.$row)->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_TOP);
+
+            $sheet->setCellValue('E'.$row, $item->executer_name);
             $sheet->getStyle('E'.$row)->getAlignment()->setWrapText(true);
+            $sheet->getStyle('E'.$row)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+            $sheet->getStyle('E'.$row)->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_TOP);
+
+            $sheet->setCellValue('F'.$row, $item->assigner_name);
             $sheet->getStyle('F'.$row)->getAlignment()->setWrapText(true);
+            $sheet->getStyle('F'.$row)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+            $sheet->getStyle('F'.$row)->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_TOP);
+
             $num = $num + 1;
             $row = $row + 1;
           }
+          //Всю таблицу в границы (тонкие)
+          $styleArray = [
+              'borders' => [
+            		'allBorders' => [
+                      'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN //fine border
+                  ]
+             	 ]
+          ];
+          $row = $row - 1;
+          $sheet->getStyle('A5:F'.$row)->applyFromArray($styleArray);
         }
 
         //Сохранение и загрузка
