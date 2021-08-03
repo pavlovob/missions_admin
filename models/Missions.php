@@ -4,6 +4,7 @@ namespace app\models;
 
 use Yii;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
+// use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class Missions extends \yii\db\ActiveRecord {
@@ -77,19 +78,25 @@ class Missions extends \yii\db\ActiveRecord {
       return self::findOne($id)->status;
   }
 
-  //Экспот в Exceldisplay instead of download
-  public static function export($id){
+  //Экспот в Excel display instead of download
+  public static function export($id,$executerid=null,$assignerid=null){
       $model = Self::findOne($id);
       if ($model !== null){
+        $template = './templates/MissionsTemplate1.xltx';
+        $file = 'MissionsReport.xlsx';
 
-        $spreadsheet = new Spreadsheet();
+        $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+        $spreadsheet = $reader->load($template);
+        // $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
-        $sheet->setCellValue('A1', $model->mission_name);
+
+        // $sheet->setCellValueExplicit('E2', $model->approve_post . "\n" . $model->approve_fio,\PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
+        $sheet->setCellValue('E2', $model->approve_post . "\n". '___________ '.$model->approve_fio);
+        // $sheet->setCellValue('test', $model->approve_post . '\n' . $model->approve_fio);
+        $sheet->setCellValue('A4', $model->mission_name);
 
         $writer = new Xlsx($spreadsheet);
-        $writer->save('hello world.xlsx');
-
-        $file = 'hello world.xlsx';
+        $writer->save($file);
 
         if (file_exists($file)) {
           // ob_clean();
@@ -102,7 +109,7 @@ class Missions extends \yii\db\ActiveRecord {
           header('Pragma: public');
           header('Content-Length: ' . filesize($file));
           readfile($file);
-          flush();
+          // flush();
           unlink($file);
           exit;
         }

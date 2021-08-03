@@ -32,7 +32,7 @@ $this->registerCss("table { cursor: pointer; }");
     <?= Html::a('Создать поручения', ['export','id'=>56], ['class' => 'btn btn-success'])?>
   </p>
 
-  <?php Pjax::begin(); ?>
+  <!-- <?php Pjax::begin(); ?> -->
   <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
   <?= GridView::widget([
@@ -90,26 +90,26 @@ $this->registerCss("table { cursor: pointer; }");
         'options' => ['width' => '70'],
         'visible' => $usertype == USERTYPE_ADMIN,
       ],
-      // [ //элементы управления для куратора
-      //   'class' => 'yii\grid\ActionColumn',
-      //   'template' => '{export}',
-      //   'buttons' => [
-      //     'export' => function ($url,$model)          {
-      //       return Html::a(
-      //         '<span class="glyphicon glyphicon-export"></span>',
-      //         // $url,
-      //         ['export','id'=>56],
-      //         // ['class' => 'btn btn-success','title' => 'Экспорт в Excel']
-      //       );
-      //     },
-      //   ],
-      //   // 'visible' => $user->usertype !== USERTYPE_EXECUTER,
-      //   // 'visible' => false,
-      //   'options' => ['width' => '30'],
-      // ],
+      [ //элементы управления для куратора
+        'class' => 'yii\grid\ActionColumn',
+        'template' => '{export}',
+        'buttons' => [
+          'export' => function ($url,$model)          {
+            return Html::a(
+              '<span class="glyphicon glyphicon-export"></span>',
+              // $url,
+              ['export','id'=>56],
+              // ['class' => 'btn btn-success','title' => 'Экспорт в Excel']
+            );
+          },
+        ],
+        // 'visible' => $user->usertype !== USERTYPE_EXECUTER,
+        // 'visible' => false,
+        'options' => ['width' => '30'],
+      ],
     ],
   ]); ?>
 
-  <?php Pjax::end(); ?>
+  <!-- <?php Pjax::end(); ?> -->
   <!-- </div> -->
 </div>
