@@ -84,19 +84,63 @@ class Missions extends \yii\db\ActiveRecord {
       if ($model !== null){
         $template = './templates/MissionsTemplate1.xltx';
         $file = 'MissionsReport.xlsx';
-
+        $row = 7;
+        $num = 1;
         $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
         $spreadsheet = $reader->load($template);
-        // $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
-
-        // $sheet->setCellValueExplicit('E2', $model->approve_post . "\n" . $model->approve_fio,\PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING2);
+        //Заполнение шапки шаблона
         $sheet->setCellValue('E2', $model->approve_post . "\n". '___________ '.$model->approve_fio);
-        // $sheet->setCellValue('test', $model->approve_post . '\n' . $model->approve_fio);
         $sheet->setCellValue('A4', $model->mission_name);
+        //Заполнение деталей
+        $where = ['missionuid'=>$id];
+        if ($executerid !== null) $missionItems[] = ['executeruid'=>$executerid];
+        if ($assignerid !== null) $missionItems[] = ['assigneruid'=>$assignerid];
+        // $missionItems = Missionitems::find()->where($where)->orderBy(['executeruid'=>SORT_ASC,'assigneruid'=>SORT_ASC,'uid'=>SORT_ASC])->all();
+        $missionItems = Missionitems::find()->joinWith(['assigner a'])->where($where)->orderBy(['executeruid'=>SORT_ASC,'a.ordernumber'=>SORT_ASC,'uid'=>SORT_ASC])->all();
+        $lastexecuter = null;
+        $lastassigner = null;
+        if ($missionItems !== null){
+          foreach ($missionItems as $item) {
+            if ($lastexecuter !== $item->executeruid){
+              $sheet->setCellValue('A'.$row, 'Поручения для '.$item->executer->name);
+              $sheet->mergeCells('A'.$row.':'.'F'.$row);
+              $sheet->getStyle('A'.$row.':'.'F'.$row)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+              $sheet->getStyle('A'.$row.':'.'F'.$row)->getFont()->setBold(true);
+              $num = 1;
+              $row = $row + 1;
+              $lastexecuter = $item->executeruid;
+            }
+            if ($lastassigner !== $item->assigneruid){
+              // $sheet->setCellValue('A'.$row, 'От '.$item->assigner->name);
+              $sheet->setCellValue('A'.$row, $item->assigner->ordernumber.'. '.$item->assigner->name);
+              $sheet->mergeCells('A'.$row.':'.'F'.$row);
+              $sheet->getStyle('A'.$row.':'.'F'.$row)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+              $sheet->getStyle('A'.$row.':'.'F'.$row)->getFont()->setBold(true);
+              $row = $row + 1;
+              $lastassigner = $item->assigneruid;
+            }
+            $sheet->setCellValue('A'.$row, $num);
+            $sheet->setCellValue('B'.$row, $item->task);
+            $sheet->setCellValue('C'.$row, $item->deadline);
+            $sheet->setCellValue('D'.$row, $item->report);
+            $sheet->setCellValue('E'.$row, $item->executer_name);
+            $sheet->setCellValue('F'.$row, $item->assigner_name);
+            $sheet->getStyle('A'.$row)->getAlignment()->setWrapText(true);
+            $sheet->getStyle('B'.$row)->getAlignment()->setWrapText(true);
+            $sheet->getStyle('C'.$row)->getAlignment()->setWrapText(true);
+            $sheet->getStyle('D'.$row)->getAlignment()->setWrapText(true);
+            $sheet->getStyle('E'.$row)->getAlignment()->setWrapText(true);
+            $sheet->getStyle('F'.$row)->getAlignment()->setWrapText(true);
+            $num = $num + 1;
+            $row = $row + 1;
+          }
+        }
 
+        //Сохранение и загрузка
         $writer = new Xlsx($spreadsheet);
         $writer->save($file);
+
 
         if (file_exists($file)) {
           // ob_clean();

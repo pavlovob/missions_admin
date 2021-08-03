@@ -97,8 +97,8 @@ $this->registerCss("table { cursor: pointer; }");
           'export' => function ($url,$model)          {
             return Html::a(
               '<span class="glyphicon glyphicon-export"></span>',
-              // $url,
-              ['export','id'=>56],
+              $url,
+              // ['export','id'=>56],
               // ['class' => 'btn btn-success','title' => 'Экспорт в Excel']
             );
           },
