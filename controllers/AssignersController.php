@@ -1,4 +1,7 @@
 <?php
+
+// Github functions trait_exists
+
 namespace app\controllers;
 
 use Yii;
