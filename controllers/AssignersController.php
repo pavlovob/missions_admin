@@ -2,6 +2,7 @@
 
 // Github functions trait_exists
 //function one test
+//function two test
 
 namespace app\controllers;
 
