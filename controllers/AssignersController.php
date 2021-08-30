@@ -1,4 +1,6 @@
 <?php
+
+// Testing new vscode features
 namespace app\controllers;
 
 use Yii;
