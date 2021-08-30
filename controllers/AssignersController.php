@@ -1,6 +1,7 @@
 <?php
 
 // Github functions trait_exists
+//function one test
 
 namespace app\controllers;
 
